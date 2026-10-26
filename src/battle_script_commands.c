@@ -909,8 +909,9 @@ static const struct PickupItem sPickupTable[] =
 
 bool32 ProteanTryChangeType(enum BattlerId battler, enum Ability ability, enum Move move, enum Type moveType)
 {
-      if ((ability == ABILITY_PROTEAN || ability == ABILITY_LIBERO)
-         && !gBattleMons[battler].volatiles.usedProteanLibero
+      if ((((ability == ABILITY_PROTEAN || ability == ABILITY_LIBERO)
+             && !gBattleMons[battler].volatiles.usedProteanLibero)
+            || ability == ABILITY_GLYPH_SHIFT)
          && !gBattleStruct->bouncedMoveIsUsed
          && (gBattleMons[battler].types[0] != moveType || gBattleMons[battler].types[1] != moveType
              || (gBattleMons[battler].types[2] != moveType && gBattleMons[battler].types[2] != TYPE_MYSTERY))
@@ -1616,7 +1617,8 @@ bool32 TrySetReflect(enum BattlerId battler)
     if (!(gSideStatuses[side] & SIDE_STATUS_REFLECT))
     {
         gSideStatuses[side] |= SIDE_STATUS_REFLECT;
-        if (GetBattlerHoldEffect(battler) == HOLD_EFFECT_LIGHT_CLAY)
+        if (GetBattlerHoldEffect(battler) == HOLD_EFFECT_LIGHT_CLAY
+         || GetBattlerAbility(battler) == ABILITY_STARLIGHT)
             gSideTimers[side].reflectTimer = 8;
         else
             gSideTimers[side].reflectTimer = 5;
@@ -1637,7 +1639,8 @@ bool32 TrySetLightScreen(enum BattlerId battler)
     if (!(gSideStatuses[side] & SIDE_STATUS_LIGHTSCREEN))
     {
         gSideStatuses[side] |= SIDE_STATUS_LIGHTSCREEN;
-        if (GetBattlerHoldEffect(battler) == HOLD_EFFECT_LIGHT_CLAY)
+        if (GetBattlerHoldEffect(battler) == HOLD_EFFECT_LIGHT_CLAY
+         || GetBattlerAbility(battler) == ABILITY_STARLIGHT)
             gSideTimers[side].lightscreenTimer = 8;
         else
             gSideTimers[side].lightscreenTimer = 5;

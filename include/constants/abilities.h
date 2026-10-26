@@ -341,6 +341,12 @@ enum __attribute__((packed)) Ability
     ABILITY_317 = 317,
     ABILITY_SPICY_SPRAY = 318,
     ABILITY_AURA_GUARD = 319,
+
+    // Custom abilities for this hack
+    ABILITY_FULL_STEAM = 320,
+    ABILITY_STARLIGHT = 321,
+    ABILITY_SPIDER_SENSE = 322,
+    ABILITY_GLYPH_SHIFT = 323,
     ABILITIES_COUNT_GEN9,
     ABILITIES_COUNT = ABILITIES_COUNT_GEN9,
 };

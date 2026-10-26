@@ -4491,6 +4491,13 @@ s32 GetBattleMovePriority(enum BattlerId battler, enum Ability ability, enum Mov
     {
         priority += 3;
     }
+    else if (ability == ABILITY_SPIDER_SENSE
+          && !IsBattleMoveStatus(move)
+          && GetMoveAccuracy(move) != 0
+          && GetMoveAccuracy(move) < 100)
+    {
+        priority++;
+    }
 
     return priority;
 }

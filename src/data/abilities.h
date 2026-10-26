@@ -2556,4 +2556,34 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Aura Guard"),
         .description = COMPOUND_STRING("Unimplemented."),
     },
+
+    // Custom abilities for this hack
+    [ABILITY_FULL_STEAM] =
+    {
+        .name = _("Full Steam"),
+        .description = COMPOUND_STRING("Fire/Water: half dmg, +Speed."),
+        .aiRating = 6,
+        .breakable = TRUE,
+    },
+
+    [ABILITY_STARLIGHT] =
+    {
+        .name = _("Starlight"),
+        .description = COMPOUND_STRING("Its screens last 8 turns."),
+        .aiRating = 5,
+    },
+
+    [ABILITY_SPIDER_SENSE] =
+    {
+        .name = _("Spider Sense"),
+        .description = COMPOUND_STRING("Ups accuracy; risky hits first."),
+        .aiRating = 7,
+    },
+
+    [ABILITY_GLYPH_SHIFT] =
+    {
+        .name = _("Glyph Shift"),
+        .description = COMPOUND_STRING("Always changes type to move's."),
+        .aiRating = 8,
+    },
 };
