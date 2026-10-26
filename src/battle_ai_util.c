@@ -5766,6 +5766,7 @@ bool32 ShouldTriggerAbility(enum BattlerId battlerAtk, enum BattlerId battlerDef
 
         case ABILITY_RATTLED:
         case ABILITY_STEAM_ENGINE:
+        case ABILITY_FULL_STEAM:
             return BattlerStatCanRise(battlerDef, ability, STAT_SPEED);
 
         case ABILITY_FLASH_FIRE:

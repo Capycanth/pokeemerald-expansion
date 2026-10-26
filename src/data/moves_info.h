@@ -22117,6 +22117,28 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_ALL] =
     },
 
     // Z-Moves
+    // Custom moves for this hack
+    [MOVE_THREAD_CANNON] =
+    {
+        .name = COMPOUND_STRING("Thread Cannon"),
+        .description = COMPOUND_STRING(
+            "Fires a hardened thread\n"
+            "with great force."),
+        .effect = EFFECT_HIT,
+        .power = 100,
+        .type = TYPE_BUG,
+        .accuracy = 80,
+        .pp = 10,
+        .target = TARGET_SELECTED,
+        .priority = 0,
+        .category = DAMAGE_CATEGORY_SPECIAL,
+        .contestEffect = CONTEST_EFFECT_HIGHLY_APPEALING,
+        .contestCategory = CONTEST_CATEGORY_COOL,
+        .contestComboStarterId = 0,
+        .contestComboMoves = {0},
+        .battleAnimScript = gBattleAnimMove_PinMissile, // borrowed animation
+    },
+
     [MOVE_BREAKNECK_BLITZ] =
     {
         .name = COMPOUND_STRING("Breakneck Blitz"),
