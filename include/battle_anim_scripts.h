@@ -45,6 +45,7 @@ extern const u8 gBattleAnimMove_TailWhip[];
 extern const u8 gBattleAnimMove_PoisonSting[];
 extern const u8 gBattleAnimMove_Twineedle[];
 extern const u8 gBattleAnimMove_PinMissile[];
+extern const u8 gBattleAnimMove_ThreadCannon[];
 extern const u8 gBattleAnimMove_Leer[];
 extern const u8 gBattleAnimMove_Bite[];
 extern const u8 gBattleAnimMove_Growl[];

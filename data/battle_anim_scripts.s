@@ -19376,6 +19376,22 @@ gBattleAnimMove_PinMissile::
 	blendoff
 	end
 
+@ Custom move for this hack: one straight needle, one impact
+gBattleAnimMove_ThreadCannon::
+	monbg ANIM_TARGET
+	splitbgprio ANIM_TARGET
+	setalpha 12, 8
+	playsewithpan SE_M_JUMP_KICK, SOUND_PAN_ATTACKER
+	create_pin_missile_sprite ANIM_ATTACKER, 2, initial_x=20, initial_y=-8, target_x=0, target_y=0, duration=14, wave_amplitude=0
+	delay 12
+	playsewithpan SE_M_HORN_ATTACK, SOUND_PAN_TARGET
+	create_basic_hitsplat_sprite ANIM_ATTACKER, 3, x=0, y=0, relative_to=ANIM_TARGET, animation=0
+	createvisualtask AnimTask_ShakeMon2, 2, ANIM_TARGET, 4, 0, 6, 1
+	waitforvisualfinish
+	clearmonbg ANIM_TARGET
+	blendoff
+	end
+
 gBattleAnimMove_IcicleSpear::
 	monbg ANIM_TARGET
 	splitbgprio ANIM_TARGET
