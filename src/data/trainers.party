@@ -169,14 +169,15 @@ Music: Female
 Double Battle: No
 AI: Basic Trainer
 
-Charmander
+Snorunt
 Level: 7
-Ability: Blaze
+Ability: Inner Focus
 IVs: 7 HP / 7 Atk / 7 Def / 7 SpA / 7 SpD / 7 Spe
 Nature: Bashful
-- Scratch
-- Growl
-- Ember
+- Powder Snow
+- Headbutt
+- Astonish
+- Leer
 
 === TRAINER_LADDER_HUGO ===
 Name: HUGO
@@ -187,15 +188,14 @@ Music: Male
 Double Battle: No
 AI: Basic Trainer
 
-Snorunt
+Charmander
 Level: 8
-Ability: Inner Focus
+Ability: Blaze
 IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
 Nature: Hasty
-- Powder Snow
-- Headbutt
-- Astonish
-- Leer
+- Scratch
+- Growl
+- Ember
 
 === TRAINER_LADDER_IVY ===
 Name: IVY
