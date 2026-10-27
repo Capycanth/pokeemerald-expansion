@@ -40,6 +40,10 @@ struct Weather
             struct Sprite *sandstormSprites1[NUM_SANDSTORM_SPRITES];
             struct Sprite *sandstormSprites2[NUM_SWIRL_SANDSTORM_SPRITES];
         } s2;
+        struct
+        {
+            struct Sprite *confettiSprites[NUM_CONFETTI_SPRITES];
+        } s3;
     } sprites;
     s8 colorMapIndex;
     s8 targetColorMapIndex;
@@ -75,6 +79,10 @@ struct Weather
     u16 snowflakeTimer;
     u8 snowflakeSpriteCount;
     u8 targetSnowflakeSpriteCount;
+    // Confetti
+    u16 confettiVisibleCounter;
+    u8 confettiSpriteCount;
+    u8 targetConfettiSpriteCount;
     // Thunderstorm
     u16 thunderTimer;        // general-purpose timer for state transitions
     u16 thunderSETimer;      // timer for thunder sound effect
@@ -226,6 +234,10 @@ void Bubbles_InitVars(void);
 void Bubbles_Main(void);
 void Bubbles_InitAll(void);
 bool8 Bubbles_Finish(void);
+void Confetti_InitVars(void);
+void Confetti_Main(void);
+void Confetti_InitAll(void);
+bool8 Confetti_Finish(void);
 
 u8 GetSavedWeather(void);
 void SetSavedWeather(enum OverworldWeather weather);
