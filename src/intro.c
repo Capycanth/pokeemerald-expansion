@@ -29,6 +29,7 @@
 #include "constants/rgb.h"
 #include "constants/battle_anim.h"
 #include "pokemon.h"
+#include "test_arena.h"
 
 /*
     The intro is grouped into the following scenes
@@ -1136,19 +1137,30 @@ static u8 SetUpCopyrightScreen(void)
     return 1;
 }
 
+static void InitGameStateAfterBootup(void)
+{
+    SetSaveBlocksPointers(GetSaveBlocksPointersBaseOffset());
+    ResetMenuAndMonGlobals();
+    Save_ResetSaveCounters();
+    LoadGameSave(SAVE_NORMAL);
+    if (gSaveFileStatus == SAVE_STATUS_EMPTY || gSaveFileStatus == SAVE_STATUS_CORRUPT)
+        Sav2_ClearSetDefault();
+    SetPokemonCryStereo(gSaveBlock2Ptr->optionsSound);
+    InitHeap(gHeap, HEAP_SIZE);
+}
+
 void CB2_InitCopyrightScreenAfterBootup(void)
 {
-    if (!SetUpCopyrightScreen())
+    // Skip the copyright screen and intro and go straight to the battle test arena.
+    if (TEST_ARENA)
     {
-        SetSaveBlocksPointers(GetSaveBlocksPointersBaseOffset());
-        ResetMenuAndMonGlobals();
-        Save_ResetSaveCounters();
-        LoadGameSave(SAVE_NORMAL);
-        if (gSaveFileStatus == SAVE_STATUS_EMPTY || gSaveFileStatus == SAVE_STATUS_CORRUPT)
-            Sav2_ClearSetDefault();
-        SetPokemonCryStereo(gSaveBlock2Ptr->optionsSound);
-        InitHeap(gHeap, HEAP_SIZE);
+        InitGameStateAfterBootup();
+        TestArena_StartFromBoot();
+        return;
     }
+
+    if (!SetUpCopyrightScreen())
+        InitGameStateAfterBootup();
 }
 
 void CB2_InitCopyrightScreenAfterTitleScreen(void)

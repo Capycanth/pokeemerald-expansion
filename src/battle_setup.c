@@ -92,7 +92,6 @@ static void RegisterTrainerInMatchCall(void);
 static void HandleRematchVarsOnBattleEnd(void);
 static const u8 *GetIntroSpeechOfApproachingTrainer(void);
 static const u8 *GetTrainerCantBattleSpeech(void);
-static void CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum);
 static void DoTrainerBattle(void);
 
 EWRAM_DATA TrainerBattleParameter gTrainerBattleParameter = {0};
@@ -2215,7 +2214,7 @@ void CreateNPCTrainerPartyFromTrainer(struct Pokemon *party, const struct Traine
     Free(trainerGen);
 }
 
-static void CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum)
+void CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum)
 {
     if (!GetTrainerStructFromId(trainerNum)->overrideTrainer)
     {
