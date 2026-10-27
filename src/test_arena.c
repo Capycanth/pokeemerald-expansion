@@ -2,10 +2,13 @@
 //
 // When ENABLE_TEST_ARENA is TRUE (include/config/test_arena.h), the game boots
 // straight into this menu instead of the intro. The first screen picks a
-// starter; the second lists the battles in src/data/test_arena.h. Each battle
-// rebuilds the starter at that battle's level with full HP, then returns here
-// with the result. A gauntlet entry runs its trainers back to back with HP
-// carried over, stopping between fights so a Potion can be used.
+// starter, which becomes your trained starter at TEST_ARENA_STARTER_LEVEL with
+// its four set moves. The second screen lists the battles in
+// src/data/test_arena.h. Battles marked ARENA_TRAINED use the trained starter,
+// healed to full first, and keep the EXP and levels it gains. Other battles
+// build a fresh starter at their own level. A gauntlet entry runs its trainers
+// back to back with HP carried over, stopping between fights so a Potion can
+// be used.
 //
 // Nothing here is ever saved.
 
@@ -33,16 +36,26 @@
 #include "window.h"
 #include "constants/battle.h"
 #include "constants/items.h"
+#include "constants/moves.h"
 #include "constants/rgb.h"
 #include "constants/songs.h"
 #include "constants/species.h"
 #include "constants/trainers.h"
 
+// playerLevel value meaning "use the trained starter".
+#define ARENA_TRAINED 0
+
+struct TestArenaStarter
+{
+    u16 species;
+    u16 moves[MAX_MON_MOVES];   // Known at TEST_ARENA_STARTER_LEVEL.
+};
+
 struct TestArenaEntry
 {
     const u8 *name;
     const u16 *opponents;   // TRAINER_NONE-terminated. More than one = gauntlet.
-    u8 playerLevel;         // Starter's level at the start of the entry.
+    u8 playerLevel;         // Starter's level at the start of the entry, or ARENA_TRAINED.
     u8 potions;             // Potions in the Bag at the start of the entry.
 };
 
@@ -103,6 +116,7 @@ struct TestArena
 
 EWRAM_DATA bool8 gIsTestArenaBattle = FALSE;
 static EWRAM_DATA struct TestArena sArena = {0};
+static EWRAM_DATA struct Pokemon sTrainedStarter = {0};
 
 static void CB2_InitArenaScreen(void);
 static void CB2_TestArena(void);
@@ -189,6 +203,26 @@ static u16 GetCurrentOpponent(void)
     return GetCurrentEntry()->opponents[sArena.fight];
 }
 
+static bool32 UsesTrainedStarter(const struct TestArenaEntry *entry)
+{
+    return entry->playerLevel == ARENA_TRAINED;
+}
+
+// At TEST_ARENA_STARTER_LEVEL the starter gets its four set moves; at any
+// other level it keeps the level-up moves CreateRandomMonWithIVs gives it.
+static void CreateArenaStarter(struct Pokemon *mon, u32 level)
+{
+    const struct TestArenaStarter *starter = &sTestArenaStarters[sArena.starter];
+    u32 i;
+
+    CreateRandomMonWithIVs(mon, starter->species, level, TEST_ARENA_IVS);
+    if (level == TEST_ARENA_STARTER_LEVEL)
+    {
+        for (i = 0; i < MAX_MON_MOVES; i++)
+            SetMonMoveSlot(mon, starter->moves[i], i);
+    }
+}
+
 static u8 *AppendNumber(u8 *end, u32 value)
 {
     return ConvertIntToDecimalStringN(end, value, STR_CONV_MODE_LEFT_ALIGN, 6);
@@ -232,7 +266,7 @@ static void BufferRowText(u32 row, u8 *dst)
     switch (sArena.screen)
     {
     case ARENA_SCREEN_STARTER:
-        StringCopy(dst, GetSpeciesName(sTestArenaStarters[row]));
+        StringCopy(dst, GetSpeciesName(sTestArenaStarters[row].species));
         break;
     case ARENA_SCREEN_BATTLES:
         StringCopy(dst, sTestArenaEntries[row].name);
@@ -268,8 +302,10 @@ static void BufferTitle(u8 *dst)
         StringCopy(dst, COMPOUND_STRING("TEST ARENA - Choose a starter"));
         break;
     case ARENA_SCREEN_BATTLES:
-        end = StringCopy(dst, COMPOUND_STRING("TEST ARENA - Starter: "));
-        StringCopy(end, GetSpeciesName(sTestArenaStarters[sArena.starter]));
+        end = StringCopy(dst, COMPOUND_STRING("TEST ARENA - "));
+        end = StringCopy(end, GetSpeciesName(sTestArenaStarters[sArena.starter].species));
+        end = StringCopy(end, COMPOUND_STRING(" Lv "));
+        AppendNumber(end, GetMonData(&sTrainedStarter, MON_DATA_LEVEL));
         break;
     case ARENA_SCREEN_GAUNTLET:
         end = StringCopy(dst, GetCurrentEntry()->name);
@@ -289,7 +325,9 @@ static void BufferFooterStatus(u8 *dst)
     switch (sArena.screen)
     {
     case ARENA_SCREEN_STARTER:
-        StringCopy(dst, COMPOUND_STRING("Your only Pokémon in every battle."));
+        end = StringCopy(dst, COMPOUND_STRING("Starts at Lv "));
+        end = AppendNumber(end, TEST_ARENA_STARTER_LEVEL);
+        StringCopy(end, COMPOUND_STRING(" with its 4 set moves."));
         break;
     case ARENA_SCREEN_GAUNTLET:
         BufferLeadMonStatus(dst, TRUE);
@@ -347,7 +385,7 @@ static void BufferFooterHint(u8 *dst)
         StringCopy(dst, COMPOUND_STRING("A: choose"));
         break;
     case ARENA_SCREEN_BATTLES:
-        StringCopy(dst, COMPOUND_STRING("A: fight   B: change starter"));
+        StringCopy(dst, COMPOUND_STRING("A: fight  B: reset/change starter"));
         break;
     case ARENA_SCREEN_GAUNTLET:
         end = StringCopy(dst, COMPOUND_STRING("Beat "));
@@ -496,7 +534,15 @@ static void StartEntry(u32 entryIndex)
     sArena.runPrize = 0;
 
     ZeroPlayerPartyMons();
-    CreateRandomMonWithIVs(&gPlayerParty[0], sTestArenaStarters[sArena.starter], entry->playerLevel, TEST_ARENA_IVS);
+    if (UsesTrainedStarter(entry))
+    {
+        gPlayerParty[0] = sTrainedStarter;
+        HealPokemon(&gPlayerParty[0]);
+    }
+    else
+    {
+        CreateArenaStarter(&gPlayerParty[0], entry->playerLevel);
+    }
     CalculatePlayerPartyCount();
 
     ClearBag();
@@ -545,6 +591,8 @@ static void CB2_ReturnFromArenaBattle(void)
     u32 moneyNow = GetMoney(&gSaveBlock1Ptr->money);
 
     gIsTestArenaBattle = FALSE;
+    if (UsesTrainedStarter(entry))
+        sTrainedStarter = gPlayerParty[0];
     sArena.resultTrainer = GetCurrentOpponent();
     sArena.lastPrize = (won && moneyNow > sArena.moneyBeforeFight) ? moneyNow - sArena.moneyBeforeFight : 0;
     sArena.runPrize += sArena.lastPrize;
@@ -599,6 +647,7 @@ static void SelectRow(u32 row)
     case ARENA_SCREEN_STARTER:
         PlaySE(SE_SELECT);
         sArena.starter = row;
+        CreateArenaStarter(&sTrainedStarter, TEST_ARENA_STARTER_LEVEL);
         sArena.result = ARENA_RESULT_NONE;
         sArena.screen = ARENA_SCREEN_BATTLES;
         DrawArenaScreen();
