@@ -231,7 +231,7 @@ static u8 *AppendNumber(u8 *end, u32 value)
 // "SPHEAL Lv 6  HP 14/22", or "SPHEAL HP 14/22" without the level.
 static void BufferLeadMonStatus(u8 *dst, bool32 showLevel)
 {
-    struct Pokemon *mon = &gPlayerParty[0];
+    struct Pokemon *mon = &gParties[B_TRAINER_PLAYER][0];
     u8 *end = StringCopy(dst, GetSpeciesName(GetMonData(mon, MON_DATA_SPECIES)));
     if (showLevel)
     {
@@ -536,12 +536,12 @@ static void StartEntry(u32 entryIndex)
     ZeroPlayerPartyMons();
     if (UsesTrainedStarter(entry))
     {
-        gPlayerParty[0] = sTrainedStarter;
-        HealPokemon(&gPlayerParty[0]);
+        gParties[B_TRAINER_PLAYER][0] = sTrainedStarter;
+        HealPokemon(&gParties[B_TRAINER_PLAYER][0]);
     }
     else
     {
-        CreateArenaStarter(&gPlayerParty[0], entry->playerLevel);
+        CreateArenaStarter(&gParties[B_TRAINER_PLAYER][0], entry->playerLevel);
     }
     CalculatePlayerPartyCount();
 
@@ -592,7 +592,7 @@ static void CB2_ReturnFromArenaBattle(void)
 
     gIsTestArenaBattle = FALSE;
     if (UsesTrainedStarter(entry))
-        sTrainedStarter = gPlayerParty[0];
+        sTrainedStarter = gParties[B_TRAINER_PLAYER][0];
     sArena.resultTrainer = GetCurrentOpponent();
     sArena.lastPrize = (won && moneyNow > sArena.moneyBeforeFight) ? moneyNow - sArena.moneyBeforeFight : 0;
     sArena.runPrize += sArena.lastPrize;
@@ -631,7 +631,7 @@ static void TryUsePotion(void)
 {
     // ExecuteTableBasedItemEffect returns TRUE when the item had no effect.
     if (!CheckBagHasItem(ITEM_POTION, 1)
-     || ExecuteTableBasedItemEffect(&gPlayerParty[0], ITEM_POTION, 0, 0))
+     || ExecuteTableBasedItemEffect(&gParties[B_TRAINER_PLAYER][0], ITEM_POTION, 0, 0))
     {
         PlaySE(SE_FAILURE);
         return;
