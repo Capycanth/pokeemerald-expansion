@@ -30,6 +30,8 @@ const u8 gWeatherBubbleTiles[] = INCGFX_U8("graphics/weather/bubble.png", ".4bpp
 const u8 gWeatherAshTiles[] = INCGFX_U8("graphics/weather/ash.png", ".4bpp");
 const u8 gWeatherRainTiles[] = INCGFX_U8("graphics/weather/rain.png", ".4bpp");
 const u8 gWeatherSandstormTiles[] = INCGFX_U8("graphics/weather/sandstorm.png", ".4bpp");
+const u16 gConfettiWeatherPalette[] = INCGFX_U16("graphics/weather/confetti.png", ".gbapal");
+const u8 gWeatherConfettiTiles[] = INCGFX_U8("graphics/weather/confetti.png", ".4bpp");
 
 //------------------------------------------------------------------------------
 // WEATHER_SUNNY_CLOUDS
@@ -985,6 +987,352 @@ static void UpdateSnowflakeSprite(struct Sprite *sprite)
 #undef tFallCounter
 #undef tFallDuration
 #undef tDeltaY2
+
+//------------------------------------------------------------------------------
+// WEATHER_CONFETTI
+//------------------------------------------------------------------------------
+
+// Red, blue and green paper strips that tumble down the screen while a steady
+// wind carries them from left to right. Each strip picks a random color, flutter
+// speed and facing, and when it falls off the bottom it comes back in at the top
+// as a new piece. When the weather ends, strips drift off-screen instead of
+// popping out.
+//
+// graphics/weather/confetti.png holds 8 flutter frames for each of the 3 colors,
+// stacked as 8x8 tiles: red frames 0-7, blue frames 8-15, green frames 16-23.
+
+#define CONFETTI_FRAMES          8   // Flutter frames per color in confetti.png
+#define CONFETTI_COLORS          3
+#define CONFETTI_ANIMS_PER_COLOR 4   // 2 facings x 2 flutter speeds
+#define CONFETTI_SPAWN_DELAY     12  // Frames between each new strip appearing
+#define CONFETTI_FINISH_TIMEOUT  240 // Max frames to wait for strips to drift away
+#define CONFETTI_SUBPIXEL_SHIFT  6   // Speeds are in 1/64ths of a pixel per frame
+
+// Movement speeds, in 1/64ths of a pixel per frame
+#define CONFETTI_FALL_SPEED_MIN  29  // ~0.45 px/frame; snow falls at 0.5-0.6
+#define CONFETTI_FALL_SPEED_STEP 5
+#define CONFETTI_WIND_SPEED_MIN  35  // ~0.55 px/frame to the right
+#define CONFETTI_WIND_SPEED_STEP 6
+
+static void UpdateConfettiSprite(struct Sprite *);
+static bool8 UpdateVisibleConfettiSprites(void);
+static bool8 CreateConfettiSprite(bool32 anywhereOnScreen);
+static bool8 DestroyConfettiSprite(void);
+static bool8 AreAllConfettiSpritesGone(void);
+static void InitConfettiSpriteMovement(struct Sprite *, bool32 anywhereOnScreen);
+
+void Confetti_InitVars(void)
+{
+    gWeatherPtr->initStep = 0;
+    gWeatherPtr->weatherGfxLoaded = FALSE;
+    gWeatherPtr->targetColorMapIndex = 0;
+    gWeatherPtr->colorMapStepDelay = 20;
+    gWeatherPtr->targetConfettiSpriteCount = NUM_CONFETTI_SPRITES;
+    gWeatherPtr->confettiVisibleCounter = 0;
+    Weather_SetBlendCoeffs(8, BASE_SHADOW_INTENSITY); // preserve shadow darkness
+    gWeatherPtr->noShadows = FALSE;
+}
+
+// Entering a map that already has confetti: fill the screen straight away.
+void Confetti_InitAll(void)
+{
+    Confetti_InitVars();
+    LoadCustomWeatherSpritePalette(gConfettiWeatherPalette);
+    while (gWeatherPtr->confettiSpriteCount < gWeatherPtr->targetConfettiSpriteCount)
+    {
+        if (!CreateConfettiSprite(TRUE))
+            break;
+    }
+    gWeatherPtr->weatherGfxLoaded = TRUE;
+    gWeatherPtr->initStep = 2;
+}
+
+// Weather changed to confetti on the current map: strips start falling from the top.
+void Confetti_Main(void)
+{
+    switch (gWeatherPtr->initStep)
+    {
+    case 0:
+        LoadCustomWeatherSpritePalette(gConfettiWeatherPalette);
+        gWeatherPtr->initStep++;
+        break;
+    case 1:
+        if (!UpdateVisibleConfettiSprites())
+        {
+            gWeatherPtr->weatherGfxLoaded = TRUE;
+            gWeatherPtr->initStep++;
+        }
+        break;
+    }
+}
+
+bool8 Confetti_Finish(void)
+{
+    switch (gWeatherPtr->finishStep)
+    {
+    case 0:
+        // With a target of 0, strips that leave the screen retire instead of respawning.
+        gWeatherPtr->targetConfettiSpriteCount = 0;
+        gWeatherPtr->confettiVisibleCounter = 0;
+        gWeatherPtr->finishStep++;
+        // fall through
+    case 1:
+        if (!AreAllConfettiSpritesGone() && ++gWeatherPtr->confettiVisibleCounter < CONFETTI_FINISH_TIMEOUT)
+            return TRUE;
+        while (DestroyConfettiSprite())
+            ;
+        gWeatherPtr->finishStep++;
+        return FALSE;
+    }
+
+    return FALSE;
+}
+
+static bool8 UpdateVisibleConfettiSprites(void)
+{
+    if (gWeatherPtr->confettiSpriteCount == gWeatherPtr->targetConfettiSpriteCount)
+        return FALSE;
+
+    if (++gWeatherPtr->confettiVisibleCounter > CONFETTI_SPAWN_DELAY)
+    {
+        gWeatherPtr->confettiVisibleCounter = 0;
+        if (gWeatherPtr->confettiSpriteCount < gWeatherPtr->targetConfettiSpriteCount)
+            CreateConfettiSprite(FALSE);
+        else
+            DestroyConfettiSprite();
+    }
+
+    return gWeatherPtr->confettiSpriteCount != gWeatherPtr->targetConfettiSpriteCount;
+}
+
+static const struct OamData sConfettiSpriteOamData =
+{
+    .y = 0,
+    .affineMode = ST_OAM_AFFINE_OFF,
+    .objMode = ST_OAM_OBJ_NORMAL,
+    .mosaic = FALSE,
+    .bpp = ST_OAM_4BPP,
+    .shape = SPRITE_SHAPE(8x8),
+    .x = 0,
+    .matrixNum = 0,
+    .size = SPRITE_SIZE(8x8),
+    .tileNum = 0,
+    .priority = 1,
+    .paletteNum = 0,
+    .affineParam = 0,
+};
+
+static const struct SpriteFrameImage sConfettiSpriteImages[] =
+{
+    overworld_ascending_frames(gWeatherConfettiTiles, 1, 1),
+};
+
+// One looping 8-frame flutter. Mirrored strips lean the other way.
+#define CONFETTI_ANIM(name, color, speed, flip)                                  \
+static const union AnimCmd name[] =                                               \
+{                                                                                 \
+    ANIMCMD_FRAME((color) * CONFETTI_FRAMES + 0, speed, .hFlip = flip),           \
+    ANIMCMD_FRAME((color) * CONFETTI_FRAMES + 1, speed, .hFlip = flip),           \
+    ANIMCMD_FRAME((color) * CONFETTI_FRAMES + 2, speed, .hFlip = flip),           \
+    ANIMCMD_FRAME((color) * CONFETTI_FRAMES + 3, speed, .hFlip = flip),           \
+    ANIMCMD_FRAME((color) * CONFETTI_FRAMES + 4, speed, .hFlip = flip),           \
+    ANIMCMD_FRAME((color) * CONFETTI_FRAMES + 5, speed, .hFlip = flip),           \
+    ANIMCMD_FRAME((color) * CONFETTI_FRAMES + 6, speed, .hFlip = flip),           \
+    ANIMCMD_FRAME((color) * CONFETTI_FRAMES + 7, speed, .hFlip = flip),           \
+    ANIMCMD_JUMP(0),                                                              \
+};
+
+CONFETTI_ANIM(sConfettiAnim_Red_Fast,           0, 4, FALSE)
+CONFETTI_ANIM(sConfettiAnim_Red_Slow,           0, 6, FALSE)
+CONFETTI_ANIM(sConfettiAnim_Red_FastMirrored,   0, 4, TRUE)
+CONFETTI_ANIM(sConfettiAnim_Red_SlowMirrored,   0, 6, TRUE)
+CONFETTI_ANIM(sConfettiAnim_Blue_Fast,          1, 4, FALSE)
+CONFETTI_ANIM(sConfettiAnim_Blue_Slow,          1, 6, FALSE)
+CONFETTI_ANIM(sConfettiAnim_Blue_FastMirrored,  1, 4, TRUE)
+CONFETTI_ANIM(sConfettiAnim_Blue_SlowMirrored,  1, 6, TRUE)
+CONFETTI_ANIM(sConfettiAnim_Green_Fast,         2, 4, FALSE)
+CONFETTI_ANIM(sConfettiAnim_Green_Slow,         2, 6, FALSE)
+CONFETTI_ANIM(sConfettiAnim_Green_FastMirrored, 2, 4, TRUE)
+CONFETTI_ANIM(sConfettiAnim_Green_SlowMirrored, 2, 6, TRUE)
+
+#undef CONFETTI_ANIM
+
+static const union AnimCmd *const sConfettiAnimCmds[CONFETTI_COLORS * CONFETTI_ANIMS_PER_COLOR] =
+{
+    sConfettiAnim_Red_Fast,
+    sConfettiAnim_Red_Slow,
+    sConfettiAnim_Red_FastMirrored,
+    sConfettiAnim_Red_SlowMirrored,
+    sConfettiAnim_Blue_Fast,
+    sConfettiAnim_Blue_Slow,
+    sConfettiAnim_Blue_FastMirrored,
+    sConfettiAnim_Blue_SlowMirrored,
+    sConfettiAnim_Green_Fast,
+    sConfettiAnim_Green_Slow,
+    sConfettiAnim_Green_FastMirrored,
+    sConfettiAnim_Green_SlowMirrored,
+};
+
+static const struct SpriteTemplate sConfettiSpriteTemplate =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = PALTAG_WEATHER_2,
+    .oam = &sConfettiSpriteOamData,
+    .anims = sConfettiAnimCmds,
+    .images = sConfettiSpriteImages,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = UpdateConfettiSprite,
+};
+
+#define tSubPixelX  data[0]
+#define tSubPixelY  data[1]
+#define tDeltaX     data[2]
+#define tDeltaY     data[3]
+#define tWaveIndex  data[4]
+#define tWaveDelta  data[5]
+
+#define CONFETTI_SUBPIXEL_MASK ((1 << CONFETTI_SUBPIXEL_SHIFT) - 1)
+
+static bool8 CreateConfettiSprite(bool32 anywhereOnScreen)
+{
+    u8 spriteId = CreateSpriteAtEndUnchecked(&sConfettiSpriteTemplate, 0, 0, 78);
+    if (spriteId == MAX_SPRITES)
+        return FALSE;
+
+    gSprites[spriteId].coordOffsetEnabled = TRUE;
+    InitConfettiSpriteMovement(&gSprites[spriteId], anywhereOnScreen);
+    gWeatherPtr->sprites.s3.confettiSprites[gWeatherPtr->confettiSpriteCount++] = &gSprites[spriteId];
+    return TRUE;
+}
+
+static bool8 DestroyConfettiSprite(void)
+{
+    if (gWeatherPtr->confettiSpriteCount)
+    {
+        DestroySprite(gWeatherPtr->sprites.s3.confettiSprites[--gWeatherPtr->confettiSpriteCount]);
+        return TRUE;
+    }
+
+    return FALSE;
+}
+
+static bool8 AreAllConfettiSpritesGone(void)
+{
+    u32 i;
+
+    for (i = 0; i < gWeatherPtr->confettiSpriteCount; i++)
+    {
+        if (!gWeatherPtr->sprites.s3.confettiSprites[i]->invisible)
+            return FALSE;
+    }
+
+    return TRUE;
+}
+
+// Places a strip in screen space. Sprites have coordOffsetEnabled, so the
+// camera offset is removed here and added back when they're drawn.
+static void SetConfettiScreenPos(struct Sprite *sprite, s16 x, s16 y)
+{
+    sprite->x = x - (gSpriteCoordOffsetX + sprite->centerToCornerVecX);
+    sprite->y = y - (gSpriteCoordOffsetY + sprite->centerToCornerVecY);
+}
+
+static void InitConfettiSpriteMovement(struct Sprite *sprite, bool32 anywhereOnScreen)
+{
+    u16 rand = Random();
+    u16 look = Random();
+    u32 color = look % CONFETTI_COLORS;
+    s16 x = (Random() % (DISPLAY_WIDTH + 16)) - 8;
+    s16 y = anywhereOnScreen ? (s16)(Random() % DISPLAY_HEIGHT) : -8;
+
+    SetConfettiScreenPos(sprite, x, y);
+    sprite->x2 = 0;
+    sprite->tSubPixelX = 0;
+    sprite->tSubPixelY = 0;
+    sprite->tDeltaY = CONFETTI_FALL_SPEED_MIN + (rand & 3) * CONFETTI_FALL_SPEED_STEP;
+    sprite->tDeltaX = CONFETTI_WIND_SPEED_MIN + ((rand >> 2) % 3) * CONFETTI_WIND_SPEED_STEP;
+    sprite->tWaveDelta = ((rand >> 4) & 3) == 0 ? 2 : 3;
+    sprite->tWaveIndex = (rand >> 8) & 0xFF;
+
+    // Random color, facing and flutter speed, starting at a random point in the
+    // flutter so the strips never tumble in step with each other.
+    StartSpriteAnim(sprite, color * CONFETTI_ANIMS_PER_COLOR + ((look >> 8) % CONFETTI_ANIMS_PER_COLOR));
+    SeekSpriteAnim(sprite, Random() % CONFETTI_FRAMES);
+}
+
+static void RetireConfettiSprite(struct Sprite *sprite)
+{
+    sprite->invisible = TRUE;
+    sprite->animPaused = TRUE;
+    sprite->callback = SpriteCallbackDummy;
+}
+
+static void UpdateConfettiSprite(struct Sprite *sprite)
+{
+    s16 x, y;
+    bool32 stopping = (gWeatherPtr->targetConfettiSpriteCount == 0);
+
+    // Wind and gravity, with sub-pixel precision
+    sprite->tSubPixelX += sprite->tDeltaX;
+    sprite->x += sprite->tSubPixelX >> CONFETTI_SUBPIXEL_SHIFT;
+    sprite->tSubPixelX &= CONFETTI_SUBPIXEL_MASK;
+    sprite->tSubPixelY += sprite->tDeltaY;
+    sprite->y += sprite->tSubPixelY >> CONFETTI_SUBPIXEL_SHIFT;
+    sprite->tSubPixelY &= CONFETTI_SUBPIXEL_MASK;
+
+    // Side-to-side flutter of up to 3 pixels
+    sprite->tWaveIndex = (sprite->tWaveIndex + sprite->tWaveDelta) & 0xFF;
+    sprite->x2 = gSineTable[sprite->tWaveIndex] / 80;
+
+    // Work out where the strip is on screen, accounting for camera movement
+    x = (sprite->x + sprite->centerToCornerVecX + gSpriteCoordOffsetX) & 0x1FF;
+    if (x & 0x100)
+        x |= -0x100;
+    y = (sprite->y + sprite->centerToCornerVecY + gSpriteCoordOffsetY) & 0xFF;
+    if (y >= 0xC0)
+        y -= 0x100;
+
+    if (y > DISPLAY_HEIGHT + 4)
+    {
+        // Fell off the bottom: come back in at the top as a new piece
+        if (stopping)
+            RetireConfettiSprite(sprite);
+        else
+            InitConfettiSpriteMovement(sprite, FALSE);
+    }
+    else if (y < -12)
+    {
+        // Camera moving down faster than the strip falls: wrap to the bottom
+        if (stopping)
+            RetireConfettiSprite(sprite);
+        else
+            SetConfettiScreenPos(sprite, x, DISPLAY_HEIGHT + 2);
+    }
+    else if (x > DISPLAY_WIDTH + 2)
+    {
+        // Blown off the right side: wrap to the left
+        if (stopping)
+            RetireConfettiSprite(sprite);
+        else
+            SetConfettiScreenPos(sprite, -8, y);
+    }
+    else if (x < -10)
+    {
+        // Camera moving right faster than the wind: wrap to the right
+        if (stopping)
+            RetireConfettiSprite(sprite);
+        else
+            SetConfettiScreenPos(sprite, DISPLAY_WIDTH + 2, y);
+    }
+}
+
+#undef tSubPixelX
+#undef tSubPixelY
+#undef tDeltaX
+#undef tDeltaY
+#undef tWaveIndex
+#undef tWaveDelta
+#undef CONFETTI_SUBPIXEL_MASK
 
 //------------------------------------------------------------------------------
 // WEATHER_RAIN_THUNDERSTORM
@@ -2683,6 +3031,7 @@ static enum OverworldWeather TranslateWeatherNum(enum OverworldWeather weather)
     case WEATHER_DROUGHT:            return WEATHER_DROUGHT;
     case WEATHER_DOWNPOUR:           return WEATHER_DOWNPOUR;
     case WEATHER_UNDERWATER_BUBBLES: return WEATHER_UNDERWATER_BUBBLES;
+    case WEATHER_CONFETTI:           return WEATHER_CONFETTI;
     case WEATHER_ABNORMAL:           return WEATHER_ABNORMAL;
     case WEATHER_ROUTE119_CYCLE:     return sWeatherCycleRoute119[gSaveBlock1Ptr->weatherCycleStage];
     case WEATHER_ROUTE123_CYCLE:     return sWeatherCycleRoute123[gSaveBlock1Ptr->weatherCycleStage];

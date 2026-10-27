@@ -19,6 +19,7 @@ enum ColorMapType
 #define NUM_SANDSTORM_SPRITES        20
 #define NUM_SWIRL_SANDSTORM_SPRITES  5
 #define NUM_SNOWFLAKE_SPRITES        16
+#define NUM_CONFETTI_SPRITES         12 // How many confetti strips are on screen at once
 
 // Controls how the weather should be changing the screen palettes.
 #define WEATHER_PAL_STATE_CHANGING_WEATHER   0

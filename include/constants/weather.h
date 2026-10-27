@@ -18,6 +18,7 @@ enum OverworldWeather
     WEATHER_DROUGHT,
     WEATHER_DOWNPOUR,
     WEATHER_UNDERWATER_BUBBLES,
+    WEATHER_CONFETTI,
     WEATHER_ABNORMAL, // The alternating weather during Groudon/Kyogre conflict
     WEATHER_ROUTE119_CYCLE,
     WEATHER_ROUTE123_CYCLE,
@@ -40,6 +41,7 @@ enum OverworldWeather
 #define COORD_EVENT_WEATHER_SANDSTORM           9
 #define COORD_EVENT_WEATHER_SHADE               10
 #define COORD_EVENT_WEATHER_DROUGHT             11
+#define COORD_EVENT_WEATHER_CONFETTI            12
 #define COORD_EVENT_WEATHER_ROUTE119_CYCLE      20
 #define COORD_EVENT_WEATHER_ROUTE123_CYCLE      21
 
