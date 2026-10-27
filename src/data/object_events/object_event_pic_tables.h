@@ -1905,10 +1905,6 @@ static const struct SpriteFrameImage sPicTable_Bill[] = {
     overworld_ascending_frames(gObjectEventPic_Bill, 2, 4),
 };
 
-static const struct SpriteFrameImage sPicTable_Daisy[] = {
-    overworld_ascending_frames(gObjectEventPic_Daisy, 2, 4),
-};
-
 static const struct SpriteFrameImage sPicTable_Lorelei[] = {
     overworld_ascending_frames(gObjectEventPic_Lorelei, 2, 4),
 };
@@ -1923,10 +1919,6 @@ static const struct SpriteFrameImage sPicTable_Lance[] = {
     overworld_frame(gObjectEventPic_Lance, 2, 4, 1),
     overworld_frame(gObjectEventPic_Lance, 2, 4, 2),
     overworld_frame(gObjectEventPic_Lance, 2, 4, 2),
-};
-
-static const struct SpriteFrameImage sPicTable_Blue[] = {
-    overworld_ascending_frames(gObjectEventPic_Blue, 2, 4),
 };
 
 static const struct SpriteFrameImage sPicTable_TownMap[] = {
@@ -2494,3 +2486,11 @@ static const struct SpriteFrameImage sPicTable_MomFrlg[] = {
 };
 
 #endif // IS_FRLG
+// Blue and Daisy are the MC's sprites (docs/character-map.md), so Emerald builds need them too.
+static const struct SpriteFrameImage sPicTable_Daisy[] = {
+    overworld_ascending_frames(gObjectEventPic_Daisy, 2, 4),
+};
+
+static const struct SpriteFrameImage sPicTable_Blue[] = {
+    overworld_ascending_frames(gObjectEventPic_Blue, 2, 4),
+};

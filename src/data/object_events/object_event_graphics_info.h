@@ -6103,25 +6103,6 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Bill = {
     .affineAnims = gDummySpriteAffineAnimTable,
 };
 
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Daisy = {
-    .tileTag = TAG_NONE,
-    .paletteTag = OBJ_EVENT_PAL_TAG_NPC_GREEN,
-    .reflectionPaletteTag = OBJ_EVENT_PAL_TAG_NONE,
-    .size = 256,
-    .width = 16,
-    .height = 32,
-    .paletteSlot = PALSLOT_NPC_3,
-    .shadowSize = SHADOW_SIZE_M,
-    .inanimate = FALSE,
-    .compressed = FALSE,
-    .tracks = TRACKS_FOOT,
-    .oam = &gObjectEventBaseOam_16x32,
-    .subspriteTables = sOamTables_16x32,
-    .anims = sAnimTable_Standard,
-    .images = sPicTable_Daisy,
-    .affineAnims = gDummySpriteAffineAnimTable,
-};
-
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Lorelei = {
     .tileTag = TAG_NONE,
     .paletteTag = OBJ_EVENT_PAL_TAG_NPC_WHITE,
@@ -6157,25 +6138,6 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Lance = {
     .subspriteTables = sOamTables_16x32,
     .anims = sAnimTable_Standard,
     .images = sPicTable_Lance,
-    .affineAnims = gDummySpriteAffineAnimTable,
-};
-
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Blue = {
-    .tileTag = TAG_NONE,
-    .paletteTag = OBJ_EVENT_PAL_TAG_NPC_GREEN,
-    .reflectionPaletteTag = OBJ_EVENT_PAL_TAG_NONE,
-    .size = 256,
-    .width = 16,
-    .height = 32,
-    .paletteSlot = PALSLOT_NPC_3,
-    .shadowSize = SHADOW_SIZE_M,
-    .inanimate = FALSE,
-    .compressed = FALSE,
-    .tracks = TRACKS_FOOT,
-    .oam = &gObjectEventBaseOam_16x32,
-    .subspriteTables = sOamTables_16x32,
-    .anims = sAnimTable_Standard,
-    .images = sPicTable_Blue,
     .affineAnims = gDummySpriteAffineAnimTable,
 };
 
@@ -7225,3 +7187,41 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_SSAnne = {
 };
 
 #endif // IS_FRLG
+// Blue and Daisy are the MC's sprites (docs/character-map.md), so Emerald builds need them too.
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Daisy = {
+    .tileTag = TAG_NONE,
+    .paletteTag = OBJ_EVENT_PAL_TAG_NPC_GREEN,
+    .reflectionPaletteTag = OBJ_EVENT_PAL_TAG_NONE,
+    .size = 256,
+    .width = 16,
+    .height = 32,
+    .paletteSlot = PALSLOT_NPC_3,
+    .shadowSize = SHADOW_SIZE_M,
+    .inanimate = FALSE,
+    .compressed = FALSE,
+    .tracks = TRACKS_FOOT,
+    .oam = &gObjectEventBaseOam_16x32,
+    .subspriteTables = sOamTables_16x32,
+    .anims = sAnimTable_Standard,
+    .images = sPicTable_Daisy,
+    .affineAnims = gDummySpriteAffineAnimTable,
+};
+
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Blue = {
+    .tileTag = TAG_NONE,
+    .paletteTag = OBJ_EVENT_PAL_TAG_NPC_GREEN,
+    .reflectionPaletteTag = OBJ_EVENT_PAL_TAG_NONE,
+    .size = 256,
+    .width = 16,
+    .height = 32,
+    .paletteSlot = PALSLOT_NPC_3,
+    .shadowSize = SHADOW_SIZE_M,
+    .inanimate = FALSE,
+    .compressed = FALSE,
+    .tracks = TRACKS_FOOT,
+    .oam = &gObjectEventBaseOam_16x32,
+    .subspriteTables = sOamTables_16x32,
+    .anims = sAnimTable_Standard,
+    .images = sPicTable_Blue,
+    .affineAnims = gDummySpriteAffineAnimTable,
+};

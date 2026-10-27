@@ -538,7 +538,6 @@ static const struct SpritePalette sObjectEventSpritePalettes[] = {
     {gObjectEventPal_PlayerReflectionFrlg,  OBJ_EVENT_PAL_TAG_PLAYER_GREEN_REFLECTION},
     {gObjectEventPal_NpcBlue,               OBJ_EVENT_PAL_TAG_NPC_BLUE},
     {gObjectEventPal_NpcPink,               OBJ_EVENT_PAL_TAG_NPC_PINK},
-    {gObjectEventPal_NpcGreen,              OBJ_EVENT_PAL_TAG_NPC_GREEN},
     {gObjectEventPal_NpcWhite,              OBJ_EVENT_PAL_TAG_NPC_WHITE},
     {gObjectEventPal_NpcBlueReflection,     OBJ_EVENT_PAL_TAG_NPC_BLUE_REFLECTION},
     {gObjectEventPal_NpcPinkReflection,     OBJ_EVENT_PAL_TAG_NPC_PINK_REFLECTION},
@@ -548,6 +547,8 @@ static const struct SpritePalette sObjectEventSpritePalettes[] = {
     {gObjectEventPal_SSAnne,                OBJ_EVENT_PAL_TAG_SS_ANNE},
     {gObjectEventPal_Seagallop,             OBJ_EVENT_PAL_TAG_SEAGALLOP},
 #endif // IS_FRLG
+    // NPC green is Blue and Daisy's palette, the MC's sprites (docs/character-map.md).
+    {gObjectEventPal_NpcGreen,              OBJ_EVENT_PAL_TAG_NPC_GREEN},
 #if OW_FOLLOWERS_POKEBALLS
     {gObjectEventPal_MasterBall,            OBJ_EVENT_PAL_TAG_BALL_MASTER},
     {gObjectEventPal_UltraBall,             OBJ_EVENT_PAL_TAG_BALL_ULTRA},
