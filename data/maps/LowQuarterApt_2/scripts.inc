@@ -201,12 +201,15 @@ LowQuarterApt_2_EventScript_BrotherAsleep::
 	msgbox LowQuarterApt_2_Text_LittleBrothersAsleep, MSGBOX_DEFAULT
 	return
 
-@ (14, 11) -> (3, 7), facing the sibling's bedroom door
+@ (14, 11) -> (3, 7), facing the sibling's bedroom door.
+@ Walks along y = 6, one tile above the wall's hiding row (y = 7), then steps
+@ down into the doorway at x = 3.
 LowQuarterApt_2_Movement_PlayerToBedroomDoor:
 	walk_up
 	walk_up
 	walk_up
 	walk_up
+	walk_up
 	walk_left
 	walk_left
 	walk_left
@@ -218,7 +221,7 @@ LowQuarterApt_2_Movement_PlayerToBedroomDoor:
 	walk_left
 	walk_left
 	walk_left
-	face_down
+	walk_down
 	step_end
 
 @ (3, 7) -> (3, 9), facing Mom
