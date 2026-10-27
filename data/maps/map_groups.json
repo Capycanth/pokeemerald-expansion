@@ -1163,5 +1163,8 @@
   "gMapGroup_IndoorSevenIslandRoute_Frlg": [
     "SevenIsland_SevaultCanyon_House_Frlg"
   ],
-  "gMapGroup_D_IndoorLowQuarterApt": []
+  "gMapGroup_D_IndoorLowQuarterApt": [
+    "tst",
+    "LowQuarterApt_2"
+  ]
 }

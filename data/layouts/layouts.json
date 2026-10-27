@@ -9333,6 +9333,26 @@
       "secondary_tileset": "gTileset_D_LowQuarterApt",
       "border_filepath": "data/layouts/LowQuarterApt/border.bin",
       "blockdata_filepath": "data/layouts/LowQuarterApt/map.bin"
+    },
+    {
+      "id": "LAYOUT_TST",
+      "name": "tst_Layout",
+      "width": 20,
+      "height": 20,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_Petalburg",
+      "border_filepath": "data/layouts/tst/border.bin",
+      "blockdata_filepath": "data/layouts/tst/map.bin"
+    },
+    {
+      "id": "LAYOUT_LOW_QUARTER_APT_2",
+      "name": "LowQuarterApt_2_Layout",
+      "width": 16,
+      "height": 12,
+      "primary_tileset": "gTileset_D_Building",
+      "secondary_tileset": "gTileset_D_LowQuarterApt",
+      "border_filepath": "data/layouts/LowQuarterApt_2/border.bin",
+      "blockdata_filepath": "data/layouts/LowQuarterApt_2/map.bin"
     }
   ]
 }
