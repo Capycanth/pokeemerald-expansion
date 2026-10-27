@@ -1938,10 +1938,10 @@ void CB2_NewGame(void)
     PlayTimeCounter_Start();
     ScriptContext_Init();
     UnlockPlayerFieldControls();
-    if (IS_FRLG)
-        gFieldCallback = FieldCB_WarpExitFadeFromBlack;
-    else
-        gFieldCallback = ExecuteTruckSequence;
+    // New games start at the Low Quarter apartment (see WarpToTruck in new_game.c), not in the
+    // moving truck, so fade in normally. The truck sequence would overwrite apartment tiles with
+    // truck tiles and keep the screen black.
+    gFieldCallback = FieldCB_WarpExitFadeFromBlack;
     gFieldCallback2 = NULL;
     DoMapLoadLoop(&gMain.state);
     SetFieldVBlankCallback();
