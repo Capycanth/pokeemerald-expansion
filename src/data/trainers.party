@@ -91,10 +91,10 @@ not the usual level x class formula.
 
 === TRAINER_LADDER_TESSA ===
 Name: TESSA
-Class: School Kid
-Pic: School Kid F
+Class: Brawler
+Pic: Magma Grunt F
 Gender: Female
-Music: Female
+Music: Intense
 Double Battle: No
 AI: Check Bad Move
 
@@ -108,10 +108,10 @@ Nature: Hardy
 
 === TRAINER_LADDER_ROWAN ===
 Name: ROWAN
-Class: School Kid
-Pic: School Kid M
+Class: Burglar Frlg
+Pic: Burglar Frlg
 Gender: Male
-Music: Male
+Music: Suspicious
 Double Battle: No
 AI: Check Bad Move
 
@@ -126,10 +126,10 @@ Nature: Hardy
 
 === TRAINER_LADDER_CLARA ===
 Name: CLARA
-Class: Pkmn Breeder
-Pic: Pokemon Breeder F
+Class: Battle Girl
+Pic: Battle Girl
 Gender: Female
-Music: Female
+Music: Intense
 Double Battle: No
 AI: Check Bad Move
 
@@ -144,10 +144,10 @@ Nature: Docile
 
 === TRAINER_LADDER_FELIX ===
 Name: FELIX
-Class: School Kid
-Pic: School Kid M
+Class: Gamer Frlg
+Pic: Gamer Frlg
 Gender: Male
-Music: Male
+Music: Suspicious
 Double Battle: No
 AI: Basic Trainer
 
@@ -162,10 +162,10 @@ Nature: Hardy
 
 === TRAINER_LADDER_NADIA ===
 Name: NADIA
-Class: School Kid
-Pic: School Kid F
+Class: Brawler
+Pic: Aqua Grunt F
 Gender: Female
-Music: Female
+Music: Intense
 Double Battle: No
 AI: Basic Trainer
 
@@ -181,10 +181,10 @@ Nature: Bashful
 
 === TRAINER_LADDER_HUGO ===
 Name: HUGO
-Class: Pkmn Breeder
-Pic: Pokemon Breeder M
+Class: Biker Frlg
+Pic: Biker Frlg
 Gender: Male
-Music: Male
+Music: Intense
 Double Battle: No
 AI: Basic Trainer
 
@@ -199,10 +199,10 @@ Nature: Hasty
 
 === TRAINER_LADDER_IVY ===
 Name: IVY
-Class: Pkmn Breeder
-Pic: Pokemon Breeder F
+Class: Brawler
+Pic: Rocket Grunt F Frlg
 Gender: Female
-Music: Female
+Music: Intense
 Double Battle: No
 AI: Basic Trainer
 
@@ -218,10 +218,10 @@ Nature: Modest
 
 === TRAINER_LADDER_SILAS ===
 Name: SILAS
-Class: Rich Boy
-Pic: Rich Boy
+Class: Cue Ball Frlg
+Pic: Cue Ball Frlg
 Gender: Male
-Music: Rich
+Music: Intense
 Double Battle: No
 AI: Basic Trainer
 
