@@ -150,7 +150,7 @@
 #define VAR_ROUTE133_STATE                               0x4080 // Unused Var
 #define VAR_ROUTE134_STATE                               0x4081 // Unused Var
 #define VAR_LITTLEROOT_HOUSES_STATE_MAY                  0x4082
-#define VAR_UNUSED_0x4083                                0x4083 // Unused Var
+#define VAR_LOW_QUARTER_APT_STATE                        0x4083 // Scene 2 (The Apartment): 0 = not played, 1 = done
 #define VAR_BIRCH_LAB_STATE                              0x4084
 #define VAR_PETALBURG_GYM_STATE                          0x4085 // 0-1: Wally tutorial, 2-6: 0-4 badges, 7: Defeated Norman, 8: Rematch Norman
 #define VAR_CONTEST_HALL_STATE                           0x4086
@@ -158,7 +158,7 @@
 #define VAR_CONTEST_TYPE                                 0x4088
 #define VAR_SECRET_BASE_INITIALIZED                      0x4089
 #define VAR_CONTEST_PRIZE_PICKUP                         0x408A
-#define VAR_UNUSED_0x408B                                0x408B // Unused Var
+#define VAR_STARTER_CHOICE                               0x408B // Partner named for Jett Calloway in Scene 2; one of STARTER_CHOICE_*
 #define VAR_LITTLEROOT_HOUSES_STATE_BRENDAN              0x408C
 #define VAR_LITTLEROOT_RIVAL_STATE                       0x408D
 #define VAR_BOARD_BRINEY_BOAT_STATE                      0x408E
@@ -325,6 +325,12 @@
 #define VAR_TEMP_FRONTIER_TUTOR_ID         VAR_TEMP_E
 
 #define VAR_TEMP_TRANSFERRED_SPECIES  VAR_TEMP_1
+
+// Values of VAR_STARTER_CHOICE: the final form named in Scene 2's bedtime story,
+// stored under the first-stage Pokémon the van scene spawns.
+#define STARTER_CHOICE_SPHEAL   0 // "The bulky blubber-wall: Walrein"
+#define STARTER_CHOICE_ROLYCOLY 1 // "The stoic steam engine: Coalossal"
+#define STARTER_CHOICE_SEEDOT   2 // "The nimble nightmare: Shiftry"
 
 #if TESTING
 #define TESTING_VARS_START                  0x9000
