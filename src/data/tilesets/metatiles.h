@@ -57,6 +57,9 @@ const u16 gMetatileAttributes_BattleFrontierOutsideEast[] = INCBIN_U16("data/til
 const u16 gMetatiles_InsideBuilding[] = INCBIN_U16("data/tilesets/primary/building/metatiles.bin");
 const u16 gMetatileAttributes_InsideBuilding[] = INCBIN_U16("data/tilesets/primary/building/metatile_attributes.bin");
 
+const u16 gMetatiles_GreenBuilding[] = INCBIN_U16("data/tilesets/primary/green_building/metatiles.bin");
+const u16 gMetatileAttributes_GreenBuilding[] = INCBIN_U16("data/tilesets/primary/green_building/metatile_attributes.bin");
+
 const u16 gMetatiles_Shop[] = INCBIN_U16("data/tilesets/secondary/shop/metatiles.bin");
 const u16 gMetatileAttributes_Shop[] = INCBIN_U16("data/tilesets/secondary/shop/metatile_attributes.bin");
 
@@ -122,6 +125,9 @@ const u16 gMetatileAttributes_Underwater[] = INCBIN_U16("data/tilesets/secondary
 
 const u16 gMetatiles_GenericBuilding[] = INCBIN_U16("data/tilesets/secondary/generic_building/metatiles.bin");
 const u16 gMetatileAttributes_GenericBuilding[] = INCBIN_U16("data/tilesets/secondary/generic_building/metatile_attributes.bin");
+
+const u16 gMetatiles_GreenGenericBuilding[] = INCBIN_U16("data/tilesets/secondary/green_generic_building/metatiles.bin");
+const u16 gMetatileAttributes_GreenGenericBuilding[] = INCBIN_U16("data/tilesets/secondary/green_generic_building/metatile_attributes.bin");
 
 const u16 gMetatiles_MauvilleGameCorner[] = INCBIN_U16("data/tilesets/secondary/mauville_game_corner/metatiles.bin");
 const u16 gMetatileAttributes_MauvilleGameCorner[] = INCBIN_U16("data/tilesets/secondary/mauville_game_corner/metatile_attributes.bin");

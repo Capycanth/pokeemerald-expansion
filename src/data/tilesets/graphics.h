@@ -396,6 +396,28 @@ const u16 gTilesetPalettes_InsideBuilding[][16] =
     INCGFX_U16("data/tilesets/primary/building/palettes/15.pal", ".gbapal"),
 };
 
+const u32 gTilesetTiles_GreenBuilding[] = INCGFX_U32("data/tilesets/primary/green_building/tiles.png", ".4bpp.smol", "-num_tiles 502 -Wnum_tiles");
+
+const u16 gTilesetPalettes_GreenBuilding[][16] =
+{
+    INCGFX_U16("data/tilesets/primary/green_building/palettes/00.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/green_building/palettes/01.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/green_building/palettes/02.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/green_building/palettes/03.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/green_building/palettes/04.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/green_building/palettes/05.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/green_building/palettes/06.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/green_building/palettes/07.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/green_building/palettes/08.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/green_building/palettes/09.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/green_building/palettes/10.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/green_building/palettes/11.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/green_building/palettes/12.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/green_building/palettes/13.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/green_building/palettes/14.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/green_building/palettes/15.pal", ".gbapal"),
+};
+
 const u32 gTilesetTiles_Shop[] = INCGFX_U32("data/tilesets/secondary/shop/tiles.png", ".4bpp.fastSmol", "-num_tiles 502 -Wnum_tiles");
 
 const u16 gTilesetPalettes_Shop[][16] =
@@ -985,6 +1007,28 @@ const u16 gTilesetPalettes_GenericBuilding[][16] =
     INCGFX_U16("data/tilesets/secondary/generic_building/palettes/13.pal", ".gbapal"),
     INCGFX_U16("data/tilesets/secondary/generic_building/palettes/14.pal", ".gbapal"),
     INCGFX_U16("data/tilesets/secondary/generic_building/palettes/15.pal", ".gbapal"),
+};
+
+const u32 gTilesetTiles_GreenGenericBuilding[] = INCGFX_U32("data/tilesets/secondary/green_generic_building/tiles.png", ".4bpp.fastSmol", "-num_tiles 509 -Wnum_tiles");
+
+const u16 gTilesetPalettes_GreenGenericBuilding[][16] =
+{
+    INCGFX_U16("data/tilesets/secondary/green_generic_building/palettes/00.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/green_generic_building/palettes/01.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/green_generic_building/palettes/02.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/green_generic_building/palettes/03.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/green_generic_building/palettes/04.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/green_generic_building/palettes/05.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/green_generic_building/palettes/06.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/green_generic_building/palettes/07.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/green_generic_building/palettes/08.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/green_generic_building/palettes/09.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/green_generic_building/palettes/10.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/green_generic_building/palettes/11.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/green_generic_building/palettes/12.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/green_generic_building/palettes/13.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/green_generic_building/palettes/14.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/green_generic_building/palettes/15.pal", ".gbapal"),
 };
 
 const u32 gTilesetTiles_MauvilleGameCorner[] = INCGFX_U32("data/tilesets/secondary/mauville_game_corner/tiles.png", ".4bpp.fastSmol", "-num_tiles 469 -Wnum_tiles");

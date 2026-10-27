@@ -217,6 +217,19 @@ const struct Tileset gTileset_Building =
     .callback = InitTilesetAnim_Building,
 };
 
+// Copy of gTileset_Building, paired with gTileset_GreenGenericBuilding.
+// Reuses Building's tileset animations (the TV).
+const struct Tileset gTileset_GreenBuilding =
+{
+    .isCompressed = TRUE,
+    .isSecondary = FALSE,
+    .tiles = gTilesetTiles_GreenBuilding,
+    .palettes = gTilesetPalettes_GreenBuilding,
+    .metatiles = gMetatiles_GreenBuilding,
+    .metatileAttributes = gMetatileAttributes_GreenBuilding,
+    .callback = InitTilesetAnim_Building,
+};
+
 const struct Tileset gTileset_Shop =
 {
     .isCompressed = TRUE,
@@ -544,6 +557,19 @@ const struct Tileset gTileset_GenericBuilding =
     .palettes = gTilesetPalettes_GenericBuilding,
     .metatiles = gMetatiles_GenericBuilding,
     .metatileAttributes = gMetatileAttributes_GenericBuilding,
+    .callback = NULL,
+};
+
+// Copy of gTileset_GenericBuilding. Metatiles 0x2FA-0x2FC have the green
+// flooring of 0x221 as their bottom layer instead of the wood.
+const struct Tileset gTileset_GreenGenericBuilding =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_GreenGenericBuilding,
+    .palettes = gTilesetPalettes_GreenGenericBuilding,
+    .metatiles = gMetatiles_GreenGenericBuilding,
+    .metatileAttributes = gMetatileAttributes_GreenGenericBuilding,
     .callback = NULL,
 };
 
