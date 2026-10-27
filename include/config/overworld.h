@@ -4,6 +4,7 @@
 // Movement config
 #define OW_RUNNING_INDOORS          GEN_LATEST  // In Gen4+, players are allowed to run indoors.
 #define SLOW_MOVEMENT_ON_STAIRS     FALSE       // If enabled, the player will move slower up/down stairs like in FR
+#define OW_PLAYER_CAN_RUN           FALSE       // If disabled, holding B never makes the player run, even with FLAG_SYS_B_DASH set. Off because the MC's sprites (OBJ_EVENT_GFX_BLUE / OBJ_EVENT_GFX_DAISY) have no running frames.
 
 // Other settings
 #define OW_POISON_DAMAGE                GEN_LATEST // In Gen4, Pokémon no longer faint from Poison in the overworld. In Gen5+, they no longer take damage at all.
