@@ -7409,15 +7409,16 @@ static const struct LevelUpMove sLudicoloLevelUpLearnset[] = {
 #endif //P_FAMILY_LOTAD
 
 #if P_FAMILY_SEEDOT
+// Retuned for the Underground Ladder: levels 1-15 differ from Gen 9.
 static const struct LevelUpMove sSeedotLevelUpLearnset[] = {
     LEVEL_UP_MOVE( 1, MOVE_TACKLE),
     LEVEL_UP_MOVE( 1, MOVE_HARDEN),
-    LEVEL_UP_MOVE( 3, MOVE_ABSORB),
-    LEVEL_UP_MOVE( 6, MOVE_ASTONISH),
+    LEVEL_UP_MOVE( 3, MOVE_LEAFAGE),
+    LEVEL_UP_MOVE( 5, MOVE_BULLET_SEED),
+    LEVEL_UP_MOVE( 7, MOVE_PAYBACK),
     LEVEL_UP_MOVE( 9, MOVE_GROWTH),
     LEVEL_UP_MOVE(12, MOVE_ROLLOUT),
     LEVEL_UP_MOVE(15, MOVE_MEGA_DRAIN),
-    LEVEL_UP_MOVE(18, MOVE_PAYBACK),
     LEVEL_UP_MOVE(21, MOVE_HEADBUTT),
     LEVEL_UP_MOVE(24, MOVE_SUNNY_DAY),
     LEVEL_UP_MOVE(27, MOVE_SYNTHESIS),
@@ -9461,12 +9462,15 @@ static const struct LevelUpMove sFroslassLevelUpLearnset[] = {
 #endif //P_FAMILY_SNORUNT
 
 #if P_FAMILY_SPHEAL
+// Retuned for the Underground Ladder: levels 1-15 differ from Gen 9.
 static const struct LevelUpMove sSphealLevelUpLearnset[] = {
-    LEVEL_UP_MOVE( 1, MOVE_ROLLOUT),
+    LEVEL_UP_MOVE( 1, MOVE_POWDER_SNOW),
     LEVEL_UP_MOVE( 1, MOVE_DEFENSE_CURL),
-    LEVEL_UP_MOVE( 4, MOVE_GROWL),
-    LEVEL_UP_MOVE( 8, MOVE_WATER_GUN),
-    LEVEL_UP_MOVE(12, MOVE_POWDER_SNOW),
+    LEVEL_UP_MOVE( 1, MOVE_ROLLOUT),
+    LEVEL_UP_MOVE( 4, MOVE_ICY_WIND),
+    LEVEL_UP_MOVE( 7, MOVE_WATER_GUN),
+    LEVEL_UP_MOVE( 9, MOVE_MUD_SLAP),
+    LEVEL_UP_MOVE(12, MOVE_YAWN),
     LEVEL_UP_MOVE(16, MOVE_REST),
     LEVEL_UP_MOVE(20, MOVE_SNORE),
     LEVEL_UP_MOVE(24, MOVE_BRINE),
@@ -18930,11 +18934,14 @@ static const struct LevelUpMove sBoltundLevelUpLearnset[] = {
 #endif //P_FAMILY_YAMPER
 
 #if P_FAMILY_ROLYCOLY
+// Retuned for the Underground Ladder: levels 1-15 differ from Gen 9.
 static const struct LevelUpMove sRolycolyLevelUpLearnset[] = {
     LEVEL_UP_MOVE( 1, MOVE_TACKLE),
     LEVEL_UP_MOVE( 1, MOVE_SMOKESCREEN),
-    LEVEL_UP_MOVE( 5, MOVE_RAPID_SPIN),
-    LEVEL_UP_MOVE(10, MOVE_SMACK_DOWN),
+    LEVEL_UP_MOVE( 4, MOVE_ROCK_THROW),
+    LEVEL_UP_MOVE( 5, MOVE_EMBER),
+    LEVEL_UP_MOVE( 9, MOVE_MUD_SLAP),
+    LEVEL_UP_MOVE(12, MOVE_RAPID_SPIN),
     LEVEL_UP_MOVE(15, MOVE_ROCK_POLISH),
     LEVEL_UP_MOVE(20, MOVE_ANCIENT_POWER),
     LEVEL_UP_MOVE(25, MOVE_INCINERATE),
