@@ -83,116 +83,49 @@ Gender: Male
 Music: Male
 Double Battle: No
 
-=== TRAINER_SAWYER_1 ===
-Name: SAWYER
-Class: Hiker
-Pic: Hiker
-Gender: Male
-Music: Hiker
-Double Battle: No
-AI: Basic Trainer
+/*
+Underground Ladder: eight single battles, Lv 3 -> 10, fought back to back.
+Prizes are fixed per trainer in GetLadderPrize() (src/battle_script_commands.c),
+not the usual level x class formula.
+*/
 
-Geodude
-Level: 21
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
-
-=== TRAINER_GRUNT_AQUA_HIDEOUT_1 ===
-Name: GRUNT
-Class: Team Aqua
-Pic: Aqua Grunt M
-Gender: Male
-Music: Aqua
+=== TRAINER_LADDER_TESSA ===
+Name: TESSA
+Class: School Kid
+Pic: School Kid F
+Gender: Female
+Music: Female
 Double Battle: No
 AI: Check Bad Move
 
-Poochyena
-Level: 32
+Cleffa
+Level: 3
+Ability: Cute Charm
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+Nature: Hardy
+- Pound
+- Copycat
 
-=== TRAINER_GRUNT_AQUA_HIDEOUT_2 ===
-Name: GRUNT
-Class: Team Aqua
-Pic: Aqua Grunt M
+=== TRAINER_LADDER_ROWAN ===
+Name: ROWAN
+Class: School Kid
+Pic: School Kid M
 Gender: Male
-Music: Aqua
+Music: Male
 Double Battle: No
 AI: Check Bad Move
 
-Zubat
-Level: 31
+Eevee
+Level: 4
+Ability: Run Away
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+Nature: Hardy
+- Tackle
+- Tail Whip
+- Growl
 
-Carvanha
-Level: 31
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
-
-=== TRAINER_GRUNT_AQUA_HIDEOUT_3 ===
-Name: GRUNT
-Class: Team Aqua
-Pic: Aqua Grunt M
-Gender: Male
-Music: Aqua
-Double Battle: No
-AI: Check Bad Move
-
-Zubat
-Level: 32
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
-
-=== TRAINER_GRUNT_AQUA_HIDEOUT_4 ===
-Name: GRUNT
-Class: Team Aqua
-Pic: Aqua Grunt M
-Gender: Male
-Music: Aqua
-Double Battle: No
-AI: Check Bad Move
-
-Carvanha
-Level: 32
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
-
-=== TRAINER_GRUNT_SEAFLOOR_CAVERN_1 ===
-Name: GRUNT
-Class: Team Aqua
-Pic: Aqua Grunt M
-Gender: Male
-Music: Aqua
-Double Battle: No
-AI: Check Bad Move
-
-Poochyena
-Level: 36
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
-
-=== TRAINER_GRUNT_SEAFLOOR_CAVERN_2 ===
-Name: GRUNT
-Class: Team Aqua
-Pic: Aqua Grunt M
-Gender: Male
-Music: Aqua
-Double Battle: No
-AI: Check Bad Move
-
-Carvanha
-Level: 36
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
-
-=== TRAINER_GRUNT_SEAFLOOR_CAVERN_3 ===
-Name: GRUNT
-Class: Team Aqua
-Pic: Aqua Grunt M
-Gender: Male
-Music: Aqua
-Double Battle: No
-AI: Check Bad Move
-
-Zubat
-Level: 36
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
-
-=== TRAINER_GABRIELLE_1 ===
-Name: GABRIELLE
+=== TRAINER_LADDER_CLARA ===
+Name: CLARA
 Class: Pkmn Breeder
 Pic: Pokemon Breeder F
 Gender: Female
@@ -200,77 +133,277 @@ Music: Female
 Double Battle: No
 AI: Check Bad Move
 
-Skitty
-Level: 26
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+Riolu
+Level: 5
+Ability: Steadfast
+IVs: 3 HP / 3 Atk / 3 Def / 3 SpA / 3 SpD / 3 Spe
+Nature: Docile
+- Quick Attack
+- Endure
+- Feint
 
-Poochyena
-Level: 26
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
-
-Zigzagoon
-Level: 26
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
-
-Lotad
-Level: 26
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
-
-Seedot
-Level: 26
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
-
-Taillow
-Level: 26
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
-
-=== TRAINER_GRUNT_PETALBURG_WOODS ===
-Name: GRUNT
-Class: Team Aqua
-Pic: Aqua Grunt M
+=== TRAINER_LADDER_FELIX ===
+Name: FELIX
+Class: School Kid
+Pic: School Kid M
 Gender: Male
-Music: Aqua
-Double Battle: No
-AI: Check Bad Move
-
-Poochyena
-Level: 9
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
-
-=== TRAINER_MARCEL ===
-Name: MARCEL
-Class: Cooltrainer
-Pic: Cooltrainer M
-Gender: Male
-Music: Cool
-Items: Hyper Potion
+Music: Male
 Double Battle: No
 AI: Basic Trainer
 
-Manectric
-Level: 29
-IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+Ralts
+Level: 6
+Ability: Synchronize
+IVs: 5 HP / 5 Atk / 5 Def / 5 SpA / 5 SpD / 5 Spe
+Nature: Hardy
+- Growl
+- Disarming Voice
+- Confusion
 
-Shiftry
-Level: 29
-IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
-
-=== TRAINER_ALBERTO ===
-Name: ALBERTO
-Class: Bird Keeper
-Pic: Bird Keeper
-Gender: Male
-Music: Cool
+=== TRAINER_LADDER_NADIA ===
+Name: NADIA
+Class: School Kid
+Pic: School Kid F
+Gender: Female
+Music: Female
 Double Battle: No
-AI: Check Bad Move
+AI: Basic Trainer
 
-Pelipper
-Level: 30
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+Charmander
+Level: 7
+Ability: Blaze
+IVs: 7 HP / 7 Atk / 7 Def / 7 SpA / 7 SpD / 7 Spe
+Nature: Bashful
+- Scratch
+- Growl
+- Ember
 
-Xatu
-Level: 30
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+=== TRAINER_LADDER_HUGO ===
+Name: HUGO
+Class: Pkmn Breeder
+Pic: Pokemon Breeder M
+Gender: Male
+Music: Male
+Double Battle: No
+AI: Basic Trainer
+
+Snorunt
+Level: 8
+Ability: Inner Focus
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+Nature: Hasty
+- Powder Snow
+- Headbutt
+- Astonish
+- Leer
+
+=== TRAINER_LADDER_IVY ===
+Name: IVY
+Class: Pkmn Breeder
+Pic: Pokemon Breeder F
+Gender: Female
+Music: Female
+Double Battle: No
+AI: Basic Trainer
+
+Magnemite
+Level: 9
+Ability: Magnet Pull
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+Nature: Modest
+- Tackle
+- Thunder Shock
+- Supersonic
+- Thunder Wave
+
+=== TRAINER_LADDER_SILAS ===
+Name: SILAS
+Class: Rich Boy
+Pic: Rich Boy
+Gender: Male
+Music: Rich
+Double Battle: No
+AI: Basic Trainer
+
+Gible
+Level: 10
+Ability: Sand Veil
+IVs: 15 HP / 15 Atk / 15 Def / 15 SpA / 15 SpD / 15 Spe
+Nature: Adamant
+- Tackle
+- Sand Tomb
+- Mud Shot
+- Metal Claw
+
+/*
+Open Tournament: the four academy graduates, level cap 15, no waivers.
+Percival lists the smart AI flags one by one because the Smart Trainer
+bundle includes Smart Tera.
+*/
+
+=== TRAINER_GRAD_BARRETT ===
+Name: BARRETT
+Class: Rich Boy
+Pic: Rich Boy
+Gender: Male
+Music: Rich
+Double Battle: No
+AI: Basic Trainer
+
+Fletchling
+Level: 12
+Ability: Big Pecks
+IVs: 5 HP / 5 Atk / 5 Def / 5 SpA / 5 SpD / 5 Spe
+Nature: Hardy
+- Growl
+- Peck
+- Quick Attack
+
+SPECIES_WOOPER_PALDEA
+Level: 12
+Ability: Poison Point
+IVs: 5 HP / 5 Atk / 5 Def / 5 SpA / 5 SpD / 5 Spe
+Nature: Hardy
+- Tail Whip
+- Tackle
+- Mud Shot
+- Poison Tail
+
+Grookey @ Oran Berry
+Level: 13
+Ability: Overgrow
+IVs: 5 HP / 5 Atk / 5 Def / 5 SpA / 5 SpD / 5 Spe
+Nature: Docile
+- Scratch
+- Growl
+- Taunt
+- Branch Poke
+
+=== TRAINER_GRAD_TOBIAS ===
+Name: TOBIAS
+Class: Rich Boy
+Pic: Rich Boy
+Gender: Male
+Music: Rich
+Double Battle: No
+AI: Basic Trainer
+
+Snorunt @ Oran Berry
+Level: 13
+Ability: Inner Focus
+IVs: 15 HP / 15 Atk / 15 Def / 15 SpA / 15 SpD / 15 Spe
+Nature: Hasty
+- Powder Snow
+- Headbutt
+- Astonish
+- Leer
+
+Riolu @ Black Belt
+Level: 13
+Ability: Inner Focus
+IVs: 15 HP / 15 Atk / 15 Def / 15 SpA / 15 SpD / 15 Spe
+Nature: Adamant
+- Quick Attack
+- Rock Smash
+- Metal Claw
+- Counter
+
+Charmander @ Sitrus Berry
+Level: 14
+Ability: Blaze
+IVs: 15 HP / 15 Atk / 15 Def / 15 SpA / 15 SpD / 15 Spe
+Nature: Naive
+- Ember
+- Dragon Breath
+- Metal Claw
+- Smokescreen
+
+=== TRAINER_GRAD_JUNIPER ===
+Name: JUNIPER
+Class: Lady
+Pic: Lady
+Gender: Female
+Music: Rich
+Double Battle: No
+AI: Basic Trainer / Ace Pokemon
+
+Gastly @ Black Sludge
+Level: 14
+Ability: Levitate
+IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
+EVs: 128 SpA / 128 Spe
+Nature: Timid
+- Hypnosis
+- Lick
+- Clear Smog
+- Payback
+
+Magnemite @ Magnet
+Level: 14
+Ability: Sturdy
+IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
+EVs: 128 HP / 128 SpA
+Nature: Modest
+- Electro Ball
+- Thunder Shock
+- Thunder Wave
+- Supersonic
+
+Mudkip @ Sitrus Berry
+Level: 15
+Ability: Torrent
+IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
+EVs: 128 HP / 128 Atk
+Nature: Naughty
+- Water Pulse
+- Rock Smash
+- Avalanche
+- Yawn
+
+=== TRAINER_GRAD_PERCIVAL ===
+Name: PERCIVAL
+Class: Rich Boy
+Pic: Rich Boy
+Gender: Male
+Music: Rich
+Double Battle: No
+AI: Basic Trainer / Omniscient / Smart Switching / Smart Mon Choices / PP Stall Prevention / Randomize Switchin / Ace Pokemon
+
+Porygon @ Leftovers
+Level: 15
+Ability: Download
+Ball: Luxury
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+EVs: 252 HP / 252 SpA
+Nature: Modest
+- Shock Wave
+- Icy Wind
+- Thunder Wave
+- Secret Power
+
+Gible @ Focus Sash
+Level: 15
+Ability: Rough Skin
+Ball: Luxury
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+EVs: 252 HP / 252 Atk
+Nature: Adamant
+- Dig
+- Iron Head
+- Dragon Breath
+- Sand Tomb
+
+Charmander @ Eviolite
+Level: 15
+Ability: Blaze
+Ball: Luxury
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+EVs: 252 Atk / 252 SpA
+Nature: Hasty
+- Ember
+- Ancient Power
+- Metal Claw
+- Dragon Breath
 
 === TRAINER_ED ===
 Name: ED
