@@ -4012,11 +4012,38 @@ static void Cmd_hitanimation(void)
     gBattlescriptCurrInstr = cmd->nextInstr;
 }
 
+// Underground Ladder pays fixed prizes (already after the house's cut),
+// so they bypass the usual level x class formula. Money multipliers
+// such as the Amulet Coin do not apply to them.
+static u32 GetLadderPrize(u16 trainerId)
+{
+    // FRLG trainer IDs reuse the same numbers for other trainers.
+    if (IS_FRLG)
+        return 0;
+
+    switch (trainerId)
+    {
+    case TRAINER_LADDER_TESSA:  return 10;
+    case TRAINER_LADDER_ROWAN:  return 25;
+    case TRAINER_LADDER_CLARA:  return 50;
+    case TRAINER_LADDER_FELIX:  return 75;
+    case TRAINER_LADDER_NADIA:  return 100;
+    case TRAINER_LADDER_HUGO:   return 150;
+    case TRAINER_LADDER_IVY:    return 200;
+    case TRAINER_LADDER_SILAS:  return 250;
+    default:                    return 0;
+    }
+}
+
 static u32 GetTrainerMoneyToGive(u16 trainerId)
 {
     u32 lastMonLevel = 0;
     u32 moneyReward;
     u8 trainerMoney = 0;
+    u32 ladderPrize = GetLadderPrize(trainerId);
+
+    if (ladderPrize != 0)
+        return ladderPrize;
 
     if (trainerId == TRAINER_SECRET_BASE)
     {

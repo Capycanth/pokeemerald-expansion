@@ -143,8 +143,7 @@ Route121_EventScript_Pat::
 	end
 
 Route121_EventScript_Marcel::
-	trainerbattle_single TRAINER_MARCEL, Route121_Text_MarcelIntro, Route121_Text_MarcelDefeat
-	msgbox Route121_Text_MarcelPostBattle, MSGBOX_AUTOCLOSE
+	msgbox Route121_Text_MarcelPostBattle, MSGBOX_NPC
 	end
 
 Route121_EventScript_Cristin::
