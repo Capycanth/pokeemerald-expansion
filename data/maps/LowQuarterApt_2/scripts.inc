@@ -129,8 +129,13 @@ LowQuarterApt_2_EventScript_Scene2::
 	applymovement OBJ_EVENT_ID_PLAYER, LowQuarterApt_2_Movement_PlayerToDoor
 	waitmovement 0
 	setvar VAR_LOW_QUARTER_APT_STATE, 1
-	@ TODO: the MC heads outside for the van scene. The apartment door has no outdoor map yet,
-	@ so for now this uses the door's own warp, which leads back into the apartment.
+	@ TODO: the van scene goes here (the starter runs into the MC outside). Until it exists,
+	@ the MC gets the starter here and goes straight into the Underground Ladder's battles,
+	@ which have no map of their own yet.
+	call LowQuarterApt_2_EventScript_GiveStarter
+	call EventScript_UndergroundLadder
+	@ TODO: the apartment door has no outdoor map yet, so for now this uses the door's own
+	@ warp, which leads back into the apartment.
 	warp MAP_LOW_QUARTER_APT_2, 0
 	waitstate
 	releaseall
@@ -146,6 +151,34 @@ LowQuarterApt_2_EventScript_BufferCoalossal::
 
 LowQuarterApt_2_EventScript_BufferShiftry::
 	bufferspeciesname STR_VAR_1, SPECIES_SHIFTRY
+	return
+
+@ Placeholder until the van scene: gives the first stage of the partner named in the
+@ bedtime story at Lv 5, plus the ladder's one Potion.
+LowQuarterApt_2_EventScript_GiveStarter::
+	call_if_eq VAR_STARTER_CHOICE, STARTER_CHOICE_SPHEAL, LowQuarterApt_2_EventScript_GiveSpheal
+	call_if_eq VAR_STARTER_CHOICE, STARTER_CHOICE_ROLYCOLY, LowQuarterApt_2_EventScript_GiveRolycoly
+	call_if_eq VAR_STARTER_CHOICE, STARTER_CHOICE_SEEDOT, LowQuarterApt_2_EventScript_GiveSeedot
+	additem ITEM_POTION
+	playfanfare MUS_OBTAIN_ITEM
+	msgbox LowQuarterApt_2_Text_GotStarter, MSGBOX_DEFAULT
+	waitfanfare
+	closemessage
+	return
+
+LowQuarterApt_2_EventScript_GiveSpheal::
+	givemon SPECIES_SPHEAL, 5
+	bufferspeciesname STR_VAR_1, SPECIES_SPHEAL
+	return
+
+LowQuarterApt_2_EventScript_GiveRolycoly::
+	givemon SPECIES_ROLYCOLY, 5
+	bufferspeciesname STR_VAR_1, SPECIES_ROLYCOLY
+	return
+
+LowQuarterApt_2_EventScript_GiveSeedot::
+	givemon SPECIES_SEEDOT, 5
+	bufferspeciesname STR_VAR_1, SPECIES_SEEDOT
 	return
 
 LowQuarterApt_2_EventScript_BangOnDoor::
@@ -457,3 +490,8 @@ LowQuarterApt_2_Text_SorryYouSawThat:
 	.string "You, uh, might have to find your own\n"
 	.string "dinner tonight.\p"
 	.string "Maybe your cousin can spare something?$"
+
+@ Placeholder until the van scene
+LowQuarterApt_2_Text_GotStarter:
+	.string "{STR_VAR_1} joined your team!\n"
+	.string "You got 1 Potion.$"
