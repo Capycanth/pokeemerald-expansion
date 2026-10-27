@@ -217,6 +217,19 @@ const struct Tileset gTileset_Building =
     .callback = InitTilesetAnim_Building,
 };
 
+// Copy of gTileset_Building, paired with gTileset_D_LowQuarterApt.
+// Reuses Building's tileset animations (the TV).
+const struct Tileset gTileset_D_Building =
+{
+    .isCompressed = TRUE,
+    .isSecondary = FALSE,
+    .tiles = gTilesetTiles_D_Building,
+    .palettes = gTilesetPalettes_D_Building,
+    .metatiles = gMetatiles_D_Building,
+    .metatileAttributes = gMetatileAttributes_D_Building,
+    .callback = InitTilesetAnim_Building,
+};
+
 const struct Tileset gTileset_Shop =
 {
     .isCompressed = TRUE,
@@ -544,6 +557,19 @@ const struct Tileset gTileset_GenericBuilding =
     .palettes = gTilesetPalettes_GenericBuilding,
     .metatiles = gMetatiles_GenericBuilding,
     .metatileAttributes = gMetatileAttributes_GenericBuilding,
+    .callback = NULL,
+};
+
+// Copy of gTileset_GenericBuilding. Metatiles 0x2FA-0x2FC have the green
+// flooring of 0x221 as their bottom layer instead of the wood.
+const struct Tileset gTileset_D_LowQuarterApt =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_D_LowQuarterApt,
+    .palettes = gTilesetPalettes_D_LowQuarterApt,
+    .metatiles = gMetatiles_D_LowQuarterApt,
+    .metatileAttributes = gMetatileAttributes_D_LowQuarterApt,
     .callback = NULL,
 };
 
