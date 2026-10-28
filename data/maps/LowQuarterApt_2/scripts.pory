@@ -9,6 +9,11 @@
 //   STARTER_CHOICE_SPHEAL   (0) = "The bulky blubber-wall: Walrein"
 //   STARTER_CHOICE_ROLYCOLY (1) = "The stoic steam engine: Coalossal"
 //   STARTER_CHOICE_SEEDOT   (2) = "The nimble nightmare: Shiftry"
+//
+// Dialogue rule: a change of speaker gets closemessage + delay(MESSAGE_GAP), so the
+// brief empty beat marks who's talking. Boxes from the same speaker stay in one msgbox.
+
+const MESSAGE_GAP = 10 // frames between one speaker's box closing and the next opening (~1/6 s)
 
 mapscripts LowQuarterApt_2_MapScripts {
     MAP_SCRIPT_ON_TRANSITION {
@@ -48,13 +53,16 @@ script LowQuarterApt_2_EventScript_Scene2 {
     msgbox("Brrr… it's cold in here, Mom. Can't we\n"
            "turn up the heat?")
     closemessage
+    delay(MESSAGE_GAP)
     msgbox("The heater's acting up again, sweetie…\p"
            "I'll grab you another blanket in a\n"
            "second.\p"
            "How about a bedtime story first?")
     closemessage
+    delay(MESSAGE_GAP)
     msgbox("Okay…")
     closemessage
+    delay(MESSAGE_GAP)
     msgbox("How about that old story about Jett\n"
            "Calloway and his partner… uh…\p"
            "(Which Pokémon was it again?)")
@@ -88,6 +96,7 @@ script LowQuarterApt_2_EventScript_Scene2 {
     msgbox("Want to hear about Jett and\n"
            "{STR_VAR_1}?")
     closemessage
+    delay(MESSAGE_GAP)
     msgbox("ACHOO!\p"
            "Uh, I'm not feeling well, Mom.\n"
            "I think I'll just go to bed.")
@@ -133,15 +142,11 @@ script LowQuarterApt_2_EventScript_Scene2 {
     msgbox("Coraline? I'm coming in!")
     closemessage
 
-    // Landlord barges in and confronts Mom about the rent.
+    // Landlord barges in and confronts Mom about the rent. One continuous walk, with the
+    // MC's turns timed to it; the landlord goes last so waitmovement(0) waits on him.
     applymovement(LOCALID_LOW_QUARTER_APT_MOM, Common_Movement_FaceDown)
-    applymovement(LOCALID_LOW_QUARTER_APT_LANDLORD, LowQuarterApt_2_Movement_LandlordEnterPart1)
-    waitmovement(0)
-    applymovement(OBJ_EVENT_ID_PLAYER, Common_Movement_FaceDown)
-    applymovement(LOCALID_LOW_QUARTER_APT_LANDLORD, LowQuarterApt_2_Movement_LandlordEnterPart2)
-    waitmovement(0)
-    applymovement(OBJ_EVENT_ID_PLAYER, Common_Movement_FaceLeft)
-    applymovement(LOCALID_LOW_QUARTER_APT_LANDLORD, LowQuarterApt_2_Movement_LandlordEnterPart3)
+    applymovement(OBJ_EVENT_ID_PLAYER, LowQuarterApt_2_Movement_PlayerWatchLandlord)
+    applymovement(LOCALID_LOW_QUARTER_APT_LANDLORD, LowQuarterApt_2_Movement_LandlordEnter)
     waitmovement(0)
     msgbox("This is the second time I've had to come\n"
            "down here and chase rent!\p"
@@ -174,12 +179,14 @@ script LowQuarterApt_2_EventScript_Scene2 {
            "So, what'll it be? Pay the rent or get\n"
            "kicked to the curb?")
     closemessage
+    delay(MESSAGE_GAP)
     msgbox("Well… I just don't have it yet…\p"
            "Tips were slow this week, but with all\n"
            "the graduation parties, they're bound\l"
            "to pick up!\p"
            "I'll pay you as soon as I can, I promise!")
     closemessage
+    delay(MESSAGE_GAP)
     msgbox("*grumbles* You have until the end of\n"
            "the week. ¥1000, not a coin less!")
     closemessage
@@ -209,6 +216,17 @@ script LowQuarterApt_2_EventScript_Scene2 {
            "You, uh, might have to find your own\n"
            "dinner tonight.\p"
            "Maybe your cousin can spare something?")
+    closemessage
+
+    // Mom stops in front of the MC on her way to bed for a goodnight kiss.
+    applymovement(OBJ_EVENT_ID_PLAYER, moves(delay_16 * 4, face_down)) // turns as she steps into (3, 5)
+    applymovement(LOCALID_LOW_QUARTER_APT_MOM, LowQuarterApt_2_Movement_MomToPlayer)
+    waitmovement(0)
+    msgbox("I have the morning shift, so I'm going\n"
+           "to bed.\p"
+           "Hey…\p"
+           "*kisses forehead*\n"
+           "I love you, goodnight.")
     closemessage
     applymovement(LOCALID_LOW_QUARTER_APT_MOM, LowQuarterApt_2_Movement_MomToBedroom)
     waitmovement(0)
@@ -313,22 +331,23 @@ movement LowQuarterApt_2_Movement_PlayerToTable {
     face_right
 }
 
-// (14, 11) -> (6, 5), pausing right below MC to allow him to turn his head to follow the landlord.
-movement LowQuarterApt_2_Movement_LandlordEnterPart1 {
+// (14, 11) -> (2, 5), stopping below Mom at the stove (2, 2). 18 steps, 288 frames.
+movement LowQuarterApt_2_Movement_LandlordEnter {
     walk_up * 6
-    walk_left * 8
-}
-
-// (6, 5) -> (5, 5), stepping past the MC. The delay gives the MC time to turn down first.
-movement LowQuarterApt_2_Movement_LandlordEnterPart2 {
-    delay_8
-    walk_left
-}
-
-// (5, 5) -> (2, 5), stopping below Mom (who is at the stove at (2, 2))
-movement LowQuarterApt_2_Movement_LandlordEnterPart3 {
-    walk_left * 3
+    walk_left * 12
     face_up
+}
+
+// MC at (6, 4) follows the landlord with their eyes as he walks under them.
+// He steps into (6, 5) on frames 208-224 and into (5, 5) on frames 224-240,
+// so each turn lands about halfway through that step.
+movement LowQuarterApt_2_Movement_PlayerWatchLandlord {
+    delay_16 * 13
+    delay_4
+    face_down // ~frame 212
+    delay_16
+    delay_4
+    face_left // ~frame 232
 }
 
 // (6, 4) -> (2, 4), stepping between the landlord and Mom.
@@ -368,10 +387,16 @@ movement LowQuarterApt_2_Movement_LandlordLeave {
     walk_down * 6
 }
 
-// (1, 2) -> (11, 9), through the bedroom door at (9, 8)
-movement LowQuarterApt_2_Movement_MomToBedroom {
+// (1, 2) -> (3, 5), facing the MC at (3, 4). 5 steps, 80 frames.
+movement LowQuarterApt_2_Movement_MomToPlayer {
     walk_down * 3
-    walk_right * 8
+    walk_right * 2
+    face_up
+}
+
+// (3, 5) -> (11, 9), through the bedroom door at (9, 8)
+movement LowQuarterApt_2_Movement_MomToBedroom {
+    walk_right * 6
     walk_down * 4
     walk_right * 2
 }
