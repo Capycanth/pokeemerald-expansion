@@ -57,6 +57,9 @@ const u16 gMetatileAttributes_BattleFrontierOutsideEast[] = INCBIN_U16("data/til
 const u16 gMetatiles_InsideBuilding[] = INCBIN_U16("data/tilesets/primary/building/metatiles.bin");
 const u16 gMetatileAttributes_InsideBuilding[] = INCBIN_U16("data/tilesets/primary/building/metatile_attributes.bin");
 
+const u16 gMetatiles_D_CollegeCourtyard[] = INCBIN_U16("data/tilesets/primary/d_college_courtyard/metatiles.bin");
+const u16 gMetatileAttributes_D_CollegeCourtyard[] = INCBIN_U16("data/tilesets/primary/d_college_courtyard/metatile_attributes.bin");
+
 const u16 gMetatiles_D_Building[] = INCBIN_U16("data/tilesets/primary/d_building/metatiles.bin");
 const u16 gMetatileAttributes_D_Building[] = INCBIN_U16("data/tilesets/primary/d_building/metatile_attributes.bin");
 
@@ -128,6 +131,9 @@ const u16 gMetatileAttributes_GenericBuilding[] = INCBIN_U16("data/tilesets/seco
 
 const u16 gMetatiles_D_LowQuarterApt[] = INCBIN_U16("data/tilesets/secondary/d_low_quarter_apt/metatiles.bin");
 const u16 gMetatileAttributes_D_LowQuarterApt[] = INCBIN_U16("data/tilesets/secondary/d_low_quarter_apt/metatile_attributes.bin");
+
+const u16 gMetatiles_D_GraduationCeremony[] = INCBIN_U16("data/tilesets/secondary/d_graduation_ceremony/metatiles.bin");
+const u16 gMetatileAttributes_D_GraduationCeremony[] = INCBIN_U16("data/tilesets/secondary/d_graduation_ceremony/metatile_attributes.bin");
 
 const u16 gMetatiles_MauvilleGameCorner[] = INCBIN_U16("data/tilesets/secondary/mauville_game_corner/metatiles.bin");
 const u16 gMetatileAttributes_MauvilleGameCorner[] = INCBIN_U16("data/tilesets/secondary/mauville_game_corner/metatile_attributes.bin");

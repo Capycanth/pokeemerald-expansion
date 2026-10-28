@@ -9359,8 +9359,8 @@
       "name": "GraduationCeremony_Layout",
       "width": 30,
       "height": 30,
-      "primary_tileset": "gTileset_General",
-      "secondary_tileset": "gTileset_Rustboro",
+      "primary_tileset": "gTileset_D_CollegeCourtyard",
+      "secondary_tileset": "gTileset_D_GraduationCeremony",
       "border_filepath": "data/layouts/GraduationCeremony/border.bin",
       "blockdata_filepath": "data/layouts/GraduationCeremony/map.bin"
     }

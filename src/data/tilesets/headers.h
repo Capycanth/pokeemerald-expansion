@@ -217,6 +217,19 @@ const struct Tileset gTileset_Building =
     .callback = InitTilesetAnim_Building,
 };
 
+// Copy of gTileset_General, paired with gTileset_D_GraduationCeremony.
+// Reuses General's tileset animations (water, flowers, waterfalls).
+const struct Tileset gTileset_D_CollegeCourtyard =
+{
+    .isCompressed = TRUE,
+    .isSecondary = FALSE,
+    .tiles = gTilesetTiles_D_CollegeCourtyard,
+    .palettes = gTilesetPalettes_D_CollegeCourtyard,
+    .metatiles = gMetatiles_D_CollegeCourtyard,
+    .metatileAttributes = gMetatileAttributes_D_CollegeCourtyard,
+    .callback = InitTilesetAnim_General,
+};
+
 // Copy of gTileset_Building, paired with gTileset_D_LowQuarterApt.
 // Reuses Building's tileset animations (the TV).
 const struct Tileset gTileset_D_Building =
@@ -571,6 +584,19 @@ const struct Tileset gTileset_D_LowQuarterApt =
     .metatiles = gMetatiles_D_LowQuarterApt,
     .metatileAttributes = gMetatileAttributes_D_LowQuarterApt,
     .callback = NULL,
+};
+
+// Copy of gTileset_Rustboro, paired with gTileset_D_CollegeCourtyard.
+// Reuses Rustboro's tileset animations (windy water, fountain).
+const struct Tileset gTileset_D_GraduationCeremony =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_D_GraduationCeremony,
+    .palettes = gTilesetPalettes_D_GraduationCeremony,
+    .metatiles = gMetatiles_D_GraduationCeremony,
+    .metatileAttributes = gMetatileAttributes_D_GraduationCeremony,
+    .callback = InitTilesetAnim_Rustboro,
 };
 
 const struct Tileset gTileset_MauvilleGameCorner =
