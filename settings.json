@@ -1,0 +1,6 @@
+{
+    "languageServerPoryscript.commandIncludes": [
+        "asm/macros/event.inc",
+        "asm/macros/movement.inc"
+    ]
+}

@@ -17,7 +17,7 @@ mapscripts LowQuarterApt_2_MapScripts {
         call(LowQuarterApt_2_EventScript_SetSiblingGfx)
         if (var(VAR_LOW_QUARTER_APT_STATE) >= 1) {
             setobjectxyperm(LOCALID_LOW_QUARTER_APT_MOM, 11, 9)
-            setobjectmovementtype(LOCALID_LOW_QUARTER_APT_MOM, MOVEMENT_TYPE_FACE_DOWN)
+            setobjectmovementtype(LOCALID_LOW_QUARTER_APT_MOM, MOVEMENT_TYPE_FACE_RIGHT)
             setobjectmovementtype(LOCALID_LOW_QUARTER_APT_SIBLING, MOVEMENT_TYPE_FACE_LEFT)
         }
     }
@@ -47,11 +47,14 @@ script LowQuarterApt_2_EventScript_Scene2 {
     waitmovement(0)
     msgbox("Brrr… it's cold in here, Mom. Can't we\n"
            "turn up the heat?")
+    closemessage
     msgbox("The heater's acting up again, sweetie…\p"
            "I'll grab you another blanket in a\n"
            "second.\p"
            "How about a bedtime story first?")
+    closemessage
     msgbox("Okay…")
+    closemessage
     msgbox("How about that old story about Jett\n"
            "Calloway and his partner… uh…\p"
            "(Which Pokémon was it again?)")
@@ -82,7 +85,9 @@ script LowQuarterApt_2_EventScript_Scene2 {
     closemessage
     applymovement(LOCALID_LOW_QUARTER_APT_MOM, Common_Movement_FaceLeft)
     waitmovement(0)
-    msgbox("Want to hear about Jett and {STR_VAR_1}?")
+    msgbox("Want to hear about Jett and\n"
+           "{STR_VAR_1}?")
+    closemessage
     msgbox("ACHOO!\p"
            "Uh, I'm not feeling well, Mom.\n"
            "I think I'll just go to bed.")
@@ -96,11 +101,20 @@ script LowQuarterApt_2_EventScript_Scene2 {
     // ---------------------------------------------------------------
     // Part 3: The Kitchen
     // ---------------------------------------------------------------
+
+    // Mom and MC go to kitchen to talk
     applymovement(OBJ_EVENT_ID_PLAYER, LowQuarterApt_2_Movement_PlayerToKitchen)
+    applymovement(LOCALID_LOW_QUARTER_APT_MOM, LowQuarterApt_2_Movement_MomToKitchen)
+    waitmovement(0)
+    msgbox("I'll heat up some leftover soup.\n"
+           "Take a seat at the table, {PLAYER}.")
+    closemessage
+
+    // MC goes to table, Mom goes to stove. Mom's walk is longer, so she goes last for waitmovement(0).
+    applymovement(OBJ_EVENT_ID_PLAYER, LowQuarterApt_2_Movement_PlayerToTable)
     applymovement(LOCALID_LOW_QUARTER_APT_MOM, LowQuarterApt_2_Movement_MomToStove)
     waitmovement(0)
-    msgbox("I'll heat you up some leftover soup.\n"
-           "How did the ceremony go?\p"
+    msgbox("How did the ceremony go?\p"
            "…Oh, honey.\p"
            "Milo won? Well… good for the Fenwicks.\n"
            "They needed it as much as we did.")
@@ -116,13 +130,19 @@ script LowQuarterApt_2_EventScript_Scene2 {
     clearflag(FLAG_TEMP_1)
     addobject(LOCALID_LOW_QUARTER_APT_LANDLORD)
     playse(SE_DOOR)
-    applymovement(LOCALID_LOW_QUARTER_APT_LANDLORD, LowQuarterApt_2_Movement_LandlordEnter)
+    msgbox("Coraline? I'm coming in!")
+    closemessage
+
+    // Landlord barges in and confronts Mom about the rent.
     applymovement(LOCALID_LOW_QUARTER_APT_MOM, Common_Movement_FaceDown)
+    applymovement(LOCALID_LOW_QUARTER_APT_LANDLORD, LowQuarterApt_2_Movement_LandlordEnterPart1)
+    waitmovement(0)
+    applymovement(OBJ_EVENT_ID_PLAYER, Common_Movement_FaceDown)
+    applymovement(LOCALID_LOW_QUARTER_APT_LANDLORD, LowQuarterApt_2_Movement_LandlordEnterPart2)
     waitmovement(0)
     applymovement(OBJ_EVENT_ID_PLAYER, Common_Movement_FaceLeft)
+    applymovement(LOCALID_LOW_QUARTER_APT_LANDLORD, LowQuarterApt_2_Movement_LandlordEnterPart3)
     waitmovement(0)
-    // "waitmovement(0)" only waits for whoever moved last, so wait on the landlord by name.
-    waitmovement(LOCALID_LOW_QUARTER_APT_LANDLORD)
     msgbox("This is the second time I've had to come\n"
            "down here and chase rent!\p"
            "You're really testing my patience.")
@@ -147,20 +167,19 @@ script LowQuarterApt_2_EventScript_Scene2 {
 
     // The landlord pushes past the MC to Mom.
     applymovement(OBJ_EVENT_ID_PLAYER, LowQuarterApt_2_Movement_PlayerPushedAside)
-    applymovement(LOCALID_LOW_QUARTER_APT_MOM, Common_Movement_FaceDown)
     applymovement(LOCALID_LOW_QUARTER_APT_LANDLORD, LowQuarterApt_2_Movement_LandlordToMom)
-    waitmovement(0)
-    applymovement(OBJ_EVENT_ID_PLAYER, LowQuarterApt_2_Movement_PlayerToNearLandlord)
     waitmovement(0)
     msgbox("You think I like doing this?\n"
            "I've got bills too.\p"
            "So, what'll it be? Pay the rent or get\n"
            "kicked to the curb?")
+    closemessage
     msgbox("Well… I just don't have it yet…\p"
            "Tips were slow this week, but with all\n"
            "the graduation parties, they're bound\l"
            "to pick up!\p"
            "I'll pay you as soon as I can, I promise!")
+    closemessage
     msgbox("*grumbles* You have until the end of\n"
            "the week. ¥1000, not a coin less!")
     closemessage
@@ -176,7 +195,6 @@ script LowQuarterApt_2_EventScript_Scene2 {
     msgbox("Tell you what. I'll take it off your tab.\n"
            "¥950.")
     closemessage
-    applymovement(OBJ_EVENT_ID_PLAYER, LowQuarterApt_2_Movement_PlayerPushedAsideSecondTime)
     applymovement(LOCALID_LOW_QUARTER_APT_LANDLORD, LowQuarterApt_2_Movement_LandlordLeave)
     waitmovement(0)
     playse(SE_EXIT)
@@ -267,27 +285,49 @@ movement LowQuarterApt_2_Movement_PlayerToBedside {
     face_left
 }
 
-// (3, 9) -> (6, 4)
+// (3, 9) -> (4, 5) facing Mom
 movement LowQuarterApt_2_Movement_PlayerToKitchen {
     walk_up * 4
-    walk_right * 3
+    walk_right * 1
+    face_left
+}
+
+// (2, 9) -> (3, 5) facing MC
+movement LowQuarterApt_2_Movement_MomToKitchen {
+    delay_16 // walk behind MC
+    walk_right
+    walk_up * 4
+    face_right
+}
+
+// (3, 5) -> (2, 2)
+movement LowQuarterApt_2_Movement_MomToStove {
+    walk_left
+    walk_up * 3
+}
+
+// (4, 5) -> (6, 4) facing the table
+movement LowQuarterApt_2_Movement_PlayerToTable {
+    walk_right * 2
     walk_up
     face_right
 }
 
-// (2, 9) -> (2, 2), one step behind the MC so they don't overlap in the doorway
-movement LowQuarterApt_2_Movement_MomToStove {
-    delay_16
-    walk_right
+// (14, 11) -> (6, 5), pausing right below MC to allow him to turn his head to follow the landlord.
+movement LowQuarterApt_2_Movement_LandlordEnterPart1 {
     walk_up * 6
-    walk_left
-    walk_up
+    walk_left * 8
 }
 
-// (14, 11) -> (2, 5), stopping below Mom (who is at the stove at (2, 2))
-movement LowQuarterApt_2_Movement_LandlordEnter {
-    walk_up * 6
-    walk_left * 12
+// (6, 5) -> (5, 5), stepping past the MC. The delay gives the MC time to turn down first.
+movement LowQuarterApt_2_Movement_LandlordEnterPart2 {
+    delay_8
+    walk_left
+}
+
+// (5, 5) -> (2, 5), stopping below Mom (who is at the stove at (2, 2))
+movement LowQuarterApt_2_Movement_LandlordEnterPart3 {
+    walk_left * 3
     face_up
 }
 
@@ -300,7 +340,7 @@ movement LowQuarterApt_2_Movement_PlayerConfrontLandlord {
 
 // (2, 4) -> (3, 4), shoved out of the landlord's way while facing him
 movement LowQuarterApt_2_Movement_PlayerPushedAside {
-    face_down
+    face_left
     lock_facing_direction
     walk_right
     unlock_facing_direction
@@ -311,14 +351,6 @@ movement LowQuarterApt_2_Movement_PlayerPushedAside {
 movement LowQuarterApt_2_Movement_LandlordToMom {
     delay_8
     walk_up * 2
-    face_up
-}
-
-// (3, 4) -> (2, 5), the MC steps in behind the landlord
-movement LowQuarterApt_2_Movement_PlayerToNearLandlord {
-    walk_down
-    walk_left
-    face_up
 }
 
 // (2, 2) -> (1, 2), shoved away from the stove while facing right
@@ -331,35 +363,22 @@ movement LowQuarterApt_2_Movement_MomPushedAside {
 
 // (2, 2) -> (14, 11)
 movement LowQuarterApt_2_Movement_LandlordLeave {
-    walk_down
-    walk_right
-    walk_down * 2
-    walk_right * 11
+    walk_down * 3
+    walk_right * 12
     walk_down * 6
-}
-
-// (2, 5) -> (1, 5), shoved away while facing right. The delay lines the shove up
-// with the landlord reaching (3, 5), right beside the MC, on his way out.
-movement LowQuarterApt_2_Movement_PlayerPushedAsideSecondTime {
-    delay_16 * 3
-    face_right
-    lock_facing_direction
-    walk_left
-    unlock_facing_direction
 }
 
 // (1, 2) -> (11, 9), through the bedroom door at (9, 8)
 movement LowQuarterApt_2_Movement_MomToBedroom {
-    walk_down
-    walk_right * 2
-    walk_down * 2
-    walk_right * 6
+    walk_down * 3
+    walk_right * 8
     walk_down * 4
     walk_right * 2
 }
 
-// (1, 5) -> (14, 11)
+// (3, 4) -> (14, 11)
 movement LowQuarterApt_2_Movement_PlayerToDoor {
-    walk_right * 13
+    walk_down
+    walk_right * 11
     walk_down * 6
 }
