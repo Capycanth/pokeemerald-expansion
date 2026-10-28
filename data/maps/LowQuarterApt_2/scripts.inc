@@ -205,41 +205,21 @@ LowQuarterApt_2_EventScript_BrotherAsleep::
 @ Walks along y = 6, one tile above the wall's hiding row (y = 7), then steps
 @ down into the doorway at x = 3.
 LowQuarterApt_2_Movement_PlayerToBedroomDoor:
-	walk_up
-	walk_up
-	walk_up
-	walk_up
-	walk_up
-	walk_left
-	walk_left
-	walk_left
-	walk_left
-	walk_left
-	walk_left
-	walk_left
-	walk_left
-	walk_left
-	walk_left
-	walk_left
+	walk_up 5
+	walk_left 11
 	walk_down
 	step_end
 
 @ (3, 7) -> (3, 9), facing Mom
 LowQuarterApt_2_Movement_PlayerToBedside:
-	walk_down
-	walk_down
+	walk_down 2
 	face_left
 	step_end
 
 @ (3, 9) -> (6, 4)
 LowQuarterApt_2_Movement_PlayerToKitchen:
-	walk_up
-	walk_up
-	walk_up
-	walk_up
-	walk_right
-	walk_right
-	walk_right
+	walk_up 4
+	walk_right 3
 	walk_up
 	face_right
 	step_end
@@ -248,12 +228,7 @@ LowQuarterApt_2_Movement_PlayerToKitchen:
 LowQuarterApt_2_Movement_MomToStove:
 	delay_16
 	walk_right
-	walk_up
-	walk_up
-	walk_up
-	walk_up
-	walk_up
-	walk_up
+	walk_up 6
 	walk_left
 	walk_up
 	step_end
@@ -269,25 +244,14 @@ LowQuarterApt_2_Movement_Startled:
 
 @ (14, 11) -> (14, 5)
 LowQuarterApt_2_Movement_LandlordEnter:
-	walk_up
-	walk_up
-	walk_up
-	walk_up
-	walk_up
-	walk_up
+	walk_up 6
 	face_left
 	step_end
 
 @ (6, 4) -> (13, 5). Running is off for the MC's sprite, so this is a fast walk.
 LowQuarterApt_2_Movement_PlayerConfrontLandlord:
 	walk_fast_down
-	walk_fast_right
-	walk_fast_right
-	walk_fast_right
-	walk_fast_right
-	walk_fast_right
-	walk_fast_right
-	walk_fast_right
+	walk_fast_right 7
 	face_right
 	step_end
 
@@ -301,27 +265,15 @@ LowQuarterApt_2_Movement_PlayerPushedAside:
 
 @ (14, 5) -> (2, 3), facing Mom at the stove
 LowQuarterApt_2_Movement_LandlordToMom:
-	walk_left
-	walk_left
-	walk_left
-	walk_left
-	walk_left
-	walk_left
-	walk_left
-	walk_left
-	walk_left
-	walk_left
-	walk_left
-	walk_up
-	walk_up
+	walk_left 11
+	walk_up 2
 	walk_left
 	face_up
 	step_end
 
 LowQuarterApt_2_Movement_LandlordSniff:
 	face_down
-	delay_16
-	delay_16
+	delay_16 2
 	face_up
 	step_end
 
@@ -337,65 +289,31 @@ LowQuarterApt_2_Movement_MomPushedAside:
 LowQuarterApt_2_Movement_LandlordLeave:
 	walk_down
 	walk_right
-	walk_down
-	walk_down
-	walk_right
-	walk_right
-	walk_right
-	walk_right
-	walk_right
-	walk_right
-	walk_right
-	walk_right
-	walk_right
-	walk_right
-	walk_right
-	walk_down
-	walk_down
-	walk_down
-	walk_down
-	walk_down
-	walk_down
+	walk_down 2
+	walk_right 11
+	walk_down 6
 	step_end
 
 LowQuarterApt_2_Movement_MomLooksDownThenRight:
 	face_down
-	delay_16
-	delay_16
+	delay_16 2
 	face_right
 	step_end
 
 @ (1, 2) -> (11, 9), through the bedroom door at (9, 8)
 LowQuarterApt_2_Movement_MomToBedroom:
 	walk_down
-	walk_right
-	walk_right
-	walk_down
-	walk_down
-	walk_right
-	walk_right
-	walk_right
-	walk_right
-	walk_right
-	walk_right
-	walk_down
-	walk_down
-	walk_down
-	walk_down
-	walk_right
-	walk_right
+	walk_right 2
+	walk_down 2
+	walk_right 6
+	walk_down 4
+	walk_right 2
 	step_end
 
 @ (13, 4) -> (14, 11)
 LowQuarterApt_2_Movement_PlayerToDoor:
 	walk_right
-	walk_down
-	walk_down
-	walk_down
-	walk_down
-	walk_down
-	walk_down
-	walk_down
+	walk_down 7
 	step_end
 
 LowQuarterApt_2_Text_ItsCold:

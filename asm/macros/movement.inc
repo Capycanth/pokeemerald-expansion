@@ -1,6 +1,14 @@
+	@ Every movement action takes an optional repeat count, so a run of identical steps
+	@ can be written once: "walk_left 11" is the same as eleven "walk_left" lines.
+	@ With no count, the action is emitted once, so existing scripts are unchanged.
 	.macro create_movement_action name:req, value:req
-	.macro \name
+	.macro \name times=1
+	.if \times < 1
+	.error "movement repeat count must be at least 1"
+	.endif
+	.rept \times
 	.byte \value
+	.endr
 	.endm
 	.endm
 
