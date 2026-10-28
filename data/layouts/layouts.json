@@ -9353,6 +9353,16 @@
       "secondary_tileset": "gTileset_D_LowQuarterApt",
       "border_filepath": "data/layouts/LowQuarterApt_2/border.bin",
       "blockdata_filepath": "data/layouts/LowQuarterApt_2/map.bin"
+    },
+    {
+      "id": "LAYOUT_GRADUATION_CEREMONY",
+      "name": "GraduationCeremony_Layout",
+      "width": 30,
+      "height": 30,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_Rustboro",
+      "border_filepath": "data/layouts/GraduationCeremony/border.bin",
+      "blockdata_filepath": "data/layouts/GraduationCeremony/map.bin"
     }
   ]
 }
