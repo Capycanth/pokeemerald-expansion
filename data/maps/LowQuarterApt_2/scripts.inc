@@ -88,10 +88,12 @@ LowQuarterApt_2_EventScript_Scene2::
 	addobject LOCALID_LOW_QUARTER_APT_LANDLORD
 	playse SE_DOOR
 	applymovement LOCALID_LOW_QUARTER_APT_LANDLORD, LowQuarterApt_2_Movement_LandlordEnter
-	applymovement LOCALID_LOW_QUARTER_APT_MOM, LowQuarterApt_2_Movement_FaceDown
+	applymovement LOCALID_LOW_QUARTER_APT_MOM, Common_Movement_FaceDown
 	waitmovement 0
-	applymovement OBJ_EVENT_ID_PLAYER, LowQuarterApt_2_Movement_FaceLeft
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_FaceLeft
 	waitmovement 0
+	@ "waitmovement 0" only waits for whoever moved last, so wait on the landlord by name.
+	waitmovement LOCALID_LOW_QUARTER_APT_LANDLORD
 	msgbox LowQuarterApt_2_Text_ChaseRent, MSGBOX_DEFAULT
 	closemessage
 	applymovement OBJ_EVENT_ID_PLAYER, LowQuarterApt_2_Movement_PlayerConfrontLandlord
@@ -247,48 +249,40 @@ LowQuarterApt_2_Movement_Startled:
 	emote_exclamation_mark
 	step_end
 
-@ (14, 11) -> (2, 5)
+@ (14, 11) -> (2, 5), stopping below Mom (who is at the stove at (2, 2))
 LowQuarterApt_2_Movement_LandlordEnter:
 	walk_up 6
 	walk_left 12
 	face_up
 	step_end
 
-LowQuarterApt_2_Movement_FaceLeft:
-	face_left
-	step_end
-
-LowQuarterApt_2_Movement_FaceDown:
+@ (6, 4) -> (2, 4), stepping between the landlord and Mom.
+@ Running is off for the MC's sprite, so this is a fast walk.
+LowQuarterApt_2_Movement_PlayerConfrontLandlord:
+	walk_fast_left 4
 	face_down
 	step_end
 
-@ (6, 4) -> (13, 5). Running is off for the MC's sprite, so this is a fast walk.
-LowQuarterApt_2_Movement_PlayerConfrontLandlord:
-	walk_fast_down
-	walk_fast_right 7
-	face_right
-	step_end
-
-@ (13, 5) -> (13, 4), shoved backward while facing down
+@ (2, 4) -> (3, 4), shoved out of the landlord's way while facing him
 LowQuarterApt_2_Movement_PlayerPushedAside:
 	face_down
 	lock_facing_direction
-	walk_up
+	walk_right
 	unlock_facing_direction
 	step_end
 
-@ (14, 5) -> (2, 3), facing Mom at the stove
+@ (2, 5) -> (2, 3), facing Mom at the stove. The short delay lets the MC get
+@ halfway out of the way before the landlord steps through.
 LowQuarterApt_2_Movement_LandlordToMom:
-	walk_left 11
+	delay_8
 	walk_up 2
-	walk_left
 	face_up
 	step_end
 
-@ (13, 4) -> (2, 5), player walks to landlord confronting mom
+@ (3, 4) -> (2, 5), the MC steps in behind the landlord
 LowQuarterApt_2_Movement_PlayerToNearLandlord:
 	walk_down
-	walk_left 11
+	walk_left
 	face_up
 	step_end
 
@@ -315,8 +309,10 @@ LowQuarterApt_2_Movement_LandlordLeave:
 	walk_down 6
 	step_end
 
-@ (2, 5) -> (1, 5), shoved away while facing right
+@ (2, 5) -> (1, 5), shoved away while facing right. The delay lines the shove up
+@ with the landlord reaching (3, 5), right beside the MC, on his way out.
 LowQuarterApt_2_Movement_PlayerPushedAsideSecondTime:
+	delay_16 3
 	face_right
 	lock_facing_direction
 	walk_left
@@ -339,10 +335,10 @@ LowQuarterApt_2_Movement_MomToBedroom:
 	walk_right 2
 	step_end
 
-@ (13, 4) -> (14, 11)
+@ (1, 5) -> (14, 11)
 LowQuarterApt_2_Movement_PlayerToDoor:
-	walk_right
-	walk_down 7
+	walk_right 13
+	walk_down 6
 	step_end
 
 LowQuarterApt_2_Text_ItsCold:
