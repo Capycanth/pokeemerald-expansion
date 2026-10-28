@@ -1,0 +1,365 @@
+// Scene 2: The Apartment
+// Design doc: docs/scenes/scene-02-the-apartment.md (Pokemon ROM Hack project)
+//
+// VAR_LOW_QUARTER_APT_STATE
+//   0 = Scene 2 not played yet (plays on entry)
+//   1 = Scene 2 done; Mom is in her bedroom
+//
+// VAR_STARTER_CHOICE (read by the van scene)
+//   STARTER_CHOICE_SPHEAL   (0) = "The bulky blubber-wall: Walrein"
+//   STARTER_CHOICE_ROLYCOLY (1) = "The stoic steam engine: Coalossal"
+//   STARTER_CHOICE_SEEDOT   (2) = "The nimble nightmare: Shiftry"
+
+mapscripts LowQuarterApt_2_MapScripts {
+    MAP_SCRIPT_ON_TRANSITION {
+        // The landlord only appears during Scene 2.
+        setflag(FLAG_TEMP_1)
+        call(LowQuarterApt_2_EventScript_SetSiblingGfx)
+        if (var(VAR_LOW_QUARTER_APT_STATE) >= 1) {
+            setobjectxyperm(LOCALID_LOW_QUARTER_APT_MOM, 11, 9)
+            setobjectmovementtype(LOCALID_LOW_QUARTER_APT_MOM, MOVEMENT_TYPE_FACE_DOWN)
+            setobjectmovementtype(LOCALID_LOW_QUARTER_APT_SIBLING, MOVEMENT_TYPE_FACE_LEFT)
+        }
+    }
+    MAP_SCRIPT_ON_FRAME_TABLE [
+        VAR_LOW_QUARTER_APT_STATE, 0: LowQuarterApt_2_EventScript_Scene2
+    ]
+}
+
+// The little sibling is always the opposite gender of the MC.
+script LowQuarterApt_2_EventScript_SetSiblingGfx {
+    checkplayergender
+    if (var(VAR_RESULT) == MALE) {
+        setvar(VAR_OBJ_GFX_ID_0, OBJ_EVENT_GFX_GIRL_2)
+    } else {
+        setvar(VAR_OBJ_GFX_ID_0, OBJ_EVENT_GFX_WALLY)
+    }
+    return
+}
+
+script LowQuarterApt_2_EventScript_Scene2 {
+    lockall
+
+    // ---------------------------------------------------------------
+    // Part 1: The Bedtime Story
+    // ---------------------------------------------------------------
+    applymovement(OBJ_EVENT_ID_PLAYER, LowQuarterApt_2_Movement_PlayerToBedroomDoor)
+    waitmovement(0)
+    msgbox("Brrr… it's cold in here, Mom. Can't we\n"
+           "turn up the heat?")
+    msgbox("The heater's acting up again, sweetie…\p"
+           "I'll grab you another blanket in a\n"
+           "second.\p"
+           "How about a bedtime story first?")
+    msgbox("Okay…")
+    msgbox("How about that old story about Jett\n"
+           "Calloway and his partner… uh…\p"
+           "(Which Pokémon was it again?)")
+    closemessage
+    applymovement(OBJ_EVENT_ID_PLAYER, LowQuarterApt_2_Movement_PlayerToBedside)
+    waitmovement(0)
+
+    // ---------------------------------------------------------------
+    // Part 2: Starter Choice
+    // ---------------------------------------------------------------
+    dynmultichoice(1, 1, TRUE, 3, 0, DYN_MULTICHOICE_CB_NONE,
+                   "The bulky blubber-wall: Walrein",
+                   "The stoic steam engine: Coalossal",
+                   "The nimble nightmare: Shiftry")
+    copyvar(VAR_STARTER_CHOICE, VAR_RESULT)
+    switch (var(VAR_STARTER_CHOICE)) {
+        case STARTER_CHOICE_SPHEAL:
+            bufferspeciesname(STR_VAR_1, SPECIES_WALREIN)
+        case STARTER_CHOICE_ROLYCOLY:
+            bufferspeciesname(STR_VAR_1, SPECIES_COALOSSAL)
+        case STARTER_CHOICE_SEEDOT:
+            bufferspeciesname(STR_VAR_1, SPECIES_SHIFTRY)
+    }
+    applymovement(LOCALID_LOW_QUARTER_APT_MOM, Common_Movement_FaceRight)
+    waitmovement(0)
+    msgbox("Oh! {PLAYER}! I didn't hear you come in.\n"
+           "That's right, it was {STR_VAR_1}!")
+    closemessage
+    applymovement(LOCALID_LOW_QUARTER_APT_MOM, Common_Movement_FaceLeft)
+    waitmovement(0)
+    msgbox("Want to hear about Jett and {STR_VAR_1}?")
+    msgbox("ACHOO!\p"
+           "Uh, I'm not feeling well, Mom.\n"
+           "I think I'll just go to bed.")
+    closemessage
+    applymovement(LOCALID_LOW_QUARTER_APT_SIBLING, Common_Movement_FaceLeft)
+    waitmovement(0)
+    msgbox("Oh… Sure… Well, I love you.\n"
+           "*kisses head*")
+    closemessage
+
+    // ---------------------------------------------------------------
+    // Part 3: The Kitchen
+    // ---------------------------------------------------------------
+    applymovement(OBJ_EVENT_ID_PLAYER, LowQuarterApt_2_Movement_PlayerToKitchen)
+    applymovement(LOCALID_LOW_QUARTER_APT_MOM, LowQuarterApt_2_Movement_MomToStove)
+    waitmovement(0)
+    msgbox("I'll heat you up some leftover soup.\n"
+           "How did the ceremony go?\p"
+           "…Oh, honey.\p"
+           "Milo won? Well… good for the Fenwicks.\n"
+           "They needed it as much as we did.")
+    closemessage
+
+    // Three bangs at the door.
+    call(LowQuarterApt_2_EventScript_BangOnDoor)
+    applymovement(LOCALID_LOW_QUARTER_APT_MOM, moves(face_right, emote_exclamation_mark))
+    applymovement(OBJ_EVENT_ID_PLAYER, moves(emote_exclamation_mark))
+    waitmovement(0)
+
+    // The landlord lets himself in.
+    clearflag(FLAG_TEMP_1)
+    addobject(LOCALID_LOW_QUARTER_APT_LANDLORD)
+    playse(SE_DOOR)
+    applymovement(LOCALID_LOW_QUARTER_APT_LANDLORD, LowQuarterApt_2_Movement_LandlordEnter)
+    applymovement(LOCALID_LOW_QUARTER_APT_MOM, Common_Movement_FaceDown)
+    waitmovement(0)
+    applymovement(OBJ_EVENT_ID_PLAYER, Common_Movement_FaceLeft)
+    waitmovement(0)
+    // "waitmovement(0)" only waits for whoever moved last, so wait on the landlord by name.
+    waitmovement(LOCALID_LOW_QUARTER_APT_LANDLORD)
+    msgbox("This is the second time I've had to come\n"
+           "down here and chase rent!\p"
+           "You're really testing my patience.")
+    closemessage
+
+    // The MC steps in between the landlord and Mom.
+    applymovement(OBJ_EVENT_ID_PLAYER, LowQuarterApt_2_Movement_PlayerConfrontLandlord)
+    waitmovement(0)
+    checkplayergender
+    if (var(VAR_RESULT) == MALE) {
+        msgbox("What?… So what if your little sister's\n"
+               "asleep?\p"
+               "If I don't get my rent, she'll be\n"
+               "sleeping on the street soon enough.")
+    } else {
+        msgbox("What?… So what if your little brother's\n"
+               "asleep?\p"
+               "If I don't get my rent, he'll be sleeping\n"
+               "on the street soon enough.")
+    }
+    closemessage
+
+    // The landlord pushes past the MC to Mom.
+    applymovement(OBJ_EVENT_ID_PLAYER, LowQuarterApt_2_Movement_PlayerPushedAside)
+    applymovement(LOCALID_LOW_QUARTER_APT_MOM, Common_Movement_FaceDown)
+    applymovement(LOCALID_LOW_QUARTER_APT_LANDLORD, LowQuarterApt_2_Movement_LandlordToMom)
+    waitmovement(0)
+    applymovement(OBJ_EVENT_ID_PLAYER, LowQuarterApt_2_Movement_PlayerToNearLandlord)
+    waitmovement(0)
+    msgbox("You think I like doing this?\n"
+           "I've got bills too.\p"
+           "So, what'll it be? Pay the rent or get\n"
+           "kicked to the curb?")
+    msgbox("Well… I just don't have it yet…\p"
+           "Tips were slow this week, but with all\n"
+           "the graduation parties, they're bound\l"
+           "to pick up!\p"
+           "I'll pay you as soon as I can, I promise!")
+    msgbox("*grumbles* You have until the end of\n"
+           "the week. ¥1000, not a coin less!")
+    closemessage
+    applymovement(LOCALID_LOW_QUARTER_APT_LANDLORD, moves(face_down, delay_16 * 2, face_up))
+    waitmovement(0)
+    msgbox("*sniff* *sniff* …Is that soup?")
+    closemessage
+
+    // He shoves Mom away from the stove and takes the soup.
+    applymovement(LOCALID_LOW_QUARTER_APT_MOM, LowQuarterApt_2_Movement_MomPushedAside)
+    applymovement(LOCALID_LOW_QUARTER_APT_LANDLORD, Common_Movement_WalkUp)
+    waitmovement(0)
+    msgbox("Tell you what. I'll take it off your tab.\n"
+           "¥950.")
+    closemessage
+    applymovement(OBJ_EVENT_ID_PLAYER, LowQuarterApt_2_Movement_PlayerPushedAsideSecondTime)
+    applymovement(LOCALID_LOW_QUARTER_APT_LANDLORD, LowQuarterApt_2_Movement_LandlordLeave)
+    waitmovement(0)
+    playse(SE_EXIT)
+    removeobject(LOCALID_LOW_QUARTER_APT_LANDLORD)
+
+    // ---------------------------------------------------------------
+    // Part 4: Aftermath
+    // ---------------------------------------------------------------
+    applymovement(LOCALID_LOW_QUARTER_APT_MOM, moves(face_down, delay_16 * 2, face_right))
+    waitmovement(0)
+    msgbox("… Sorry you had to see that, {PLAYER}…\p"
+           "You, uh, might have to find your own\n"
+           "dinner tonight.\p"
+           "Maybe your cousin can spare something?")
+    closemessage
+    applymovement(LOCALID_LOW_QUARTER_APT_MOM, LowQuarterApt_2_Movement_MomToBedroom)
+    waitmovement(0)
+    applymovement(OBJ_EVENT_ID_PLAYER, LowQuarterApt_2_Movement_PlayerToDoor)
+    waitmovement(0)
+    setvar(VAR_LOW_QUARTER_APT_STATE, 1)
+
+    // TODO: the van scene goes here (the starter runs into the MC outside). Until it exists,
+    // the MC gets the starter here and goes straight into the Underground Ladder's battles,
+    // which have no map of their own yet.
+    call(LowQuarterApt_2_EventScript_GiveStarter)
+    call(EventScript_UndergroundLadder)
+
+    // TODO: the apartment door has no outdoor map yet, so for now this uses the door's own
+    // warp, which leads back into the apartment.
+    warp(MAP_LOW_QUARTER_APT_2, 0)
+    waitstate
+    releaseall
+    end
+}
+
+// Placeholder until the van scene: gives the first stage of the partner named in the
+// bedtime story at Lv 5, plus the ladder's one Potion.
+script LowQuarterApt_2_EventScript_GiveStarter {
+    switch (var(VAR_STARTER_CHOICE)) {
+        case STARTER_CHOICE_SPHEAL:
+            givemon(SPECIES_SPHEAL, 5)
+            bufferspeciesname(STR_VAR_1, SPECIES_SPHEAL)
+        case STARTER_CHOICE_ROLYCOLY:
+            givemon(SPECIES_ROLYCOLY, 5)
+            bufferspeciesname(STR_VAR_1, SPECIES_ROLYCOLY)
+        case STARTER_CHOICE_SEEDOT:
+            givemon(SPECIES_SEEDOT, 5)
+            bufferspeciesname(STR_VAR_1, SPECIES_SEEDOT)
+    }
+    additem(ITEM_POTION)
+    playfanfare(MUS_OBTAIN_ITEM)
+    msgbox("{STR_VAR_1} joined your team!\n"
+           "You got 1 Potion.")
+    waitfanfare
+    closemessage
+    return
+}
+
+script LowQuarterApt_2_EventScript_BangOnDoor {
+    playse(SE_BANG)
+    waitse
+    delay(10)
+    playse(SE_BANG)
+    waitse
+    delay(10)
+    playse(SE_BANG)
+    waitse
+    delay(20)
+    return
+}
+
+// ===================================================================
+// Movements
+// ===================================================================
+
+// (14, 11) -> (3, 7), facing the sibling's bedroom door.
+// Walks along y = 6, one tile above the wall's hiding row (y = 7), then steps
+// down into the doorway at x = 3.
+movement LowQuarterApt_2_Movement_PlayerToBedroomDoor {
+    walk_up * 5
+    walk_left * 11
+    walk_down
+}
+
+// (3, 7) -> (3, 9), facing Mom
+movement LowQuarterApt_2_Movement_PlayerToBedside {
+    walk_down * 2
+    face_left
+}
+
+// (3, 9) -> (6, 4)
+movement LowQuarterApt_2_Movement_PlayerToKitchen {
+    walk_up * 4
+    walk_right * 3
+    walk_up
+    face_right
+}
+
+// (2, 9) -> (2, 2), one step behind the MC so they don't overlap in the doorway
+movement LowQuarterApt_2_Movement_MomToStove {
+    delay_16
+    walk_right
+    walk_up * 6
+    walk_left
+    walk_up
+}
+
+// (14, 11) -> (2, 5), stopping below Mom (who is at the stove at (2, 2))
+movement LowQuarterApt_2_Movement_LandlordEnter {
+    walk_up * 6
+    walk_left * 12
+    face_up
+}
+
+// (6, 4) -> (2, 4), stepping between the landlord and Mom.
+// Running is off for the MC's sprite, so this is a fast walk.
+movement LowQuarterApt_2_Movement_PlayerConfrontLandlord {
+    walk_fast_left * 4
+    face_down
+}
+
+// (2, 4) -> (3, 4), shoved out of the landlord's way while facing him
+movement LowQuarterApt_2_Movement_PlayerPushedAside {
+    face_down
+    lock_facing_direction
+    walk_right
+    unlock_facing_direction
+}
+
+// (2, 5) -> (2, 3), facing Mom at the stove. The short delay lets the MC get
+// halfway out of the way before the landlord steps through.
+movement LowQuarterApt_2_Movement_LandlordToMom {
+    delay_8
+    walk_up * 2
+    face_up
+}
+
+// (3, 4) -> (2, 5), the MC steps in behind the landlord
+movement LowQuarterApt_2_Movement_PlayerToNearLandlord {
+    walk_down
+    walk_left
+    face_up
+}
+
+// (2, 2) -> (1, 2), shoved away from the stove while facing right
+movement LowQuarterApt_2_Movement_MomPushedAside {
+    face_right
+    lock_facing_direction
+    walk_left
+    unlock_facing_direction
+}
+
+// (2, 2) -> (14, 11)
+movement LowQuarterApt_2_Movement_LandlordLeave {
+    walk_down
+    walk_right
+    walk_down * 2
+    walk_right * 11
+    walk_down * 6
+}
+
+// (2, 5) -> (1, 5), shoved away while facing right. The delay lines the shove up
+// with the landlord reaching (3, 5), right beside the MC, on his way out.
+movement LowQuarterApt_2_Movement_PlayerPushedAsideSecondTime {
+    delay_16 * 3
+    face_right
+    lock_facing_direction
+    walk_left
+    unlock_facing_direction
+}
+
+// (1, 2) -> (11, 9), through the bedroom door at (9, 8)
+movement LowQuarterApt_2_Movement_MomToBedroom {
+    walk_down
+    walk_right * 2
+    walk_down * 2
+    walk_right * 6
+    walk_down * 4
+    walk_right * 2
+}
+
+// (1, 5) -> (14, 11)
+movement LowQuarterApt_2_Movement_PlayerToDoor {
+    walk_right * 13
+    walk_down * 6
+}
