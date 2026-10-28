@@ -88,6 +88,9 @@ LowQuarterApt_2_EventScript_Scene2::
 	addobject LOCALID_LOW_QUARTER_APT_LANDLORD
 	playse SE_DOOR
 	applymovement LOCALID_LOW_QUARTER_APT_LANDLORD, LowQuarterApt_2_Movement_LandlordEnter
+	applymovement LOCALID_LOW_QUARTER_APT_MOM, LowQuarterApt_2_Movement_FaceDown
+	waitmovement 0
+	applymovement OBJ_EVENT_ID_PLAYER, LowQuarterApt_2_Movement_FaceLeft
 	waitmovement 0
 	msgbox LowQuarterApt_2_Text_ChaseRent, MSGBOX_DEFAULT
 	closemessage
@@ -98,9 +101,10 @@ LowQuarterApt_2_EventScript_Scene2::
 	call_if_eq VAR_RESULT, FEMALE, LowQuarterApt_2_EventScript_BrotherAsleep
 	closemessage
 	applymovement OBJ_EVENT_ID_PLAYER, LowQuarterApt_2_Movement_PlayerPushedAside
+	applymovement LOCALID_LOW_QUARTER_APT_MOM, Common_Movement_FaceDown
 	applymovement LOCALID_LOW_QUARTER_APT_LANDLORD, LowQuarterApt_2_Movement_LandlordToMom
 	waitmovement 0
-	applymovement LOCALID_LOW_QUARTER_APT_MOM, Common_Movement_FaceDown
+	applymovement OBJ_EVENT_ID_PLAYER, LowQuarterApt_2_Movement_PlayerToNearLandlord
 	waitmovement 0
 	msgbox LowQuarterApt_2_Text_PayOrCurb, MSGBOX_DEFAULT
 	msgbox LowQuarterApt_2_Text_DontHaveItYet, MSGBOX_DEFAULT
@@ -115,6 +119,7 @@ LowQuarterApt_2_EventScript_Scene2::
 	waitmovement 0
 	msgbox LowQuarterApt_2_Text_OffYourTab, MSGBOX_DEFAULT
 	closemessage
+	applymovement OBJ_EVENT_ID_PLAYER, LowQuarterApt_2_Movement_PlayerPushedAsideSecondTime
 	applymovement LOCALID_LOW_QUARTER_APT_LANDLORD, LowQuarterApt_2_Movement_LandlordLeave
 	waitmovement 0
 	playse SE_EXIT
@@ -242,10 +247,19 @@ LowQuarterApt_2_Movement_Startled:
 	emote_exclamation_mark
 	step_end
 
-@ (14, 11) -> (14, 5)
+@ (14, 11) -> (2, 5)
 LowQuarterApt_2_Movement_LandlordEnter:
 	walk_up 6
+	walk_left 12
+	face_up
+	step_end
+
+LowQuarterApt_2_Movement_FaceLeft:
 	face_left
+	step_end
+
+LowQuarterApt_2_Movement_FaceDown:
+	face_down
 	step_end
 
 @ (6, 4) -> (13, 5). Running is off for the MC's sprite, so this is a fast walk.
@@ -271,6 +285,13 @@ LowQuarterApt_2_Movement_LandlordToMom:
 	face_up
 	step_end
 
+@ (13, 4) -> (2, 5), player walks to landlord confronting mom
+LowQuarterApt_2_Movement_PlayerToNearLandlord:
+	walk_down
+	walk_left 11
+	face_up
+	step_end
+
 LowQuarterApt_2_Movement_LandlordSniff:
 	face_down
 	delay_16 2
@@ -292,6 +313,14 @@ LowQuarterApt_2_Movement_LandlordLeave:
 	walk_down 2
 	walk_right 11
 	walk_down 6
+	step_end
+
+@ (2, 5) -> (1, 5), shoved away while facing right
+LowQuarterApt_2_Movement_PlayerPushedAsideSecondTime:
+	face_right
+	lock_facing_direction
+	walk_left
+	unlock_facing_direction
 	step_end
 
 LowQuarterApt_2_Movement_MomLooksDownThenRight:
@@ -351,7 +380,8 @@ LowQuarterApt_2_Text_WantToHearAboutJett:
 	.string "Want to hear about Jett and {STR_VAR_1}?$"
 
 LowQuarterApt_2_Text_Achoo:
-	.string "ACHOO! Uh, I'm not feeling well, Mom.\n"
+	.string "ACHOO!\p"
+	.string "Uh, I'm not feeling well, Mom.\n"
 	.string "I think I'll just go to bed.$"
 
 LowQuarterApt_2_Text_ILoveYou:
