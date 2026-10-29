@@ -49,6 +49,7 @@ bool32 TryTidyUpClear(bool32 clear);
 u32 IsFlowerVeilProtected(enum BattlerId battler);
 u32 IsLeafGuardProtected(enum BattlerId battler, enum Ability ability);
 bool32 IsShieldsDownProtected(enum BattlerId battler, enum Ability ability);
+bool32 HasShootingStarInstantCharge(enum BattlerId battler, enum Ability ability);
 u32 IsAbilityStatusProtected(enum BattlerId battler, enum Ability ability);
 bool32 TryResetBattlerStatChanges(enum BattlerId battler);
 bool32 CanCamouflage(enum BattlerId battler);

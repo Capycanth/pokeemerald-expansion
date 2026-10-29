@@ -17737,6 +17737,9 @@ static const struct LevelUpMove sSilvallyLevelUpLearnset[] = {
 
 #if P_FAMILY_MINIOR
 static const struct LevelUpMove sMiniorLevelUpLearnset[] = {
+    LEVEL_UP_MOVE( 1, MOVE_SKY_ATTACK),
+    LEVEL_UP_MOVE( 1, MOVE_ELECTRO_SHOT),
+    LEVEL_UP_MOVE( 1, MOVE_SOLAR_BLADE),
     LEVEL_UP_MOVE( 1, MOVE_TACKLE),
     LEVEL_UP_MOVE( 3, MOVE_DEFENSE_CURL),
     LEVEL_UP_MOVE( 8, MOVE_ROLLOUT),

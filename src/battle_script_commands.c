@@ -5062,8 +5062,18 @@ u32 IsLeafGuardProtected(enum BattlerId battler, enum Ability ability)
 
 bool32 IsShieldsDownProtected(enum BattlerId battler, enum Ability ability)
 {
-    return (ability == ABILITY_SHIELDS_DOWN
+    return ((ability == ABILITY_SHIELDS_DOWN || ability == ABILITY_SHOOTING_STAR) // Shooting Star keeps Shields Down's immunity
             && GetFormIdFromFormSpeciesId(gBattleMons[battler].species) < GetFormIdFromFormSpeciesId(SPECIES_MINIOR_CORE_RED)); // Minior is not in core form
+}
+
+// Shooting Star: a Minior in Core Form fires two-turn moves on the first turn,
+// like a Power Herb that is never used up. Meteor Form charges as normal.
+bool32 HasShootingStarInstantCharge(enum BattlerId battler, enum Ability ability)
+{
+    u32 species = gBattleMons[battler].species;
+    return (ability == ABILITY_SHOOTING_STAR
+            && GET_BASE_SPECIES_ID(species) == SPECIES_MINIOR
+            && GetFormIdFromFormSpeciesId(species) >= GetFormIdFromFormSpeciesId(SPECIES_MINIOR_CORE_RED));
 }
 
 u32 IsAbilityStatusProtected(enum BattlerId battler, enum Ability ability)

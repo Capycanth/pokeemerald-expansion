@@ -3263,7 +3263,9 @@ bool32 IsTwoTurnNotSemiInvulnerableMove(enum BattlerId battlerAtk, enum Move mov
         bool32 isAffectedByWeather = ((attackerWeather != B_WEATHER_NONE)
                                    && ((weatherType == moveAffectedByWeather) || (attackerWeatherType == moveAffectedByWeather)));
 
-        return !(isAffectedByWeather || gAiLogicData->holdEffects[battlerAtk] == HOLD_EFFECT_POWER_HERB);
+        return !(isAffectedByWeather
+              || gAiLogicData->holdEffects[battlerAtk] == HOLD_EFFECT_POWER_HERB
+              || HasShootingStarInstantCharge(battlerAtk, gAiLogicData->abilities[battlerAtk]));
     }
     default:
         return FALSE;

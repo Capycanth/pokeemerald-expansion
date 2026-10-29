@@ -1858,6 +1858,17 @@ static enum CancelerResult CancelerCharging(struct BattleCalcValues *cv)
                 result = CANCELER_RESULT_SUCCESS;
             }
         }
+        else if (HasShootingStarInstantCharge(cv->battlerAtk, cv->abilities[cv->battlerAtk]))
+        {
+            gBattleScripting.animTurn = 1;
+            gBattleScripting.animTargetsHit = 0;
+            gBattleScripting.battler = cv->battlerAtk;
+            gProtectStructs[cv->battlerAtk].chargingTurn = FALSE;
+            if (gBattleMoveEffects[cv->moveEffect].semiInvulnerableEffect)
+                gBattleMons[cv->battlerAtk].volatiles.semiInvulnerable = STATE_NONE;
+            BattleScriptCall(BattleScript_MegaSolActivatesTwoTurnMove); // ability pop-up, then the move
+            result = CANCELER_RESULT_RUN_SCRIPT_AND_INCREMENT;
+        }
         else if (cv->holdEffects[cv->battlerAtk] == HOLD_EFFECT_POWER_HERB)
         {
             gBattleScripting.animTurn = 1;

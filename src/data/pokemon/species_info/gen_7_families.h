@@ -4715,7 +4715,7 @@ const struct SpeciesInfo gSpeciesInfoGen7[] =
         .friendship = STANDARD_FRIENDSHIP,                                  \
         .growthRate = GROWTH_MEDIUM_SLOW,                                   \
         .eggGroups = MON_EGG_GROUPS(EGG_GROUP_MINERAL),                     \
-        .abilities = { ABILITY_SHIELDS_DOWN, ABILITY_NONE, ABILITY_NONE },  \
+        .abilities = { ABILITY_SHOOTING_STAR, ABILITY_NONE, ABILITY_NONE }, \
         .bodyColor = color,                                                 \
         .noFlip = TRUE,                                                     \
         .speciesName = _("Minior"),                                         \
@@ -4734,12 +4734,12 @@ const struct SpeciesInfo gSpeciesInfoGen7[] =
 
 #define MINIOR_METEOR_SPECIES_INFO(Form, heldItem)          \
     {                                                       \
-        .baseHP        = 60,                                \
+        .baseHP        = 75,                                \
         .baseAttack    = 60,                                \
-        .baseDefense   = 100,                               \
+        .baseDefense   = 110,                               \
         .baseSpeed     = 60,                                \
         .baseSpAttack  = 60,                                \
-        .baseSpDefense = 100,                               \
+        .baseSpDefense = 110,                               \
         .itemCommon = heldItem,                             \
         .weight = 400,                                      \
         .description = gMiniorMeteorPokedexText,            \
@@ -4778,11 +4778,11 @@ const struct SpeciesInfo gSpeciesInfoGen7[] =
 
 #define MINIOR_CORE_SPECIES_INFO(Form, color, iconPal, heldItem)\
     {                                                           \
-        .baseHP        = 60,                                    \
-        .baseAttack    = 100,                                   \
+        .baseHP        = 75,                                    \
+        .baseAttack    = 110,                                   \
         .baseDefense   = 60,                                    \
         .baseSpeed     = 120,                                   \
-        .baseSpAttack  = 100,                                   \
+        .baseSpAttack  = 110,                                   \
         .baseSpDefense = 60,                                    \
         .itemCommon = heldItem,                                 \
         .weight = 3,                                            \
