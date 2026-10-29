@@ -2586,4 +2586,17 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
         .description = COMPOUND_STRING("Always changes type to move's."),
         .aiRating = 8,
     },
+
+    [ABILITY_SHOOTING_STAR] =
+    {
+        .name = _("Shooting Star"),
+        .description = COMPOUND_STRING("Core form skips charge turns."),
+        .aiRating = 6,
+        .cantBeCopied = TRUE,
+        .cantBeSwapped = TRUE,
+        .cantBeTraced = TRUE,
+        .cantBeSuppressed = TRUE,
+        .cantBeOverwritten = TRUE,
+        .failsOnImposter = TRUE,
+    },
 };
