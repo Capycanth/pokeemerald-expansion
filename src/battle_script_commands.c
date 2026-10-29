@@ -5062,7 +5062,7 @@ u32 IsLeafGuardProtected(enum BattlerId battler, enum Ability ability)
 
 bool32 IsShieldsDownProtected(enum BattlerId battler, enum Ability ability)
 {
-    return (ability == ABILITY_SHIELDS_DOWN
+    return ((ability == ABILITY_SHIELDS_DOWN || ability == ABILITY_SHOOTING_STAR) // Shooting Star keeps Shields Down's immunity
             && GetFormIdFromFormSpeciesId(gBattleMons[battler].species) < GetFormIdFromFormSpeciesId(SPECIES_MINIOR_CORE_RED)); // Minior is not in core form
 }
 

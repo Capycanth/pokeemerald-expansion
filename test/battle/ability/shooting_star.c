@@ -41,10 +41,24 @@ SINGLE_BATTLE_TEST("Shooting Star does not skip the charging turn in Meteor Form
     }
 }
 
-SINGLE_BATTLE_TEST("Shooting Star does not protect Meteor Form from status conditions")
+SINGLE_BATTLE_TEST("Shooting Star protects Meteor Form from status conditions")
 {
     GIVEN {
         PLAYER(SPECIES_MINIOR_METEOR) { Ability(ABILITY_SHOOTING_STAR); }
+        OPPONENT(SPECIES_WOBBUFFET);
+    } WHEN {
+        TURN { MOVE(opponent, MOVE_SPORE); }
+    } SCENE {
+        NOT ANIMATION(ANIM_TYPE_MOVE, MOVE_SPORE, opponent);
+    } THEN {
+        EXPECT(!(player->status1 & STATUS1_SLEEP));
+    }
+}
+
+SINGLE_BATTLE_TEST("Shooting Star does not protect Core Form from status conditions")
+{
+    GIVEN {
+        PLAYER(SPECIES_MINIOR_CORE) { Ability(ABILITY_SHOOTING_STAR); HP(40); MaxHP(100); }
         OPPONENT(SPECIES_WOBBUFFET);
     } WHEN {
         TURN { MOVE(opponent, MOVE_SPORE); }
