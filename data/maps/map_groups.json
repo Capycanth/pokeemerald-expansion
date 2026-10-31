@@ -1166,7 +1166,8 @@
   ],
   "gMapGroup_D_IndoorLowQuarterApt": [
     "tst",
-    "LowQuarterApt_2"
+    "LowQuarterApt_2",
+    "LowQuarterWarehouse"
   ],
   "gMapGroup_D_CollegeCourtyard": [
     "GraduationCeremony"
