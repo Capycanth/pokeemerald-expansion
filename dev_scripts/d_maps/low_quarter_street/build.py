@@ -792,8 +792,8 @@ PLACE = [
     ('trash', 5, 14), ('bags', 5, 18), ('box_open', 35, 14), ('trash', 35, 17),
     ('trash', 7, 30), ('bags', 19, 32), ('crate_lbl', 19, 28), ('box', 7, 33),
     # curbside
-    ('trash', 23, 6), ('trash', 15, 20), ('trash', 24, 34), ('trash', 37, 6), ('bags', 1, 34),
-    ('hydrant', 17, 21), ('hydrant', 24, 7), ('hydrant', 30, 25), ('hydrant', 13, 35),
+    ('trash', 23, 6), ('trash', 24, 34), ('trash', 37, 6), ('bags', 1, 34),
+    ('hydrant', 17, 21), ('hydrant', 24, 7), ('hydrant', 13, 35),
     # warehouse yard
     ('drum_stack', 39, 35), ('drum', 32, 35), ('crate3', 34, 37), ('crate2', 37, 37), ('pallet', 32, 38), ('rubble', 36, 36), ('lumber', 39, 37),
 ]
