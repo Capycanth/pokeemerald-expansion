@@ -1053,7 +1053,7 @@ const u16 gTilesetPalettes_D_LowQuarterApt[][16] =
     INCGFX_U16("data/tilesets/secondary/d_low_quarter_apt/palettes/15.pal", ".gbapal"),
 };
 
-const u32 gTilesetTiles_D_LowQuarterWarehouse[] = INCGFX_U32("data/tilesets/secondary/d_low_quarter_warehouse/tiles.png", ".4bpp.fastSmol", "-num_tiles 413 -Wnum_tiles");
+const u32 gTilesetTiles_D_LowQuarterWarehouse[] = INCGFX_U32("data/tilesets/secondary/d_low_quarter_warehouse/tiles.png", ".4bpp.fastSmol", "-num_tiles 409 -Wnum_tiles");
 
 const u16 gTilesetPalettes_D_LowQuarterWarehouse[][16] =
 {

@@ -78,8 +78,30 @@ def cut(name, spec):
     col = [[(m[(y+j)*l['width'] + x+i] >> 10) & 3 for i in range(w)] for j in range(h)]
     return obj, col, fam
 
+# Props whose art sits wholly in the source metatiles' top layer: build them from that layer
+# instead of cutting them off the floor (the floor shares colours with the lids).
+# Power Plant drums: 2d1 = top of the lid, 2d8 = drum + next drum's lid, 2d9 = last drum.
+TOPS = {
+    'drum':       (PP, [[0x2d1], [0x2d9]], 'warm'),
+    'drum_stack': (PP, [[0x2d1], [0x2d8], [0x2d8], [0x2d9]], 'warm'),
+}
+
+def top_layer(name, spec):
+    lid, rows, fam = spec
+    P, l = layout_pair(lid); h, w = len(rows), len(rows[0])
+    im = Image.new('RGBA', (w*16, h*16), (0, 0, 0, 0)); px = im.load()
+    for cy, row in enumerate(rows):
+        for cx, mid in enumerate(row):
+            m = P.meta(mid)
+            for qd in range(4):
+                e = m[4 + qd]; t = flip(P.tile(e & 0x3ff), e & 0x400, e & 0x800); pal = P.pal(e >> 12)
+                for j, c in enumerate(t):
+                    if c: px[cx*16 + qd % 2*8 + j % 8, cy*16 + qd//2*8 + j//8] = pal[c] + (255,)
+    col = [[0 if cy == 0 else 1 for _ in range(w)] for cy in range(h)]
+    return im, col, fam
+
 if __name__ == '__main__':
-    out = {n: cut(n, s) for n, s in OBJS.items()}
+    out = {n: (top_layer(n, TOPS[n]) if n in TOPS else cut(n, s)) for n, s in OBJS.items()}
     pickle.dump({n: (o.tobytes(), o.size, c, f) for n, (o, c, f) in out.items()}, open(os.path.join(HERE, 'objs.pkl'), 'wb'))
     # catalog image on a magenta checker so cut-outs are visible
     S = 3; x = y = rowh = 0; pos = {}
