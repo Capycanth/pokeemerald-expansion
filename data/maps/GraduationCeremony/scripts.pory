@@ -383,18 +383,19 @@ movement GraduationCeremony_Movement_StarterWalkOff {
     walk_right * 2
 }
 
-// Camera: the Dean's tile (14, 15) to (16, 21), framing the MC and cousin at (16, 23) and
-// (17, 23). Steps alternate so the pan drifts diagonally.
+// Camera: the Dean's tile (14, 15) to (16, 22), framing the MC and cousin at (16, 23) and
+// (17, 23) one row below center, clear of the text box. Steps alternate so the pan drifts
+// diagonally.
 movement GraduationCeremony_Movement_CameraToCrowd {
     walk_down * 2
     walk_right
     walk_down * 2
     walk_right
-    walk_down * 2
+    walk_down * 3
 }
 
 movement GraduationCeremony_Movement_CameraToStage {
-    walk_up * 2
+    walk_up * 3
     walk_left
     walk_up * 2
     walk_left
@@ -406,7 +407,7 @@ movement GraduationCeremony_Movement_CameraToCrowdSlow {
     walk_slow_right
     walk_slow_down * 2
     walk_slow_right
-    walk_slow_down * 2
+    walk_slow_down * 3
 }
 
 // (22, 18), just off screen right, up the right step to (15, 15) beside the Dean. She runs.
@@ -431,9 +432,9 @@ movement GraduationCeremony_Movement_MiloToStage {
     face_down
 }
 
-// (16, 23) down past the bottom of the screen to (16, 28).
+// (16, 23) down past the bottom of the screen (rows 18-27 with the camera at (16, 22)) to (16, 29).
 movement GraduationCeremony_Movement_MCWalkAway {
     face_down
     delay_16
-    walk_slow_down * 5
+    walk_slow_down * 6
 }
