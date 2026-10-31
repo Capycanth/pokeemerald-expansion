@@ -1174,6 +1174,7 @@
     "GraduationCeremony"
   ],
   "gMapGroup_D_LowQuarter": [
-    "LowQuarterNight"
+    "LowQuarterNight",
+    "LowQuarterDay"
   ]
 }

@@ -1,5 +1,7 @@
-"""Builder for the Low Quarter streets at night: LAYOUT_LOW_QUARTER_NIGHT (40x40) and its tileset pair
-gTileset_D_LowQuarterStreet (primary) + gTileset_D_LowQuarterNight (secondary).
+"""Builder for the Low Quarter streets: LAYOUT_LOW_QUARTER_NIGHT (40x40) and its tileset pair
+gTileset_D_LowQuarterStreet (primary) + gTileset_D_LowQuarterNight (secondary), plus the day twin
+LAYOUT_LOW_QUARTER_DAY, whose tilesets reuse the same tiles and metatiles under day palettes
+(gTileset_D_LowQuarterStreetDay + gTileset_D_LowQuarterDay).
 
 Re-runnable: writes both tilesets and the layout from scratch every run.
 Run order: extract.py (cut borrowed props from vanilla maps) -> build.py.
@@ -28,6 +30,10 @@ from tl import ROOT, write_pal, flip
 OUT_P = ROOT + '/data/tilesets/primary/d_low_quarter_street'
 OUT_S = ROOT + '/data/tilesets/secondary/d_low_quarter_night'
 OUT_LY = ROOT + '/data/layouts/LowQuarterNight'
+# Day: the same tiles and metatiles under daytime palettes (only palette files are written)
+OUT_P_DAY = ROOT + '/data/tilesets/primary/d_low_quarter_street_day'
+OUT_S_DAY = ROOT + '/data/tilesets/secondary/d_low_quarter_day'
+OUT_LY_DAY = ROOT + '/data/layouts/LowQuarterDay'
 W, H = 40, 40
 PXW, PXH = W*16, H*16
 
@@ -711,6 +717,7 @@ for name, (im, fam, wb) in PROPS.items():
     PIDX[name] = a
 # the awning's lantern is a light source: force it into the lit palette's brightest entry
 # lamp: its own palette (11) with glowing glass
+LAMP_DAY = [(0, 0, 0)]
 def lamp_pal_and_idx():
     im = OBJ['lamp']; px = im.load(); w_, h_ = im.size
     cols = sorted({px[x, y][:3] for y in range(h_) for x in range(w_) if px[x, y][3]}, key=lambda c: sum(c))
@@ -719,14 +726,16 @@ def lamp_pal_and_idx():
         r, g, b = c; lum = (r*3 + g*4 + b*2)/9
         is_glass = (b > r + 20 and lum > 120) or lum > 200
         nc = q((255, 238, 180)) if is_glass and lum > 190 else q((240, 200, 120)) if is_glass else q((c[0]*0.45 + 8, c[1]*0.45 + 8, c[2]*0.52 + 16))
-        if nc not in pal: pal.append(nc)
+        if nc not in pal:
+            pal.append(nc)
+            LAMP_DAY.append(q((206, 216, 224)) if is_glass and lum > 190 else q((166, 180, 194)) if is_glass else q(c))
         m[c] = pal.index(nc)
     for y in range(h_):
         for x in range(w_):
             if px[x, y][3]: idx[y][x] = m[px[x, y][:3]]
     # lantern / wall-pack glow colours appended
-    for c in [(255, 248, 210), (230, 170, 90)]:
-        pal.append(q(c))
+    for c, dc in [((255, 248, 210), (222, 216, 200)), ((230, 170, 90), (176, 166, 150))]:     # unlit by day
+        pal.append(q(c)); LAMP_DAY.append(q(dc))
     assert len(pal) <= 16, len(pal)
     return pal, idx
 PAL_GLOW, LAMP_IDX = lamp_pal_and_idx()
@@ -945,6 +954,39 @@ for slot, p in [(0, PAL_G0), (1, PAL_G1), (2, scheme_pal('brick')), (3, scheme_p
                 (6, scheme_pal('corr')), (7, PAL_METAL_D), (8, PAL_METAL_L), (9, PAL_WARM_D), (10, PAL_WARM_L), (11, PAL_GLOW), (12, PAL_NEON)]:
     assert len(p) <= 16, (slot, len(p)); PALS[slot] = (list(p) + [(0, 0, 0)]*16)[:16]
 
+# ---------------------------------------------------------------------- day palettes
+# Same index layout as the night palettes. The ground's two light levels get the same colours,
+# so the baked lamp pools vanish; lit windows read as glass with curtains, lamps and neon are off.
+DAY_ASPH = [(116, 116, 122), (98, 98, 106), (80, 80, 90)]
+DAY_CONC = [(186, 182, 172), (164, 160, 152), (134, 130, 124)]
+DAY_PAINT = (222, 214, 184)
+PAL_G_DAY = [(0, 0, 0)] + [q(c) for c in DAY_ASPH*2 + DAY_CONC*2] + [q(DAY_PAINT)]*2
+DAY_GLASS = [(152, 186, 210), (86, 114, 150), (208, 226, 236), (122, 154, 186), (198, 178, 142)]
+DAY_ROOF = [(150, 150, 158), (112, 113, 122), (56, 56, 66)]
+DAY_SCHEMES = {
+    'brick':  dict(wall=[(176, 98, 82), (150, 80, 68), (124, 64, 58), (96, 50, 50)], mortar=(150, 140, 130), trim=[(202, 198, 188), (140, 132, 126)]),
+    'stucco': dict(wall=[(192, 186, 168), (170, 164, 148), (146, 140, 126), (118, 112, 102)], mortar=(122, 116, 106), trim=[(224, 222, 214), (152, 148, 142)]),
+    'clap':   dict(wall=[(150, 160, 124), (128, 138, 106), (106, 114, 88), (82, 88, 70)], mortar=(66, 68, 58), trim=[(198, 186, 154), (128, 114, 92)]),
+    'brown':  dict(wall=[(170, 120, 90), (148, 102, 78), (124, 84, 66), (98, 66, 54)], mortar=(92, 72, 62), trim=[(206, 192, 172), (142, 124, 108)]),
+    'corr':   dict(wall=[(152, 168, 168), (128, 144, 146), (104, 118, 124), (78, 90, 98)], mortar=(158, 100, 68), trim=[(214, 188, 98), (130, 118, 98)],
+                   roof=[(162, 168, 176), (118, 124, 136), (58, 62, 72)]),
+}
+def day_scheme_pal(s):
+    S = DAY_SCHEMES[s]
+    return [(0, 0, 0)] + [q(c) for c in S['wall'] + [S['mortar']] + S['trim'] + DAY_GLASS + S.get('roof', DAY_ROOF)]
+def day_prop(c): return q((c[0]*1.04 + 4, c[1]*1.04 + 4, c[2]*1.02 + 4))
+PAL_METAL_DAY = [(0, 0, 0)] + [day_prop(c) for c in FAMPAL['metal']]
+PAL_WARM_DAY = [(0, 0, 0)] + [day_prop(c) for c in FAMPAL['warm']]
+# neon off: pale tubes, halos and the backing board in board greys (index 11 is the board)
+_BOARD, _EDGE = (58, 56, 66), (92, 90, 100)
+PAL_NEON_DAY = [(0, 0, 0)] + [q(c) for c in [(214, 186, 206), _BOARD, _EDGE, (186, 214, 222), _BOARD, _BOARD,
+                                             (220, 206, 158), (132, 168, 134), (220, 220, 226), (40, 38, 46), _BOARD]]
+PALS_DAY = [[(0, 0, 0)]*16 for _ in range(16)]
+for slot, p in [(0, PAL_G_DAY), (1, PAL_G_DAY), (2, day_scheme_pal('brick')), (3, day_scheme_pal('stucco')), (4, day_scheme_pal('clap')),
+                (5, day_scheme_pal('brown')), (6, day_scheme_pal('corr')), (7, PAL_METAL_DAY), (8, PAL_METAL_DAY), (9, PAL_WARM_DAY),
+                (10, PAL_WARM_DAY), (11, LAMP_DAY), (12, PAL_NEON_DAY)]:
+    assert len(p) <= 16, (slot, len(p)); PALS_DAY[slot] = (list(p) + [(0, 0, 0)]*16)[:16]
+
 def save():
     nt, nm = len(BK.tiles), len(BK.metas)
     assert nt <= 1024, ('too many tiles', nt); assert nm <= 1024, ('too many metatiles', nm)
@@ -978,16 +1020,24 @@ def save():
     open(OUT_LY + '/map.bin', 'wb').write(struct.pack('<%dH' % len(data), *data))
     roof_id = blocks[0*W + 2][0]                   # brick roof cell at (2, 0)
     open(OUT_LY + '/border.bin', 'wb').write(struct.pack('<4H', *[GID[roof_id]]*4))
+    for d in (OUT_P_DAY, OUT_S_DAY): os.makedirs(d + '/palettes', exist_ok=True)
+    os.makedirs(OUT_LY_DAY, exist_ok=True)
+    for i in range(16):
+        write_pal(f'{OUT_P_DAY}/palettes/{i:02d}.pal', PALS_DAY[i] if i < 6 else [(0, 0, 0)]*16)
+        write_pal(f'{OUT_S_DAY}/palettes/{i:02d}.pal', PALS_DAY[i] if 6 <= i < 13 else [(0, 0, 0)]*16)
+    open(OUT_LY_DAY + '/map.bin', 'wb').write(struct.pack('<%dH' % len(data), *data))
+    open(OUT_LY_DAY + '/border.bin', 'wb').write(struct.pack('<4H', *[GID[roof_id]]*4))
     return nt, nm
 
-def render(scale=2):
+def render(scale=2, pals=None):
+    pals = pals or PALS
     im = Image.new('RGB', (PXW, PXH)); p = im.load()
     def tile_of(i): return BK.tiles[i]
     for b_i, (mid, col) in enumerate(blocks):
         m = BK.metas[mid]; bx, by = b_i % W*16, b_i//W*16
         for L in (0, 1):
             for qd in range(4):
-                e = m[L*4 + qd]; t = flip(tile_of(e & 0x3ff), e & 0x400, e & 0x800); pal = PALS[e >> 12]
+                e = m[L*4 + qd]; t = flip(tile_of(e & 0x3ff), e & 0x400, e & 0x800); pal = pals[e >> 12]
                 for j, c in enumerate(t):
                     if c: p[bx + qd % 2*8 + j % 8, by + qd//2*8 + j//8] = pal[c]
     big = im.resize((PXW*scale, PXH*scale), Image.NEAREST)
@@ -1004,4 +1054,6 @@ if __name__ == '__main__':
     out = sys.argv[1] if len(sys.argv) > 1 else HERE
     im.save(out + '/night_map.png'); colim.save(out + '/night_collision.png')
     im.resize((PXW*2, PXH*2), Image.NEAREST).save(out + '/night_map_2x.png')
+    dim, dbig, dcol = render(1, PALS_DAY)
+    dim.save(out + '/day_map.png'); dim.resize((PXW*2, PXH*2), Image.NEAREST).save(out + '/day_map_2x.png')
     print('tiles', nt, 'metatiles', nm, '(primary', len(PRIM), 'secondary', len(SEC), ')')
