@@ -1,4 +1,293 @@
-// The Low Quarter warehouse: venue of the Underground Ladder (docs/battles.md).
-// No events yet; the ladder itself lives in data/scripts/underground_ladder.inc.
+// The Low Quarter warehouse: venue of the Underground Ladder.
+// Design doc: docs/battles.md (Pokemon ROM Hack project)
+//
+// VAR_LOW_QUARTER_WAREHOUSE_STATE
+//   0 = ladder scene not played yet (plays on entry; Scene 2 warps here after the starter)
+//   1 = played (set as the scene starts, so a battle's return to the field can't restart it)
+//
+// Camera: the ring is 9 rows tall, more than fits on screen around the MC, so the player object
+// is hidden on warp-in and stays on the centre circle (10, 9) as the camera. That frames both
+// starting marks: (10, 6) at the top and (10, 12) at the bottom. The MC is LOCALID_WAREHOUSE_MC,
+// an NPC on the bottom mark whose sprite follows the player's gender; the cousin stands behind
+// at (10, 13). Hidden objects stay hidden through a battle (gObjectEvents survive it).
+//
+// The ladder: eight single battles, Lv 3 -> 10, in a fixed order (docs/battles.md).
+//   - The eight opponents wait ringside, alternating sides in ladder order (left, right, left...),
+//     so the loser walking back and the next opponent walking up never cross.
+//   - Each opponent walks to the top mark, faces the MC, and the battle starts.
+//   - After a win, the loser walks back to their spot as the next one steps up.
+//   - No healing between fights; the only heal is the one Potion, used from the Bag in battle.
+//   - Prizes are fixed per trainer and paid by GetLadderPrize() (src/battle_script_commands.c).
+//   - A loss ends the ladder without whiting out (FLAG_NO_WHITEOUT); the party isn't healed.
+//
+// Ringside spots (x, y), facing the ring:
+//   1 Tessa (5, 8)    2 Rowan (15, 9)   3 Clara (4, 6)    4 Felix (16, 11)
+//   5 Nadia (4, 12)   6 Hugo (15, 7)    7 Ivy (3, 10)     8 Silas (16, 13)
+// The ring's side openings are x = 5 and x = 15, rows 7-10 (girders above and below).
 
-mapscripts LowQuarterWarehouse_MapScripts {}
+const LADDER_BEAT = 24     // frames between an opponent squaring up and the battle starting
+const LADDER_STAGGER = 16  // frames between the loser setting off and the next opponent setting off
+
+mapscripts LowQuarterWarehouse_MapScripts {
+    MAP_SCRIPT_ON_TRANSITION {
+        checkplayergender
+        if (var(VAR_RESULT) == MALE) {
+            setvar(VAR_OBJ_GFX_ID_0, OBJ_EVENT_GFX_BLUE)
+        } else {
+            setvar(VAR_OBJ_GFX_ID_0, OBJ_EVENT_GFX_DAISY)
+        }
+    }
+    MAP_SCRIPT_ON_WARP_INTO_MAP_TABLE [
+        VAR_LOW_QUARTER_WAREHOUSE_STATE, 0: LowQuarterWarehouse_EventScript_HideCamera
+    ]
+    MAP_SCRIPT_ON_FRAME_TABLE [
+        VAR_LOW_QUARTER_WAREHOUSE_STATE, 0: LowQuarterWarehouse_EventScript_Ladder
+    ]
+}
+
+script LowQuarterWarehouse_EventScript_HideCamera {
+    hideobjectat(OBJ_EVENT_ID_PLAYER, MAP_LOW_QUARTER_WAREHOUSE)
+    end
+}
+
+script LowQuarterWarehouse_EventScript_Ladder {
+    lockall
+    setvar(VAR_LOW_QUARTER_WAREHOUSE_STATE, 1)
+    // No trainer approaches: keep the no-intro battle's reveal step from moving anyone.
+    setvar(VAR_LAST_TALKED, LOCALID_NONE)
+    setflag(FLAG_NO_WHITEOUT)
+    delay(60) // a beat to take in the ring
+
+    // 1: Tessa
+    applymovement(LOCALID_LADDER_TESSA, LowQuarterWarehouse_Movement_TessaToMark)
+    waitmovement(0)
+    delay(LADDER_BEAT)
+    trainerbattle_no_intro(TRAINER_LADDER_TESSA, LowQuarterWarehouse_Text_Defeat)
+    specialvar(VAR_RESULT, GetBattleOutcome)
+    goto_if_ne(VAR_RESULT, B_OUTCOME_WON, LowQuarterWarehouse_EventScript_LadderOver)
+
+    // 2: Rowan
+    applymovement(LOCALID_LADDER_TESSA, LowQuarterWarehouse_Movement_TessaToSpot)
+    delay(LADDER_STAGGER)
+    applymovement(LOCALID_LADDER_ROWAN, LowQuarterWarehouse_Movement_RowanToMark)
+    waitmovement(LOCALID_LADDER_ROWAN)
+    waitmovement(LOCALID_LADDER_TESSA)
+    delay(LADDER_BEAT)
+    trainerbattle_no_intro(TRAINER_LADDER_ROWAN, LowQuarterWarehouse_Text_Defeat)
+    specialvar(VAR_RESULT, GetBattleOutcome)
+    goto_if_ne(VAR_RESULT, B_OUTCOME_WON, LowQuarterWarehouse_EventScript_LadderOver)
+
+    // 3: Clara
+    applymovement(LOCALID_LADDER_ROWAN, LowQuarterWarehouse_Movement_RowanToSpot)
+    delay(LADDER_STAGGER)
+    applymovement(LOCALID_LADDER_CLARA, LowQuarterWarehouse_Movement_ClaraToMark)
+    waitmovement(LOCALID_LADDER_CLARA)
+    waitmovement(LOCALID_LADDER_ROWAN)
+    delay(LADDER_BEAT)
+    trainerbattle_no_intro(TRAINER_LADDER_CLARA, LowQuarterWarehouse_Text_Defeat)
+    specialvar(VAR_RESULT, GetBattleOutcome)
+    goto_if_ne(VAR_RESULT, B_OUTCOME_WON, LowQuarterWarehouse_EventScript_LadderOver)
+
+    // 4: Felix
+    applymovement(LOCALID_LADDER_CLARA, LowQuarterWarehouse_Movement_ClaraToSpot)
+    delay(LADDER_STAGGER)
+    applymovement(LOCALID_LADDER_FELIX, LowQuarterWarehouse_Movement_FelixToMark)
+    waitmovement(LOCALID_LADDER_FELIX)
+    waitmovement(LOCALID_LADDER_CLARA)
+    delay(LADDER_BEAT)
+    trainerbattle_no_intro(TRAINER_LADDER_FELIX, LowQuarterWarehouse_Text_Defeat)
+    specialvar(VAR_RESULT, GetBattleOutcome)
+    goto_if_ne(VAR_RESULT, B_OUTCOME_WON, LowQuarterWarehouse_EventScript_LadderOver)
+
+    // 5: Nadia
+    applymovement(LOCALID_LADDER_FELIX, LowQuarterWarehouse_Movement_FelixToSpot)
+    delay(LADDER_STAGGER)
+    applymovement(LOCALID_LADDER_NADIA, LowQuarterWarehouse_Movement_NadiaToMark)
+    waitmovement(LOCALID_LADDER_NADIA)
+    waitmovement(LOCALID_LADDER_FELIX)
+    delay(LADDER_BEAT)
+    trainerbattle_no_intro(TRAINER_LADDER_NADIA, LowQuarterWarehouse_Text_Defeat)
+    specialvar(VAR_RESULT, GetBattleOutcome)
+    goto_if_ne(VAR_RESULT, B_OUTCOME_WON, LowQuarterWarehouse_EventScript_LadderOver)
+
+    // 6: Hugo
+    applymovement(LOCALID_LADDER_NADIA, LowQuarterWarehouse_Movement_NadiaToSpot)
+    delay(LADDER_STAGGER)
+    applymovement(LOCALID_LADDER_HUGO, LowQuarterWarehouse_Movement_HugoToMark)
+    waitmovement(LOCALID_LADDER_HUGO)
+    waitmovement(LOCALID_LADDER_NADIA)
+    delay(LADDER_BEAT)
+    trainerbattle_no_intro(TRAINER_LADDER_HUGO, LowQuarterWarehouse_Text_Defeat)
+    specialvar(VAR_RESULT, GetBattleOutcome)
+    goto_if_ne(VAR_RESULT, B_OUTCOME_WON, LowQuarterWarehouse_EventScript_LadderOver)
+
+    // 7: Ivy
+    applymovement(LOCALID_LADDER_HUGO, LowQuarterWarehouse_Movement_HugoToSpot)
+    delay(LADDER_STAGGER)
+    applymovement(LOCALID_LADDER_IVY, LowQuarterWarehouse_Movement_IvyToMark)
+    waitmovement(LOCALID_LADDER_IVY)
+    waitmovement(LOCALID_LADDER_HUGO)
+    delay(LADDER_BEAT)
+    trainerbattle_no_intro(TRAINER_LADDER_IVY, LowQuarterWarehouse_Text_Defeat)
+    specialvar(VAR_RESULT, GetBattleOutcome)
+    goto_if_ne(VAR_RESULT, B_OUTCOME_WON, LowQuarterWarehouse_EventScript_LadderOver)
+
+    // 8: Silas
+    applymovement(LOCALID_LADDER_IVY, LowQuarterWarehouse_Movement_IvyToSpot)
+    delay(LADDER_STAGGER)
+    applymovement(LOCALID_LADDER_SILAS, LowQuarterWarehouse_Movement_SilasToMark)
+    waitmovement(LOCALID_LADDER_SILAS)
+    waitmovement(LOCALID_LADDER_IVY)
+    delay(LADDER_BEAT)
+    trainerbattle_no_intro(TRAINER_LADDER_SILAS, LowQuarterWarehouse_Text_Defeat)
+    specialvar(VAR_RESULT, GetBattleOutcome)
+    goto_if_ne(VAR_RESULT, B_OUTCOME_WON, LowQuarterWarehouse_EventScript_LadderOver)
+
+    // Ladder cleared.
+    applymovement(LOCALID_LADDER_SILAS, LowQuarterWarehouse_Movement_SilasToSpot)
+    waitmovement(0)
+    goto(LowQuarterWarehouse_EventScript_LadderOver)
+}
+
+// Cleared or lost. A loser on the mark just stays there.
+script LowQuarterWarehouse_EventScript_LadderOver {
+    clearflag(FLAG_NO_WHITEOUT)
+    delay(40)
+    // TODO: no Low Quarter street map yet, so the MC goes home: the apartment door's own warp.
+    warp(MAP_LOW_QUARTER_APT_2, 0)
+    waitstate
+    releaseall
+    end
+}
+
+// Placeholder: one shared line for all eight trainers until each gets their own.
+text LowQuarterWarehouse_Text_Defeat {
+    "You win this round."
+}
+
+// ---------------------------------------------------------------------------
+// Walks to the top mark (10, 6) and back. Everyone climbs to row 6 inside the ring
+// at x = 6 (left side) or x = 14 (right side), then walks along it to the mark.
+// Each "ToSpot" is its "ToMark" reversed.
+// ---------------------------------------------------------------------------
+
+// 1. Tessa (5, 8), in the left opening. 7 steps.
+movement LowQuarterWarehouse_Movement_TessaToMark {
+    walk_right
+    walk_up * 2
+    walk_right * 4
+    face_down
+}
+movement LowQuarterWarehouse_Movement_TessaToSpot {
+    walk_left * 4
+    walk_down * 2
+    walk_left
+    face_right
+}
+
+// 2. Rowan (15, 9), in the right opening. 8 steps.
+movement LowQuarterWarehouse_Movement_RowanToMark {
+    walk_left
+    walk_up * 3
+    walk_left * 4
+    face_down
+}
+movement LowQuarterWarehouse_Movement_RowanToSpot {
+    walk_right * 4
+    walk_down * 3
+    walk_right
+    face_left
+}
+
+// 3. Clara (4, 6), beside the top-left girder. 8 steps.
+movement LowQuarterWarehouse_Movement_ClaraToMark {
+    walk_down
+    walk_right * 2
+    walk_up
+    walk_right * 4
+    face_down
+}
+movement LowQuarterWarehouse_Movement_ClaraToSpot {
+    walk_left * 4
+    walk_down
+    walk_left * 2
+    walk_up
+    face_right
+}
+
+// 4. Felix (16, 11), below the right opening. 11 steps.
+movement LowQuarterWarehouse_Movement_FelixToMark {
+    walk_up
+    walk_left * 2
+    walk_up * 4
+    walk_left * 4
+    face_down
+}
+movement LowQuarterWarehouse_Movement_FelixToSpot {
+    walk_right * 4
+    walk_down * 4
+    walk_right * 2
+    walk_down
+    face_left
+}
+
+// 5. Nadia (4, 12), below the left opening. 12 steps.
+movement LowQuarterWarehouse_Movement_NadiaToMark {
+    walk_up * 2
+    walk_right * 2
+    walk_up * 4
+    walk_right * 4
+    face_down
+}
+movement LowQuarterWarehouse_Movement_NadiaToSpot {
+    walk_left * 4
+    walk_down * 4
+    walk_left * 2
+    walk_down * 2
+    face_right
+}
+
+// 6. Hugo (15, 7), in the right opening under the girder. 6 steps.
+movement LowQuarterWarehouse_Movement_HugoToMark {
+    walk_left
+    walk_up
+    walk_left * 4
+    face_down
+}
+movement LowQuarterWarehouse_Movement_HugoToSpot {
+    walk_right * 4
+    walk_down
+    walk_right
+    face_left
+}
+
+// 7. Ivy (3, 10), by the drums. 11 steps.
+movement LowQuarterWarehouse_Movement_IvyToMark {
+    walk_right * 3
+    walk_up * 4
+    walk_right * 4
+    face_down
+}
+movement LowQuarterWarehouse_Movement_IvyToSpot {
+    walk_left * 4
+    walk_down * 4
+    walk_left * 3
+    face_right
+}
+
+// 8. Silas (16, 13), off by the generator. Walks around the girder and up the whole right
+// side of the ring. 15 steps.
+movement LowQuarterWarehouse_Movement_SilasToMark {
+    walk_down
+    walk_left * 2
+    walk_up * 8
+    walk_left * 4
+    face_down
+}
+movement LowQuarterWarehouse_Movement_SilasToSpot {
+    walk_right * 4
+    walk_down * 8
+    walk_right * 2
+    walk_up
+    face_left
+}
