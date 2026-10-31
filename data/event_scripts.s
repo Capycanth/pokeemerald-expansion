@@ -1750,3 +1750,5 @@ EventScript_PalletTown_PlayersHouse_2F_TurnOnPC::
 	.include "data/maps/LowQuarterWarehouse/scripts.inc"
 
 	.include "data/maps/LowQuarterNight/scripts.inc"
+
+	.include "data/maps/LowQuarterDay/scripts.inc"

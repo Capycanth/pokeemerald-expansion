@@ -1119,6 +1119,47 @@ const u16 gTilesetPalettes_D_LowQuarterNight[][16] =
     INCGFX_U16("data/tilesets/secondary/d_low_quarter_night/palettes/15.pal", ".gbapal"),
 };
 
+// Day palettes for the Low Quarter streets; the tiles are gTilesetTiles_D_LowQuarterStreet / _Night.
+const u16 gTilesetPalettes_D_LowQuarterStreetDay[][16] =
+{
+    INCGFX_U16("data/tilesets/primary/d_low_quarter_street_day/palettes/00.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/d_low_quarter_street_day/palettes/01.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/d_low_quarter_street_day/palettes/02.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/d_low_quarter_street_day/palettes/03.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/d_low_quarter_street_day/palettes/04.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/d_low_quarter_street_day/palettes/05.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/d_low_quarter_street_day/palettes/06.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/d_low_quarter_street_day/palettes/07.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/d_low_quarter_street_day/palettes/08.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/d_low_quarter_street_day/palettes/09.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/d_low_quarter_street_day/palettes/10.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/d_low_quarter_street_day/palettes/11.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/d_low_quarter_street_day/palettes/12.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/d_low_quarter_street_day/palettes/13.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/d_low_quarter_street_day/palettes/14.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/d_low_quarter_street_day/palettes/15.pal", ".gbapal"),
+};
+
+const u16 gTilesetPalettes_D_LowQuarterDay[][16] =
+{
+    INCGFX_U16("data/tilesets/secondary/d_low_quarter_day/palettes/00.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/d_low_quarter_day/palettes/01.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/d_low_quarter_day/palettes/02.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/d_low_quarter_day/palettes/03.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/d_low_quarter_day/palettes/04.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/d_low_quarter_day/palettes/05.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/d_low_quarter_day/palettes/06.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/d_low_quarter_day/palettes/07.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/d_low_quarter_day/palettes/08.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/d_low_quarter_day/palettes/09.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/d_low_quarter_day/palettes/10.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/d_low_quarter_day/palettes/11.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/d_low_quarter_day/palettes/12.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/d_low_quarter_day/palettes/13.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/d_low_quarter_day/palettes/14.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/d_low_quarter_day/palettes/15.pal", ".gbapal"),
+};
+
 const u32 gTilesetTiles_D_GraduationCeremony[] = INCGFX_U32("data/tilesets/secondary/d_graduation_ceremony/tiles.png", ".4bpp.fastSmol", "-num_tiles 498 -Wnum_tiles");
 
 const u16 gTilesetPalettes_D_GraduationCeremony[][16] =

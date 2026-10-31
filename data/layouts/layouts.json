@@ -9383,6 +9383,16 @@
       "secondary_tileset": "gTileset_D_LowQuarterNight",
       "border_filepath": "data/layouts/LowQuarterNight/border.bin",
       "blockdata_filepath": "data/layouts/LowQuarterNight/map.bin"
+    },
+    {
+      "id": "LAYOUT_LOW_QUARTER_DAY",
+      "name": "LowQuarterDay_Layout",
+      "width": 40,
+      "height": 40,
+      "primary_tileset": "gTileset_D_LowQuarterStreetDay",
+      "secondary_tileset": "gTileset_D_LowQuarterDay",
+      "border_filepath": "data/layouts/LowQuarterDay/border.bin",
+      "blockdata_filepath": "data/layouts/LowQuarterDay/map.bin"
     }
   ]
 }

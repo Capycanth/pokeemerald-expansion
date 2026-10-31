@@ -628,6 +628,31 @@ const struct Tileset gTileset_D_LowQuarterNight =
     .callback = NULL,
 };
 
+// Day twins of the Low Quarter streets pair: the same tiles and metatiles as
+// gTileset_D_LowQuarterStreet / gTileset_D_LowQuarterNight under daytime palettes
+// (lamp pools gone, windows unlit, lamps and neon off). Written by the same builder.
+const struct Tileset gTileset_D_LowQuarterStreetDay =
+{
+    .isCompressed = TRUE,
+    .isSecondary = FALSE,
+    .tiles = gTilesetTiles_D_LowQuarterStreet,
+    .palettes = gTilesetPalettes_D_LowQuarterStreetDay,
+    .metatiles = gMetatiles_D_LowQuarterStreet,
+    .metatileAttributes = gMetatileAttributes_D_LowQuarterStreet,
+    .callback = NULL,
+};
+
+const struct Tileset gTileset_D_LowQuarterDay =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_D_LowQuarterNight,
+    .palettes = gTilesetPalettes_D_LowQuarterDay,
+    .metatiles = gMetatiles_D_LowQuarterNight,
+    .metatileAttributes = gMetatileAttributes_D_LowQuarterNight,
+    .callback = NULL,
+};
+
 // Copy of gTileset_Rustboro, paired with gTileset_D_CollegeCourtyard.
 // Reuses Rustboro's tileset animations (windy water, fountain).
 const struct Tileset gTileset_D_GraduationCeremony =
