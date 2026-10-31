@@ -15,9 +15,10 @@
 // graduates in a row share a species, so a starter is always off stage before it's needed again.
 //
 // Object budget: the engine has 16 object slots, player included. At the busiest moment (one
-// pair walking off, the next graduate walking on) this map uses 15. Five more onlookers are
-// painted into the tileset (D_GraduationCeremony) at (12, 19), (11, 23), (12, 23), (12, 24) and
-// (22, 20); they cost no slots but never move. Don't route anyone through those tiles.
+// pair walking off, the next graduate walking on) this map uses 15. Ten more onlookers are
+// painted into the tileset (D_GraduationCeremony), standing at (12, 19), (11, 23), (12, 23),
+// (12, 24), (22, 20), (9, 21), (18, 21), (19, 23), (20, 24) and (15, 25); they cost no slots but
+// never move. Don't route anyone through those tiles.
 //
 // Dialogue rule: a change of speaker gets closemessage + delay(MESSAGE_GAP), so the brief
 // empty beat marks who's talking. Boxes from the same speaker stay in one msgbox.
