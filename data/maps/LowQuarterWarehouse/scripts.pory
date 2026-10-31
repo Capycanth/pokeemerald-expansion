@@ -1,0 +1,4 @@
+// The Low Quarter warehouse: venue of the Underground Ladder (docs/battles.md).
+// No events yet; the ladder itself lives in data/scripts/underground_ladder.inc.
+
+mapscripts LowQuarterWarehouse_MapScripts {}

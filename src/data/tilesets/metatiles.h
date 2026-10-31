@@ -131,6 +131,8 @@ const u16 gMetatileAttributes_GenericBuilding[] = INCBIN_U16("data/tilesets/seco
 
 const u16 gMetatiles_D_LowQuarterApt[] = INCBIN_U16("data/tilesets/secondary/d_low_quarter_apt/metatiles.bin");
 const u16 gMetatileAttributes_D_LowQuarterApt[] = INCBIN_U16("data/tilesets/secondary/d_low_quarter_apt/metatile_attributes.bin");
+const u16 gMetatiles_D_LowQuarterWarehouse[] = INCBIN_U16("data/tilesets/secondary/d_low_quarter_warehouse/metatiles.bin");
+const u16 gMetatileAttributes_D_LowQuarterWarehouse[] = INCBIN_U16("data/tilesets/secondary/d_low_quarter_warehouse/metatile_attributes.bin");
 
 const u16 gMetatiles_D_GraduationCeremony[] = INCBIN_U16("data/tilesets/secondary/d_graduation_ceremony/metatiles.bin");
 const u16 gMetatileAttributes_D_GraduationCeremony[] = INCBIN_U16("data/tilesets/secondary/d_graduation_ceremony/metatile_attributes.bin");

@@ -586,6 +586,21 @@ const struct Tileset gTileset_D_LowQuarterApt =
     .callback = NULL,
 };
 
+// The Low Quarter warehouse (Underground Ladder venue), paired with gTileset_D_Building.
+// Props imported from vanilla tilesets and recoloured into shared palettes;
+// the ring's spotlight is baked into the floor tiles (slots 6/7 lit+mid / mid+dark,
+// 8/9 warm props mid/dark, 10/11 metal props and walls mid/dark). Slot 12 is free.
+const struct Tileset gTileset_D_LowQuarterWarehouse =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_D_LowQuarterWarehouse,
+    .palettes = gTilesetPalettes_D_LowQuarterWarehouse,
+    .metatiles = gMetatiles_D_LowQuarterWarehouse,
+    .metatileAttributes = gMetatileAttributes_D_LowQuarterWarehouse,
+    .callback = NULL,
+};
+
 // Copy of gTileset_Rustboro, paired with gTileset_D_CollegeCourtyard.
 // Reuses Rustboro's tileset animations (windy water, fountain).
 const struct Tileset gTileset_D_GraduationCeremony =

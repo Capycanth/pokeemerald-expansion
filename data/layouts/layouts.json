@@ -9355,6 +9355,16 @@
       "blockdata_filepath": "data/layouts/LowQuarterApt_2/map.bin"
     },
     {
+      "id": "LAYOUT_LOW_QUARTER_WAREHOUSE",
+      "name": "LowQuarterWarehouse_Layout",
+      "width": 21,
+      "height": 16,
+      "primary_tileset": "gTileset_D_Building",
+      "secondary_tileset": "gTileset_D_LowQuarterWarehouse",
+      "border_filepath": "data/layouts/LowQuarterWarehouse/border.bin",
+      "blockdata_filepath": "data/layouts/LowQuarterWarehouse/map.bin"
+    },
+    {
       "id": "LAYOUT_GRADUATION_CEREMONY",
       "name": "GraduationCeremony_Layout",
       "width": 30,

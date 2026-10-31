@@ -1053,6 +1053,28 @@ const u16 gTilesetPalettes_D_LowQuarterApt[][16] =
     INCGFX_U16("data/tilesets/secondary/d_low_quarter_apt/palettes/15.pal", ".gbapal"),
 };
 
+const u32 gTilesetTiles_D_LowQuarterWarehouse[] = INCGFX_U32("data/tilesets/secondary/d_low_quarter_warehouse/tiles.png", ".4bpp.fastSmol", "-num_tiles 413 -Wnum_tiles");
+
+const u16 gTilesetPalettes_D_LowQuarterWarehouse[][16] =
+{
+    INCGFX_U16("data/tilesets/secondary/d_low_quarter_warehouse/palettes/00.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/d_low_quarter_warehouse/palettes/01.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/d_low_quarter_warehouse/palettes/02.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/d_low_quarter_warehouse/palettes/03.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/d_low_quarter_warehouse/palettes/04.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/d_low_quarter_warehouse/palettes/05.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/d_low_quarter_warehouse/palettes/06.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/d_low_quarter_warehouse/palettes/07.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/d_low_quarter_warehouse/palettes/08.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/d_low_quarter_warehouse/palettes/09.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/d_low_quarter_warehouse/palettes/10.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/d_low_quarter_warehouse/palettes/11.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/d_low_quarter_warehouse/palettes/12.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/d_low_quarter_warehouse/palettes/13.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/d_low_quarter_warehouse/palettes/14.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/d_low_quarter_warehouse/palettes/15.pal", ".gbapal"),
+};
+
 const u32 gTilesetTiles_D_GraduationCeremony[] = INCGFX_U32("data/tilesets/secondary/d_graduation_ceremony/tiles.png", ".4bpp.fastSmol", "-num_tiles 498 -Wnum_tiles");
 
 const u16 gTilesetPalettes_D_GraduationCeremony[][16] =
