@@ -566,7 +566,7 @@ OBJ = {}
 D = pickle.load(open(os.path.join(HERE, 'objs.pkl'), 'rb'))
 for n, (b_, sz, c, f) in D.items(): OBJ[n] = Image.frombytes('RGBA', sz, b_)
 # the Battle Factory can is clean white: dirty it down to galvanised grey
-OBJ['trash'] = Image.eval(OBJ['trash'].convert('RGB'), lambda v: int(v*0.66)).convert('RGBA'); OBJ['trash'].putalpha(Image.frombytes('RGBA', D['trash'][1], D['trash'][0]).getchannel('A'))
+
 
 def canvas(w, h): return Image.new('RGBA', (w*16, h*16), (0, 0, 0, 0))
 def dumpster():
@@ -634,11 +634,36 @@ def counter(goods):
             gi = OBJ[g].resize((12, 12), Image.NEAREST)
             im.alpha_composite(gi, (k*16 + 2, -1))
     return im
+def trash_can():
+    """Galvanised can, 10 px wide, with a rounded base and its own contact shadow so it sits on any ground."""
+    im = canvas(1, 2); px = im.load()
+    out, dk, mid, lt, hi, rust, shad = (40, 42, 50), (78, 82, 92), (108, 114, 124), (138, 144, 152), (172, 178, 184), (112, 80, 58), (22, 22, 28)
+    cx = 7.5
+    for y in range(28, 32):                                   # contact shadow
+        for x in range(1, 15):
+            if ((x - cx)/6.5)**2 + ((y - 29.6)/2.0)**2 <= 1: px[x, y] = shad + (255,)
+    for y in range(15, 30):                                   # body: shaded cylinder with two ribs
+        for x in range(3, 13):
+            if y >= 28 and ((x - cx)/5.0)**2 + ((y - 27.5)/1.6)**2 > 1: continue
+            u = (x - 3)/9.0
+            c = hi if u < 0.18 else lt if u < 0.40 else mid if u < 0.72 else dk
+            if y in (19, 24): c = dk if u > 0.2 else mid
+            if x in (3, 12) or y == 29 or (y == 28 and x in (4, 11)): c = out
+            px[x, y] = c + (255,)
+    for x, y in ((10, 21), (9, 22), (10, 26), (5, 27)): px[x, y] = rust + (255,)
+    for y in range(11, 17):                                   # lid: flat ellipse with a rim and handle
+        for x in range(2, 14):
+            e = ((x - cx)/6.0)**2 + ((y - 14.0)/2.6)**2
+            if e <= 1: px[x, y] = (out if e > 0.72 else hi if y < 14 else lt) + (255,)
+    for x in range(6, 10): px[x, 10] = out + (255,)
+    px[6, 11] = px[9, 11] = out + (255,)
+    return im
+
 def boxes():
     im = canvas(1, 1); im.alpha_composite(OBJ['box'], (0, 0)); return im
 
 PROPS = {
-    'dumpster': (dumpster(), 'metal', 1), 'bags': (bags(), 'metal', 0), 'trash': (OBJ['trash'], 'metal', 1),
+    'dumpster': (dumpster(), 'metal', 1), 'bags': (bags(), 'metal', 0), 'trash': (trash_can(), 'metal', 1),
     'hydrant': (hydrant(), 'warm', 0), 'fence_h': (fence_h(), 'metal', 0), 'fence_v': (fence_v(), 'metal', 0),
     'gate_post': (gate_post(), 'metal', 0),
     'awning': (awning(), 'warm', 9), 'counter_a': (counter(['bowl_orange', 'bowl_teal', 'bowl_red']), 'warm', 0),
@@ -756,7 +781,7 @@ NEON = [  # (index array, cell x, cell y)
     (neon_sign('BAR', 2, 1, 2), 8, 31),           # over the lit shop in band C
     (neon_sign('OPEN', 2, 7, 6), 6, 18),           # corner store in band B
 ]
-GRAFF = [(graffiti(1), 22, 5), (graffiti(2), 36, 19), (graffiti(3, 3), 33, 33), (graffiti(4), 2, 32)]
+GRAFF = []                                       # graffiti tags removed (read as glitches)
 
 # ---- placement: (prop, cell x, cell y) top-left
 PLACE = [
@@ -831,7 +856,6 @@ for yy in range(10, 14):
     for xx in range(6, 10): pl[yy][xx] = GLOW_HOT if 11 <= yy <= 12 and 7 <= xx <= 8 else GLOW_WARM
 stamp(pl, MC_DOOR[0], MC_DOOR[1] - 1, 11, 0, block=False)
 for a, x, y in NEON: stamp(a, x, y, 12, 0, block=False)
-for a, x, y in GRAFF: stamp(a, x, y, 12, 0, block=False)
 
 # ====================================================================== tile + metatile banks
 class Bank:

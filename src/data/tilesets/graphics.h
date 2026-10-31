@@ -1097,7 +1097,7 @@ const u16 gTilesetPalettes_D_LowQuarterStreet[][16] =
     INCGFX_U16("data/tilesets/primary/d_low_quarter_street/palettes/15.pal", ".gbapal"),
 };
 
-const u32 gTilesetTiles_D_LowQuarterNight[] = INCGFX_U32("data/tilesets/secondary/d_low_quarter_night/tiles.png", ".4bpp.fastSmol", "-num_tiles 345 -Wnum_tiles");
+const u32 gTilesetTiles_D_LowQuarterNight[] = INCGFX_U32("data/tilesets/secondary/d_low_quarter_night/tiles.png", ".4bpp.fastSmol", "-num_tiles 308 -Wnum_tiles");
 
 const u16 gTilesetPalettes_D_LowQuarterNight[][16] =
 {
