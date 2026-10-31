@@ -133,6 +133,10 @@ const u16 gMetatiles_D_LowQuarterApt[] = INCBIN_U16("data/tilesets/secondary/d_l
 const u16 gMetatileAttributes_D_LowQuarterApt[] = INCBIN_U16("data/tilesets/secondary/d_low_quarter_apt/metatile_attributes.bin");
 const u16 gMetatiles_D_LowQuarterWarehouse[] = INCBIN_U16("data/tilesets/secondary/d_low_quarter_warehouse/metatiles.bin");
 const u16 gMetatileAttributes_D_LowQuarterWarehouse[] = INCBIN_U16("data/tilesets/secondary/d_low_quarter_warehouse/metatile_attributes.bin");
+const u16 gMetatiles_D_LowQuarterStreet[] = INCBIN_U16("data/tilesets/primary/d_low_quarter_street/metatiles.bin");
+const u16 gMetatileAttributes_D_LowQuarterStreet[] = INCBIN_U16("data/tilesets/primary/d_low_quarter_street/metatile_attributes.bin");
+const u16 gMetatiles_D_LowQuarterNight[] = INCBIN_U16("data/tilesets/secondary/d_low_quarter_night/metatiles.bin");
+const u16 gMetatileAttributes_D_LowQuarterNight[] = INCBIN_U16("data/tilesets/secondary/d_low_quarter_night/metatile_attributes.bin");
 
 const u16 gMetatiles_D_GraduationCeremony[] = INCBIN_U16("data/tilesets/secondary/d_graduation_ceremony/metatiles.bin");
 const u16 gMetatileAttributes_D_GraduationCeremony[] = INCBIN_U16("data/tilesets/secondary/d_graduation_ceremony/metatile_attributes.bin");

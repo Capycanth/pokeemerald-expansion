@@ -9373,6 +9373,16 @@
       "secondary_tileset": "gTileset_D_GraduationCeremony",
       "border_filepath": "data/layouts/GraduationCeremony/border.bin",
       "blockdata_filepath": "data/layouts/GraduationCeremony/map.bin"
+    },
+    {
+      "id": "LAYOUT_LOW_QUARTER_NIGHT",
+      "name": "LowQuarterNight_Layout",
+      "width": 40,
+      "height": 40,
+      "primary_tileset": "gTileset_D_LowQuarterStreet",
+      "secondary_tileset": "gTileset_D_LowQuarterNight",
+      "border_filepath": "data/layouts/LowQuarterNight/border.bin",
+      "blockdata_filepath": "data/layouts/LowQuarterNight/map.bin"
     }
   ]
 }

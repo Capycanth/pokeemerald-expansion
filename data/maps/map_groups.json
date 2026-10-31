@@ -76,7 +76,8 @@
     "gMapGroup_IndoorSixIslandRoute_Frlg",
     "gMapGroup_IndoorSevenIslandRoute_Frlg",
     "gMapGroup_D_IndoorLowQuarterApt",
-    "gMapGroup_D_CollegeCourtyard"
+    "gMapGroup_D_CollegeCourtyard",
+    "gMapGroup_D_LowQuarter"
   ],
   "gMapGroup_TownsAndRoutes": [
     "PetalburgCity",
@@ -1171,5 +1172,8 @@
   ],
   "gMapGroup_D_CollegeCourtyard": [
     "GraduationCeremony"
+  ],
+  "gMapGroup_D_LowQuarter": [
+    "LowQuarterNight"
   ]
 }
