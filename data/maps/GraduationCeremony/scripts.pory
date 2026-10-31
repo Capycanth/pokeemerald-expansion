@@ -15,7 +15,9 @@
 // graduates in a row share a species, so a starter is always off stage before it's needed again.
 //
 // Object budget: the engine has 16 object slots, player included. At the busiest moment (one
-// pair walking off, the next graduate walking on) this map uses 15.
+// pair walking off, the next graduate walking on) this map uses 15. Five more onlookers are
+// painted into the tileset (D_GraduationCeremony) at (12, 19), (11, 23), (12, 23), (12, 24) and
+// (22, 20); they cost no slots but never move. Don't route anyone through those tiles.
 //
 // Dialogue rule: a change of speaker gets closemessage + delay(MESSAGE_GAP), so the brief
 // empty beat marks who's talking. Boxes from the same speaker stay in one msgbox.
@@ -151,6 +153,10 @@ script GraduationCeremony_EventScript_Scene1 {
     call(GraduationCeremony_EventScript_GraduateWalkOn)
     msgbox("Grookey! Daddy picked her out himself.")
     closemessage
+    // Two onlookers trade a look.
+    applymovement(LOCALID_GRADUATION_CROWD_1, moves(face_right, delay_16 * 2, face_up))
+    applymovement(LOCALID_GRADUATION_CROWD_2, moves(face_left, delay_16 * 2, face_up))
+    waitmovement(0)
     clearflag(FLAG_TEMP_6)
     setvar(VAR_0x8005, LOCALID_GRADUATION_GROOKEY)
     setvar(VAR_0x8006, SPECIES_GROOKEY)
@@ -252,7 +258,10 @@ script GraduationCeremony_EventScript_Scene1 {
     closemessage
     playse(SE_APPLAUSE)
 
-    // Milo runs up from the crowd and stands beside the Dean.
+    // Milo runs up from the crowd and stands beside the Dean. The two onlookers nearest him
+    // turn to look, then follow him back to the stage.
+    applymovement(LOCALID_GRADUATION_CROWD_1, moves(face_left, delay_16 * 4, face_up))
+    applymovement(LOCALID_GRADUATION_CROWD_4, moves(face_left, delay_16 * 4, face_up))
     applymovement(LOCALID_GRADUATION_MILO, moves(emote_exclamation_mark, delay_16))
     waitmovement(0)
     applymovement(LOCALID_GRADUATION_MILO, GraduationCeremony_Movement_MiloToStage)
@@ -276,8 +285,12 @@ script GraduationCeremony_EventScript_Scene1 {
            "pricks how it's done Low-side.")
     closemessage
 
-    // The MC turns away and walks off; the cousin turns to watch them go.
+    // An onlooker glances over at "rich pricks". The MC turns away and walks off; the cousin
+    // and the two onlookers the MC passes turn to watch them go (a slow step is 32 frames).
+    applymovement(LOCALID_GRADUATION_CROWD_5, moves(face_left, delay_16 * 2, face_up))
     applymovement(LOCALID_GRADUATION_COUSIN, moves(delay_16 * 3, face_down))
+    applymovement(LOCALID_GRADUATION_CROWD_6, moves(delay_16 * 2, face_right, delay_16 * 4, face_down)) // MC passes (16, 24)
+    applymovement(LOCALID_GRADUATION_CROWD_7, moves(delay_16 * 3, face_left, delay_16 * 4, face_down))  // MC passes (16, 25)
     applymovement(LOCALID_GRADUATION_MC, GraduationCeremony_Movement_MCWalkAway) // longest, so last
     waitmovement(0)
     delay(30)
