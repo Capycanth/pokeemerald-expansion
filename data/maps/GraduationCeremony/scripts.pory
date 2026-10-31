@@ -1,1 +1,425 @@
-mapscripts GraduationCeremony_MapScripts {}
+// Scene 1: Graduation Day
+// Design doc: docs/scenes/scene-01-graduation-day.md (Pokemon ROM Hack project)
+//
+// VAR_GRADUATION_CEREMONY_STATE
+//   0 = Scene 1 not played yet (plays on entry; new games start here)
+//   1 = Scene 1 done (set just before the warp to Scene 2)
+//
+// Camera: the player is never seen in this scene. The player object is hidden on warp-in and
+// stands in as the camera, starting on the Dean's tile at (14, 15). Pans are scripted walks of
+// the player. The MC is LOCALID_GRADUATION_MC, an NPC whose sprite follows the player's gender.
+//
+// Graduates: two graduate objects (A and B) take turns, so one can walk off stage while the
+// Dean calls the next name and the next graduate walks on and speaks. Each graduate's sprite is set through VAR_OBJ_GFX_ID_1 (A) or
+// VAR_OBJ_GFX_ID_2 (B) just before it appears. Starters are one object per species; no two
+// graduates in a row share a species, so a starter is always off stage before it's needed again.
+//
+// Object budget: the engine has 16 object slots, player included. At the busiest moment (one
+// pair walking off, the next graduate walking on) this map uses 15.
+//
+// Dialogue rule: a change of speaker gets closemessage + delay(MESSAGE_GAP), so the brief
+// empty beat marks who's talking. Boxes from the same speaker stay in one msgbox.
+
+const MESSAGE_GAP = 10 // frames between one speaker's box closing and the next opening (~1/6 s)
+
+mapscripts GraduationCeremony_MapScripts {
+    MAP_SCRIPT_ON_TRANSITION {
+        // Everyone who walks on during the scene starts hidden.
+        setflag(FLAG_TEMP_1) // assistant
+        setflag(FLAG_TEMP_2) // graduate A
+        setflag(FLAG_TEMP_3) // graduate B
+        setflag(FLAG_TEMP_4) // Charmander
+        setflag(FLAG_TEMP_5) // Mudkip
+        setflag(FLAG_TEMP_6) // Grookey
+        call(GraduationCeremony_EventScript_SetMCGfx)
+    }
+    MAP_SCRIPT_ON_WARP_INTO_MAP_TABLE [
+        VAR_GRADUATION_CEREMONY_STATE, 0: GraduationCeremony_EventScript_HideCamera
+    ]
+    MAP_SCRIPT_ON_FRAME_TABLE [
+        VAR_GRADUATION_CEREMONY_STATE, 0: GraduationCeremony_EventScript_Scene1
+    ]
+}
+
+script GraduationCeremony_EventScript_SetMCGfx {
+    checkplayergender
+    if (var(VAR_RESULT) == MALE) {
+        setvar(VAR_OBJ_GFX_ID_0, OBJ_EVENT_GFX_BLUE)
+    } else {
+        setvar(VAR_OBJ_GFX_ID_0, OBJ_EVENT_GFX_DAISY)
+    }
+    return
+}
+
+// The player is the camera. Facing down also sets the direction starters face as they leave
+// their balls (the ball-pop movement reads the player's facing).
+script GraduationCeremony_EventScript_HideCamera {
+    hideobjectat(OBJ_EVENT_ID_PLAYER, MAP_GRADUATION_CEREMONY)
+    turnobject(OBJ_EVENT_ID_PLAYER, DIR_SOUTH)
+    end
+}
+
+script GraduationCeremony_EventScript_Scene1 {
+    lockall
+    setvar(VAR_0x8008, 0) // no graduate walking off yet
+    delay(60)             // a beat to take in the stage, the confetti and the music
+
+    // ---------------------------------------------------------------
+    // Part 1: The Speech
+    // ---------------------------------------------------------------
+    msgbox("Welcome, friends, families, faculty, and\n"
+           "distinguished guests!\p"
+           "Today we honor this year's graduates.\p"
+           "Every graduate who leaves these halls\n"
+           "carries a duty to their nation, and to\l"
+           "their time.\p"
+           "So I have chosen this moment to speak\n"
+           "on a subject too rarely understood, yet\l"
+           "the most important of all: peace.\p"
+           "Not peace between nations. Peace\n"
+           "between humanity and the wild.\p"
+           "It makes no sense to let Pokémon run\n"
+           "wild when we can breed safe, obedient,\l"
+           "certified partners.\p"
+           "It makes no sense to let fear of wild\n"
+           "incidents haunt our routes.\p"
+           "And it makes no sense to leave wild\n"
+           "Pokémon to starve and tear each other\l"
+           "apart over scraps.\p"
+           "So let us thank the Safety Bureau, and\n"
+           "our founding families, for the steps\l"
+           "they take each day to keep us safe…\p"
+           "Now, let us begin the ceremony.")
+    closemessage
+    playse(SE_APPLAUSE)
+    delay(60)
+
+    // ---------------------------------------------------------------
+    // Part 2: The Graduates
+    // Each graduate: the Dean calls the name, the graduate walks on, names their starter, the
+    // starter pops out of its ball, and the pair walks off while the next name is called.
+    // ---------------------------------------------------------------
+
+    // 1. Percival Larkspur (A), Charmander
+    msgbox("Percival Larkspur!")
+    closemessage
+    setvar(VAR_OBJ_GFX_ID_1, OBJ_EVENT_GFX_RICH_BOY)
+    clearflag(FLAG_TEMP_2)
+    setvar(VAR_0x8007, LOCALID_GRADUATION_GRADUATE_A)
+    call(GraduationCeremony_EventScript_GraduateWalkOn)
+    msgbox("Charmander. Top of its bloodline.")
+    closemessage
+    clearflag(FLAG_TEMP_4)
+    setvar(VAR_0x8005, LOCALID_GRADUATION_CHARMANDER)
+    setvar(VAR_0x8006, SPECIES_CHARMANDER)
+    call(GraduationCeremony_EventScript_ReleaseStarter)
+
+    // 2. Juniper Hollins (B), Mudkip
+    msgbox("Juniper Hollins!")
+    closemessage
+    setvar(VAR_OBJ_GFX_ID_2, OBJ_EVENT_GFX_LASS)
+    clearflag(FLAG_TEMP_3)
+    setvar(VAR_0x8007, LOCALID_GRADUATION_GRADUATE_B)
+    call(GraduationCeremony_EventScript_GraduateWalkOn)
+    msgbox("Mudkip, come on out!")
+    closemessage
+    clearflag(FLAG_TEMP_5)
+    setvar(VAR_0x8005, LOCALID_GRADUATION_MUDKIP)
+    setvar(VAR_0x8006, SPECIES_MUDKIP)
+    call(GraduationCeremony_EventScript_ReleaseStarter)
+
+    // 3. Tobias Sterling (A), Charmander
+    msgbox("Tobias Sterling!")
+    closemessage
+    setvar(VAR_OBJ_GFX_ID_1, OBJ_EVENT_GFX_SCHOOL_KID_M)
+    clearflag(FLAG_TEMP_2)
+    setvar(VAR_0x8007, LOCALID_GRADUATION_GRADUATE_A)
+    call(GraduationCeremony_EventScript_GraduateWalkOn)
+    msgbox("Charmander, let's go!")
+    closemessage
+    clearflag(FLAG_TEMP_4)
+    setvar(VAR_0x8005, LOCALID_GRADUATION_CHARMANDER)
+    setvar(VAR_0x8006, SPECIES_CHARMANDER)
+    call(GraduationCeremony_EventScript_ReleaseStarter)
+
+    // 4. Marigold Vance (B), Grookey
+    msgbox("Marigold Vance!")
+    closemessage
+    setvar(VAR_OBJ_GFX_ID_2, OBJ_EVENT_GFX_BEAUTY)
+    clearflag(FLAG_TEMP_3)
+    setvar(VAR_0x8007, LOCALID_GRADUATION_GRADUATE_B)
+    call(GraduationCeremony_EventScript_GraduateWalkOn)
+    msgbox("Grookey! Daddy picked her out himself.")
+    closemessage
+    clearflag(FLAG_TEMP_6)
+    setvar(VAR_0x8005, LOCALID_GRADUATION_GROOKEY)
+    setvar(VAR_0x8006, SPECIES_GROOKEY)
+    call(GraduationCeremony_EventScript_ReleaseStarter)
+
+    // 5. Ellis Thornbury (A), Mudkip
+    msgbox("Ellis Thornbury!")
+    closemessage
+    setvar(VAR_OBJ_GFX_ID_1, OBJ_EVENT_GFX_MAN_3)
+    clearflag(FLAG_TEMP_2)
+    setvar(VAR_0x8007, LOCALID_GRADUATION_GRADUATE_A)
+    call(GraduationCeremony_EventScript_GraduateWalkOn)
+    msgbox("Mudkip, you're up!")
+    closemessage
+    clearflag(FLAG_TEMP_5)
+    setvar(VAR_0x8005, LOCALID_GRADUATION_MUDKIP)
+    setvar(VAR_0x8006, SPECIES_MUDKIP)
+    call(GraduationCeremony_EventScript_ReleaseStarter)
+
+    // 6. Rosalind Cresswell (B), Charmander
+    msgbox("Rosalind Cresswell!")
+    closemessage
+    setvar(VAR_OBJ_GFX_ID_2, OBJ_EVENT_GFX_WOMAN_3)
+    clearflag(FLAG_TEMP_3)
+    setvar(VAR_0x8007, LOCALID_GRADUATION_GRADUATE_B)
+    call(GraduationCeremony_EventScript_GraduateWalkOn)
+    msgbox("Charmander, fully certified!")
+    closemessage
+    clearflag(FLAG_TEMP_4)
+    setvar(VAR_0x8005, LOCALID_GRADUATION_CHARMANDER)
+    setvar(VAR_0x8006, SPECIES_CHARMANDER)
+    call(GraduationCeremony_EventScript_ReleaseStarter)
+
+    // 7. Barrett Kingsley (A), Grookey
+    msgbox("Barrett Kingsley!")
+    closemessage
+    setvar(VAR_OBJ_GFX_ID_1, OBJ_EVENT_GFX_MAN_2)
+    clearflag(FLAG_TEMP_2)
+    setvar(VAR_0x8007, LOCALID_GRADUATION_GRADUATE_A)
+    call(GraduationCeremony_EventScript_GraduateWalkOn)
+    msgbox("Grookey, let's go!")
+    closemessage
+    clearflag(FLAG_TEMP_6)
+    setvar(VAR_0x8005, LOCALID_GRADUATION_GROOKEY)
+    setvar(VAR_0x8006, SPECIES_GROOKEY)
+    call(GraduationCeremony_EventScript_ReleaseStarter)
+
+    // The last pair finishes walking off before the camera leaves the stage.
+    call(GraduationCeremony_EventScript_ClearPreviousGraduate)
+
+    // ---------------------------------------------------------------
+    // Part 3: The Drawing
+    // ---------------------------------------------------------------
+
+    // The camera finds the MC and the cousin in the crowd.
+    applymovement(OBJ_EVENT_ID_PLAYER, GraduationCeremony_Movement_CameraToCrowd)
+    waitmovement(0)
+    applymovement(LOCALID_GRADUATION_COUSIN, Common_Movement_FaceLeft)
+    waitmovement(0)
+    msgbox("Finally. I thought that windbag would\n"
+           "never stop talking.\p"
+           "Look, I know you've been waiting on this\n"
+           "drawing all year. Just…\p"
+           "don't get your hopes up, okay?")
+    closemessage
+    applymovement(LOCALID_GRADUATION_COUSIN, Common_Movement_FaceUp)
+    waitmovement(0)
+
+    // Back to the Dean.
+    applymovement(OBJ_EVENT_ID_PLAYER, GraduationCeremony_Movement_CameraToStage)
+    waitmovement(0)
+    msgbox("One last round of applause for our\n"
+           "graduating class!\p"
+           "And now, the moment many of you have\n"
+           "waited for: the drawing for our\l"
+           "honorary trainer!\p"
+           "Each year, one applicant, chosen from\n"
+           "hundreds, earns free enrollment in our\l"
+           "Trainer program.")
+    closemessage
+    playse(SE_APPLAUSE)
+    delay(30)
+
+    // The assistant runs up with the winning slip. The Dean looks at her for a second, then
+    // turns back to the crowd as she walks off.
+    clearflag(FLAG_TEMP_1)
+    addobject(LOCALID_GRADUATION_ASSISTANT)
+    applymovement(LOCALID_GRADUATION_ASSISTANT, GraduationCeremony_Movement_AssistantToDean)
+    waitmovement(0)
+    applymovement(LOCALID_GRADUATION_DEAN, Common_Movement_FaceRight)
+    waitmovement(0)
+    delay(60)
+    applymovement(LOCALID_GRADUATION_DEAN, Common_Movement_FaceDown)
+    applymovement(LOCALID_GRADUATION_ASSISTANT, GraduationCeremony_Movement_AssistantLeave)
+    waitmovement(0)
+    removeobject(LOCALID_GRADUATION_ASSISTANT)
+
+    msgbox("And the winner is… Milo Fenwick!")
+    closemessage
+    playse(SE_APPLAUSE)
+
+    // Milo runs up from the crowd and stands beside the Dean.
+    applymovement(LOCALID_GRADUATION_MILO, moves(emote_exclamation_mark, delay_16))
+    waitmovement(0)
+    applymovement(LOCALID_GRADUATION_MILO, GraduationCeremony_Movement_MiloToStage)
+    waitmovement(0)
+    msgbox("Thank you so much! I won't let you down,\n"
+           "I promise!")
+    closemessage
+
+    // ---------------------------------------------------------------
+    // Part 4: Next Year
+    // ---------------------------------------------------------------
+
+    // A slow pan back to the MC.
+    applymovement(OBJ_EVENT_ID_PLAYER, GraduationCeremony_Movement_CameraToCrowdSlow)
+    waitmovement(0)
+    applymovement(LOCALID_GRADUATION_COUSIN, Common_Movement_FaceLeft)
+    waitmovement(0)
+    msgbox("Sorry, cuz. There's always next year.\n"
+           "At least it went to Milo.\p"
+           "He's one of ours. He'll show those rich\n"
+           "pricks how it's done Low-side.")
+    closemessage
+
+    // The MC turns away and walks off; the cousin turns to watch them go.
+    applymovement(LOCALID_GRADUATION_COUSIN, moves(delay_16 * 3, face_down))
+    applymovement(LOCALID_GRADUATION_MC, GraduationCeremony_Movement_MCWalkAway) // longest, so last
+    waitmovement(0)
+    delay(30)
+    fadescreen(FADE_TO_BLACK)
+    setvar(VAR_GRADUATION_CEREMONY_STATE, 1)
+    warpsilent(MAP_LOW_QUARTER_APT_2, 14, 11) // Scene 2 starts at the apartment door
+    waitstate
+    releaseall
+    end
+}
+
+// Script vars used by the graduate helpers:
+//   VAR_0x8007 = graduate on stage now (LOCALID), VAR_0x8005 = their starter (LOCALID),
+//   VAR_0x8006 = the starter's species (for its cry),
+//   VAR_0x8008 / VAR_0x8009 = the previous graduate and starter, still walking off (0 = none).
+
+// Brings on the graduate in VAR_0x8007 (its flag already cleared) and walks them to their mark
+// at (11, 14), where the Dean turns to them. The previous pair may still be walking off.
+script GraduationCeremony_EventScript_GraduateWalkOn {
+    addobject(VAR_0x8007)
+    applymovement(VAR_0x8007, GraduationCeremony_Movement_GraduateWalkOn)
+    waitmovement(0)
+    applymovement(LOCALID_GRADUATION_DEAN, Common_Movement_FaceLeft)
+    waitmovement(0)
+    return
+}
+
+// Clears the previous pair away (usually already off stage while the graduate spoke), pops the
+// starter in VAR_0x8005 out of its ball in front of the graduate in VAR_0x8007, then starts the
+// pair walking off. Doesn't wait for them: the next graduate's release clears them away.
+script GraduationCeremony_EventScript_ReleaseStarter {
+    call(GraduationCeremony_EventScript_ClearPreviousGraduate) // frees object slots for the starter
+    addobject(VAR_0x8005)
+    hideobjectat(VAR_0x8005, MAP_GRADUATION_CEREMONY) // stays hidden until the ball opens
+    playse(SE_BALL_OPEN)
+    applymovement(VAR_0x8005, moves(exit_pokeball))
+    waitmovement(0)
+    playmoncry(VAR_0x8006, CRY_MODE_NORMAL)
+    waitmoncry
+    playse(SE_APPLAUSE)
+    applymovement(LOCALID_GRADUATION_DEAN, Common_Movement_FaceDown)
+    applymovement(VAR_0x8007, GraduationCeremony_Movement_GraduateWalkOff)
+    applymovement(VAR_0x8005, GraduationCeremony_Movement_StarterWalkOff)
+    copyvar(VAR_0x8008, VAR_0x8007)
+    copyvar(VAR_0x8009, VAR_0x8005)
+    return
+}
+
+// Waits for the last graduate's starter (one step behind them) to get off stage, then removes
+// both. Removing an object sets its hide flag again, so it's ready for its next turn.
+script GraduationCeremony_EventScript_ClearPreviousGraduate {
+    if (var(VAR_0x8008) != 0) {
+        waitmovement(VAR_0x8009)
+        removeobject(VAR_0x8008)
+        removeobject(VAR_0x8009)
+        setvar(VAR_0x8008, 0)
+    }
+    return
+}
+
+// ---------------------------------------------------------------
+// Movements
+// ---------------------------------------------------------------
+
+// (6, 18), just off screen left, along the carpet and up the left step to the mark at (11, 14).
+// 9 steps, 144 frames.
+movement GraduationCeremony_Movement_GraduateWalkOn {
+    walk_right * 2
+    walk_up * 4
+    walk_right * 3
+    face_down
+}
+
+// (11, 14) along the back of the stage, down the right step and off screen at (22, 18).
+// 15 steps, 240 frames.
+movement GraduationCeremony_Movement_GraduateWalkOff {
+    walk_right * 9
+    walk_down * 4
+    walk_right * 2
+}
+
+// (11, 15) up onto the carpet behind the graduate, then the same route one step behind.
+// 16 steps plus a half-step delay, 264 frames.
+movement GraduationCeremony_Movement_StarterWalkOff {
+    delay_8
+    walk_up
+    walk_right * 9
+    walk_down * 4
+    walk_right * 2
+}
+
+// Camera: the Dean's tile (14, 15) to (16, 21), framing the MC and cousin at (16, 23) and
+// (17, 23). Steps alternate so the pan drifts diagonally.
+movement GraduationCeremony_Movement_CameraToCrowd {
+    walk_down * 2
+    walk_right
+    walk_down * 2
+    walk_right
+    walk_down * 2
+}
+
+movement GraduationCeremony_Movement_CameraToStage {
+    walk_up * 2
+    walk_left
+    walk_up * 2
+    walk_left
+    walk_up * 2
+}
+
+movement GraduationCeremony_Movement_CameraToCrowdSlow {
+    walk_slow_down * 2
+    walk_slow_right
+    walk_slow_down * 2
+    walk_slow_right
+    walk_slow_down * 2
+}
+
+// (22, 18), just off screen right, up the right step to (15, 15) beside the Dean. She runs.
+movement GraduationCeremony_Movement_AssistantToDean {
+    walk_fast_left * 2
+    walk_fast_up * 3
+    walk_fast_left * 5
+    face_left
+}
+
+// Back the way she came, at a walk.
+movement GraduationCeremony_Movement_AssistantLeave {
+    walk_right * 5
+    walk_down * 3
+    walk_right * 2
+}
+
+// (8, 20) in the crowd, up the left step to (13, 15) beside the Dean.
+movement GraduationCeremony_Movement_MiloToStage {
+    walk_fast_up * 5
+    walk_fast_right * 5
+    face_down
+}
+
+// (16, 23) down past the bottom of the screen to (16, 28).
+movement GraduationCeremony_Movement_MCWalkAway {
+    face_down
+    delay_16
+    walk_slow_down * 5
+}

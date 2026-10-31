@@ -138,9 +138,9 @@ static void WarpToTruck(void)
     if (IS_FRLG)
         SetWarpDestination(MAP_GROUP(MAP_PALLET_TOWN_PLAYERS_HOUSE_2F), MAP_NUM(MAP_PALLET_TOWN_PLAYERS_HOUSE_2F), WARP_ID_NONE, 6, 6);
     else
-        // New games start at the apartment door for Scene 2 (The Apartment).
-        // Point this at Scene 1 (Graduation Day) once that map exists.
-        SetWarpDestination(MAP_GROUP(MAP_LOW_QUARTER_APT_2), MAP_NUM(MAP_LOW_QUARTER_APT_2), WARP_ID_NONE, 14, 11);
+        // New games open on Scene 1 (Graduation Day). The player is the hidden camera,
+        // starting on the Dean's tile behind the podium; the scene ends by warping to Scene 2.
+        SetWarpDestination(MAP_GROUP(MAP_GRADUATION_CEREMONY), MAP_NUM(MAP_GRADUATION_CEREMONY), WARP_ID_NONE, 14, 15);
     WarpIntoMap();
 }
 
