@@ -1075,6 +1075,50 @@ const u16 gTilesetPalettes_D_LowQuarterWarehouse[][16] =
     INCGFX_U16("data/tilesets/secondary/d_low_quarter_warehouse/palettes/15.pal", ".gbapal"),
 };
 
+const u32 gTilesetTiles_D_LowQuarterStreet[] = INCGFX_U32("data/tilesets/primary/d_low_quarter_street/tiles.png", ".4bpp.smol", "-num_tiles 512 -Wnum_tiles");
+
+const u16 gTilesetPalettes_D_LowQuarterStreet[][16] =
+{
+    INCGFX_U16("data/tilesets/primary/d_low_quarter_street/palettes/00.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/d_low_quarter_street/palettes/01.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/d_low_quarter_street/palettes/02.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/d_low_quarter_street/palettes/03.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/d_low_quarter_street/palettes/04.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/d_low_quarter_street/palettes/05.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/d_low_quarter_street/palettes/06.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/d_low_quarter_street/palettes/07.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/d_low_quarter_street/palettes/08.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/d_low_quarter_street/palettes/09.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/d_low_quarter_street/palettes/10.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/d_low_quarter_street/palettes/11.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/d_low_quarter_street/palettes/12.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/d_low_quarter_street/palettes/13.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/d_low_quarter_street/palettes/14.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/d_low_quarter_street/palettes/15.pal", ".gbapal"),
+};
+
+const u32 gTilesetTiles_D_LowQuarterNight[] = INCGFX_U32("data/tilesets/secondary/d_low_quarter_night/tiles.png", ".4bpp.fastSmol", "-num_tiles 308 -Wnum_tiles");
+
+const u16 gTilesetPalettes_D_LowQuarterNight[][16] =
+{
+    INCGFX_U16("data/tilesets/secondary/d_low_quarter_night/palettes/00.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/d_low_quarter_night/palettes/01.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/d_low_quarter_night/palettes/02.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/d_low_quarter_night/palettes/03.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/d_low_quarter_night/palettes/04.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/d_low_quarter_night/palettes/05.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/d_low_quarter_night/palettes/06.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/d_low_quarter_night/palettes/07.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/d_low_quarter_night/palettes/08.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/d_low_quarter_night/palettes/09.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/d_low_quarter_night/palettes/10.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/d_low_quarter_night/palettes/11.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/d_low_quarter_night/palettes/12.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/d_low_quarter_night/palettes/13.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/d_low_quarter_night/palettes/14.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/d_low_quarter_night/palettes/15.pal", ".gbapal"),
+};
+
 const u32 gTilesetTiles_D_GraduationCeremony[] = INCGFX_U32("data/tilesets/secondary/d_graduation_ceremony/tiles.png", ".4bpp.fastSmol", "-num_tiles 498 -Wnum_tiles");
 
 const u16 gTilesetPalettes_D_GraduationCeremony[][16] =

@@ -601,6 +601,33 @@ const struct Tileset gTileset_D_LowQuarterWarehouse =
     .callback = NULL,
 };
 
+// The Low Quarter streets, built from scratch by dev_scripts/d_maps/low_quarter_street/.
+// The primary holds the shared art and palettes 0-5 (ground lit+mid / mid+dark, brick, stucco,
+// clapboard, brownstone); the secondary holds the rest of the art and palettes 6-12 (corrugated
+// warehouse, metal props dark/lit, warm props dark/lit, lamp glow, neon). Lamp light is baked in.
+const struct Tileset gTileset_D_LowQuarterStreet =
+{
+    .isCompressed = TRUE,
+    .isSecondary = FALSE,
+    .tiles = gTilesetTiles_D_LowQuarterStreet,
+    .palettes = gTilesetPalettes_D_LowQuarterStreet,
+    .metatiles = gMetatiles_D_LowQuarterStreet,
+    .metatileAttributes = gMetatileAttributes_D_LowQuarterStreet,
+    .callback = NULL,
+};
+
+// Night half of the Low Quarter streets pair (see gTileset_D_LowQuarterStreet).
+const struct Tileset gTileset_D_LowQuarterNight =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_D_LowQuarterNight,
+    .palettes = gTilesetPalettes_D_LowQuarterNight,
+    .metatiles = gMetatiles_D_LowQuarterNight,
+    .metatileAttributes = gMetatileAttributes_D_LowQuarterNight,
+    .callback = NULL,
+};
+
 // Copy of gTileset_Rustboro, paired with gTileset_D_CollegeCourtyard.
 // Reuses Rustboro's tileset animations (windy water, fountain).
 const struct Tileset gTileset_D_GraduationCeremony =
