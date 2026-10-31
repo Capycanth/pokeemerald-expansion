@@ -235,14 +235,11 @@ script LowQuarterApt_2_EventScript_Scene2 {
     setvar(VAR_LOW_QUARTER_APT_STATE, 1)
 
     // TODO: the van scene goes here (the starter runs into the MC outside). Until it exists,
-    // the MC gets the starter here and goes straight into the Underground Ladder's battles,
-    // which have no map of their own yet.
+    // the MC gets the starter here and goes straight to the Underground Ladder in the
+    // Low Quarter warehouse. The player arrives on the ring's centre, where it's hidden and
+    // used as the camera; the warehouse script warps back here when the ladder ends.
     call(LowQuarterApt_2_EventScript_GiveStarter)
-    call(EventScript_UndergroundLadder)
-
-    // TODO: the apartment door has no outdoor map yet, so for now this uses the door's own
-    // warp, which leads back into the apartment.
-    warp(MAP_LOW_QUARTER_APT_2, 0)
+    warp(MAP_LOW_QUARTER_WAREHOUSE, 10, 9)
     waitstate
     releaseall
     end
