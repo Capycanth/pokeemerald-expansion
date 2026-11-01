@@ -228,6 +228,8 @@ const u32 gObjectEventPic_SubmarineShadow[] = INCGFX_U32("graphics/object_events
 const u16 gObjectEventPal_SubmarineShadow[] = INCGFX_U16("graphics/object_events/palettes/submarine_shadow.pal", ".gbapal");
 const u32 gObjectEventPic_Truck[] = INCGFX_U32("graphics/object_events/pics/misc/truck.png", ".4bpp");
 const u16 gObjectEventPal_Truck[] = INCGFX_U16("graphics/object_events/palettes/truck.pal", ".gbapal");
+// Scene 3's van (docs/scenes/scene-03-the-van.md): the moving truck mirrored so its cab faces right, the way it drives.
+const u32 gObjectEventPic_Van[] = INCGFX_U32("graphics/object_events/pics/misc/van.png", ".4bpp");
 const u16 gObjectEventPal_Vigoroth[] = INCGFX_U16("graphics/object_events/palettes/vigoroth.pal", ".gbapal");
 const u32 gObjectEventPic_BirchsBag[] = INCGFX_U32("graphics/object_events/pics/misc/birchs_bag.png", ".4bpp");
 const u32 gObjectEventPic_EnemyZigzagoon[] = INCGFX_U32("graphics/object_events/pics/pokemon_old/enemy_zigzagoon.png", ".4bpp", "-mwidth 4 -mheight 4");
@@ -485,7 +487,6 @@ const u16 gObjectEventPic_GreenVSSeekerBike[] = INCGFX_U16("graphics/object_even
 
 const u16 gObjectEventPal_PlayerFrlg[] = INCGFX_U16("graphics/object_events/palettes/player_frlg.pal", ".gbapal");
 const u16 gObjectEventPal_PlayerReflectionFrlg[] = INCGFX_U16("graphics/object_events/palettes/player_reflection_frlg.pal", ".gbapal");
-const u16 gObjectEventPal_NpcBlue[] = INCGFX_U16("graphics/object_events/palettes/npc_blue.pal", ".gbapal");
 const u16 gObjectEventPal_NpcPink[] = INCGFX_U16("graphics/object_events/palettes/npc_pink.pal", ".gbapal");
 const u16 gObjectEventPal_NpcWhite[] = INCGFX_U16("graphics/object_events/palettes/npc_white.pal", ".gbapal");
 const u16 gObjectEventPal_NpcBlueReflection[] = INCGFX_U16("graphics/object_events/palettes/npc_blue_reflection.pal", ".gbapal");
@@ -567,7 +568,6 @@ const u16 gObjectEventPic_Misty[] = INCGFX_U16("graphics/object_events/pics/peop
 const u16 gObjectEventPic_Lance[] = INCGFX_U16("graphics/object_events/pics/people/lance.png", ".4bpp", "-mwidth 2 -mheight 4");
 const u16 gObjectEventPic_GBAKid[] = INCGFX_U16("graphics/object_events/pics/people/gba_kid.png", ".4bpp", "-mwidth 2 -mheight 4");
 const u16 gObjectEventPic_MomFrlg[] = INCGFX_U16("graphics/object_events/pics/people/mom_frlg.png", ".4bpp", "-mwidth 2 -mheight 4");
-const u16 gObjectEventPic_Policeman[] = INCGFX_U16("graphics/object_events/pics/people/policeman.png", ".4bpp", "-mwidth 2 -mheight 4");
 
 const u16 gObjectEventPic_CuttableTreeFrlg[] = INCGFX_U16("graphics/object_events/pics/misc/cuttable_tree_frlg.png", ".4bpp", "-mwidth 2 -mheight 2");
 const u32 gObjectEventPic_BreakableRockFrlg[] = INCGFX_U32("graphics/object_events/pics/misc/breakable_rock_frlg.png", ".4bpp", "-mwidth 2 -mheight 2");
@@ -634,3 +634,6 @@ const u16 gObjectEventPic_ClefairyOld[] = INCGFX_U16("graphics/object_events/pic
 const u16 gObjectEventPal_NpcGreen[] = INCGFX_U16("graphics/object_events/palettes/npc_green.pal", ".gbapal");
 const u16 gObjectEventPic_Daisy[] = INCGFX_U16("graphics/object_events/pics/people/daisy.png", ".4bpp", "-mwidth 2 -mheight 4");
 const u16 gObjectEventPic_Blue[] = INCGFX_U16("graphics/object_events/pics/people/blue.png", ".4bpp", "-mwidth 2 -mheight 4");
+// The policeman stands in for the Safety Bureau Enforcers in Scene 3 (docs/scenes/scene-03-the-van.md), so Emerald builds need it too.
+const u16 gObjectEventPal_NpcBlue[] = INCGFX_U16("graphics/object_events/palettes/npc_blue.pal", ".gbapal");
+const u16 gObjectEventPic_Policeman[] = INCGFX_U16("graphics/object_events/pics/people/policeman.png", ".4bpp", "-mwidth 2 -mheight 4");
