@@ -1690,6 +1690,25 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Truck = {
     .images = sPicTable_Truck,
 };
 
+// Scene 3's van (docs/scenes/scene-03-the-van.md): the moving truck mirrored so its cab faces right, the way it drives.
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Van = {
+    .tileTag = TAG_NONE,
+    .paletteTag = OBJ_EVENT_PAL_TAG_TRUCK,
+    .reflectionPaletteTag = OBJ_EVENT_PAL_TAG_NONE,
+    .size = 1152,
+    .width = 48,
+    .height = 48,
+    .paletteSlot = PALSLOT_NPC_SPECIAL,
+    .shadowSize = SHADOW_SIZE_M,
+    .inanimate = TRUE,
+    .compressed = FALSE,
+    .tracks = TRACKS_NONE,
+    .oam = &gObjectEventBaseOam_32x32,
+    .subspriteTables = sOamTables_48x48,
+    .anims = sAnimTable_Inanimate,
+    .images = sPicTable_Van,
+};
+
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_VigorothCarryingBox = {
     .tileTag = TAG_NONE,
     .paletteTag = OBJ_EVENT_PAL_TAG_VIGOROTH,
@@ -4735,25 +4754,6 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_GreenFieldMove = {
     .affineAnims = gDummySpriteAffineAnimTable,
 };
 
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Policeman = {
-    .tileTag = TAG_NONE,
-    .paletteTag = OBJ_EVENT_PAL_TAG_NPC_BLUE,
-    .reflectionPaletteTag = OBJ_EVENT_PAL_TAG_NONE,
-    .size = 256,
-    .width = 16,
-    .height = 32,
-    .paletteSlot = PALSLOT_NPC_1,
-    .shadowSize = SHADOW_SIZE_M,
-    .inanimate = FALSE,
-    .compressed = FALSE,
-    .tracks = TRACKS_FOOT,
-    .oam = &gObjectEventBaseOam_16x32,
-    .subspriteTables = sOamTables_16x32,
-    .anims = sAnimTable_Standard,
-    .images = sPicTable_Policeman,
-    .affineAnims = gDummySpriteAffineAnimTable,
-};
-
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_LittleBoyFrlg = {
     .tileTag = TAG_NONE,
     .paletteTag = OBJ_EVENT_PAL_TAG_NPC_WHITE,
@@ -7223,5 +7223,25 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Blue = {
     .subspriteTables = sOamTables_16x32,
     .anims = sAnimTable_Standard,
     .images = sPicTable_Blue,
+    .affineAnims = gDummySpriteAffineAnimTable,
+};
+
+// The policeman stands in for the Safety Bureau Enforcers in Scene 3 (docs/scenes/scene-03-the-van.md), so Emerald builds need it too.
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Policeman = {
+    .tileTag = TAG_NONE,
+    .paletteTag = OBJ_EVENT_PAL_TAG_NPC_BLUE,
+    .reflectionPaletteTag = OBJ_EVENT_PAL_TAG_NONE,
+    .size = 256,
+    .width = 16,
+    .height = 32,
+    .paletteSlot = PALSLOT_NPC_1,
+    .shadowSize = SHADOW_SIZE_M,
+    .inanimate = FALSE,
+    .compressed = FALSE,
+    .tracks = TRACKS_FOOT,
+    .oam = &gObjectEventBaseOam_16x32,
+    .subspriteTables = sOamTables_16x32,
+    .anims = sAnimTable_Standard,
+    .images = sPicTable_Policeman,
     .affineAnims = gDummySpriteAffineAnimTable,
 };

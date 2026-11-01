@@ -374,6 +374,11 @@ static const struct SpriteFrameImage sPicTable_Truck[] = {
     obj_frame_tiles(gObjectEventPic_Truck),
 };
 
+// Scene 3's van (docs/scenes/scene-03-the-van.md): the moving truck mirrored so its cab faces right, the way it drives.
+static const struct SpriteFrameImage sPicTable_Van[] = {
+    obj_frame_tiles(gObjectEventPic_Van),
+};
+
 static const struct SpriteFrameImage sPicTable_VigorothCarryingBox[] = {
     overworld_frame(gObjectEventPic_VigorothMover, 4, 4, 0),
     overworld_frame(gObjectEventPic_VigorothMover, 4, 4, 0),
@@ -1465,10 +1470,6 @@ static const struct SpriteFrameImage sPicTable_GreenVSSeekerBike[] = {
     overworld_ascending_frames(gObjectEventPic_GreenVSSeekerBike, 4, 4),
 };
 
-static const struct SpriteFrameImage sPicTable_Policeman[] = {
-    overworld_ascending_frames(gObjectEventPic_Policeman, 2, 4),
-};
-
 static const struct SpriteFrameImage sPicTable_LittleBoyFrlg[] = {
     overworld_ascending_frames(gObjectEventPic_LittleBoyFrlg, 2, 2),
 };
@@ -2493,4 +2494,9 @@ static const struct SpriteFrameImage sPicTable_Daisy[] = {
 
 static const struct SpriteFrameImage sPicTable_Blue[] = {
     overworld_ascending_frames(gObjectEventPic_Blue, 2, 4),
+};
+
+// The policeman stands in for the Safety Bureau Enforcers in Scene 3 (docs/scenes/scene-03-the-van.md), so Emerald builds need it too.
+static const struct SpriteFrameImage sPicTable_Policeman[] = {
+    overworld_ascending_frames(gObjectEventPic_Policeman, 2, 4),
 };

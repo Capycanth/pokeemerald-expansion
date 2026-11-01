@@ -1,1 +1,305 @@
-mapscripts LowQuarterNight_MapScripts {}
+// Scene 3: The Van
+// Design doc: docs/scenes/scene-03-the-van.md (Pokemon ROM Hack project)
+//
+// VAR_LOW_QUARTER_NIGHT_STATE
+//   0 = Scene 3 not played yet (plays on entry; Scene 2 warps the MC to the brownstone door)
+//   1 = Scene 3 done (set just before the warp to the warehouse)
+//
+// The MC is the player, so the camera follows them. Everyone else starts hidden and is added
+// off screen when the scene needs them:
+//   FLAG_TEMP_1 van · 2 the car that hits it · 3 the chosen starter · 4-5 the unchosen starters
+//   6-A the five wild Pokémon · B-D Enforcers A-C
+// The three starter objects take their sprites from VAR_OBJ_GFX_ID_0 (chosen) and _1/_2.
+//
+// Street 2 runs along rows 22-25. The van drives east in the near lane (row 25) and is hit off
+// screen at the avenue intersection (x 26-29). The stampede runs back west from x 23 to x 4.
+// The MC's alley is x 15-16, rows 15-19; the starter hides at (16, 18), the MC stands in
+// front of it at (16, 19).
+//
+// Dialogue rule: a change of speaker gets closemessage + delay(MESSAGE_GAP), so the brief
+// empty beat marks who's talking. Boxes from the same speaker stay in one msgbox.
+
+const MESSAGE_GAP = 10 // frames between one speaker's box closing and the next opening (~1/6 s)
+
+mapscripts LowQuarterNight_MapScripts {
+    MAP_SCRIPT_ON_TRANSITION {
+        // Everyone in the scene starts hidden.
+        setflag(FLAG_TEMP_1) // van
+        setflag(FLAG_TEMP_2) // car
+        setflag(FLAG_TEMP_3) // chosen starter
+        setflag(FLAG_TEMP_4) // unchosen starter 1
+        setflag(FLAG_TEMP_5) // unchosen starter 2
+        setflag(FLAG_TEMP_6) // Yamper
+        setflag(FLAG_TEMP_7) // Nickit
+        setflag(FLAG_TEMP_8) // Galarian Zigzagoon
+        setflag(FLAG_TEMP_9) // Krabby
+        setflag(FLAG_TEMP_A) // Phantump
+        setflag(FLAG_TEMP_B) // Enforcer A
+        setflag(FLAG_TEMP_C) // Enforcer B
+        setflag(FLAG_TEMP_D) // Enforcer C
+        call(LowQuarterNight_EventScript_SetStarterGfx)
+    }
+    MAP_SCRIPT_ON_FRAME_TABLE [
+        VAR_LOW_QUARTER_NIGHT_STATE, 0: LowQuarterNight_EventScript_Scene3
+    ]
+}
+
+// Sprites for the three starter objects, from the partner named in Scene 2's bedtime story.
+// VAR_0x8009 keeps the chosen starter's species for its cry.
+script LowQuarterNight_EventScript_SetStarterGfx {
+    switch (var(VAR_STARTER_CHOICE)) {
+        case STARTER_CHOICE_ROLYCOLY:
+            setvar(VAR_OBJ_GFX_ID_0, OBJ_EVENT_GFX_SPECIES(ROLYCOLY))
+            setvar(VAR_OBJ_GFX_ID_1, OBJ_EVENT_GFX_SPECIES(SPHEAL))
+            setvar(VAR_OBJ_GFX_ID_2, OBJ_EVENT_GFX_SPECIES(SEEDOT))
+            setvar(VAR_0x8009, SPECIES_ROLYCOLY)
+        case STARTER_CHOICE_SEEDOT:
+            setvar(VAR_OBJ_GFX_ID_0, OBJ_EVENT_GFX_SPECIES(SEEDOT))
+            setvar(VAR_OBJ_GFX_ID_1, OBJ_EVENT_GFX_SPECIES(SPHEAL))
+            setvar(VAR_OBJ_GFX_ID_2, OBJ_EVENT_GFX_SPECIES(ROLYCOLY))
+            setvar(VAR_0x8009, SPECIES_SEEDOT)
+        default:
+            setvar(VAR_OBJ_GFX_ID_0, OBJ_EVENT_GFX_SPECIES(SPHEAL))
+            setvar(VAR_OBJ_GFX_ID_1, OBJ_EVENT_GFX_SPECIES(ROLYCOLY))
+            setvar(VAR_OBJ_GFX_ID_2, OBJ_EVENT_GFX_SPECIES(SEEDOT))
+            setvar(VAR_0x8009, SPECIES_SPHEAL)
+    }
+    return
+}
+
+script LowQuarterNight_EventScript_Scene3 {
+    lockall
+
+    // ---------------------------------------------------------------
+    // Part 1: Heading Out
+    // ---------------------------------------------------------------
+    // Down the stoop from the door (12, 18) to the sidewalk, then a step east.
+    applymovement(OBJ_EVENT_ID_PLAYER, LowQuarterNight_Movement_PlayerHeadOut)
+    waitmovement(0)
+    delay(30)
+
+    // ---------------------------------------------------------------
+    // Part 2: The Van
+    // ---------------------------------------------------------------
+    // An engine from the west; the MC looks toward it.
+    playse(SE_TRUCK_MOVE)
+    applymovement(OBJ_EVENT_ID_PLAYER, moves(delay_8, face_left))
+    waitmovement(0)
+    delay(16)
+
+    // The van comes in from off screen at (2, 25) and speeds east along the near lane. It
+    // passes the MC (x 13) about 44 frames in, and the MC turns to follow it.
+    clearflag(FLAG_TEMP_1)
+    addobject(LOCALID_LOW_QUARTER_NIGHT_VAN)
+    applymovement(OBJ_EVENT_ID_PLAYER, moves(delay_16 * 2, delay_8, delay_4, face_right))
+    applymovement(LOCALID_LOW_QUARTER_NIGHT_VAN, moves(walk_faster_right * 22))
+    waitmovement(0)
+    // Off screen now (x 24). Brakes, then the hit in the intersection at x 27.
+    playse(SE_TRUCK_STOP)
+    applymovement(LOCALID_LOW_QUARTER_NIGHT_VAN, moves(walk_faster_right * 3))
+    waitmovement(0)
+    clearflag(FLAG_TEMP_2)
+    addobject(LOCALID_LOW_QUARTER_NIGHT_CAR)
+    // The wreck stays where it crashed. Once the camera moves, objects out of view are removed
+    // and later respawned from their template position, which would put the van back at (2, 25).
+    setobjectxyperm(LOCALID_LOW_QUARTER_NIGHT_VAN, 27, 25)
+    setvar(VAR_0x8004, 3)  // vertical pan
+    setvar(VAR_0x8005, 3)  // horizontal pan
+    setvar(VAR_0x8006, 10) // number of shakes
+    setvar(VAR_0x8007, 3)  // frames between shakes
+    special(ShakeCamera)   // plays its own thud
+    waitstate
+    applymovement(OBJ_EVENT_ID_PLAYER, moves(emote_exclamation_mark))
+    waitmovement(0)
+
+    // A beat of silence, then a rumble getting closer.
+    delay(40)
+    setvar(VAR_0x8004, 1)  // vertical pan
+    setvar(VAR_0x8005, 0)  // horizontal pan
+    setvar(VAR_0x8006, 12) // number of shakes
+    setvar(VAR_0x8007, 4)  // frames between shakes
+    special(ShakeCamera)
+    waitstate
+
+    // ---------------------------------------------------------------
+    // Part 3: The Stampede
+    // ---------------------------------------------------------------
+    // Everyone appears off screen at x 23 and runs west to x 4 in staggered waves. The MC's
+    // starter comes last, along the sidewalk, and runs into the MC at (13, 21).
+    clearflag(FLAG_TEMP_3)
+    clearflag(FLAG_TEMP_4)
+    clearflag(FLAG_TEMP_5)
+    clearflag(FLAG_TEMP_6)
+    clearflag(FLAG_TEMP_7)
+    clearflag(FLAG_TEMP_8)
+    clearflag(FLAG_TEMP_9)
+    clearflag(FLAG_TEMP_A)
+    addobject(LOCALID_LOW_QUARTER_NIGHT_YAMPER)
+    addobject(LOCALID_LOW_QUARTER_NIGHT_NICKIT)
+    addobject(LOCALID_LOW_QUARTER_NIGHT_ZIGZAGOON)
+    addobject(LOCALID_LOW_QUARTER_NIGHT_UNCHOSEN_1)
+    addobject(LOCALID_LOW_QUARTER_NIGHT_KRABBY)
+    addobject(LOCALID_LOW_QUARTER_NIGHT_UNCHOSEN_2)
+    addobject(LOCALID_LOW_QUARTER_NIGHT_PHANTUMP)
+    addobject(LOCALID_LOW_QUARTER_NIGHT_STARTER)
+    // Wave 1: Yamper (row 23) and Nickit (row 24)
+    applymovement(LOCALID_LOW_QUARTER_NIGHT_YAMPER, LowQuarterNight_Movement_Stampede)
+    applymovement(LOCALID_LOW_QUARTER_NIGHT_NICKIT, LowQuarterNight_Movement_Stampede)
+    // Wave 2: Galarian Zigzagoon (row 22) and the first unchosen starter (row 23)
+    applymovement(LOCALID_LOW_QUARTER_NIGHT_ZIGZAGOON, moves(delay_16, walk_fast_left * 19))
+    applymovement(LOCALID_LOW_QUARTER_NIGHT_UNCHOSEN_1, moves(delay_16, walk_fast_left * 19))
+    // Wave 3: Krabby (row 24) and the second unchosen starter (row 22)
+    applymovement(LOCALID_LOW_QUARTER_NIGHT_KRABBY, moves(delay_16 * 2, walk_fast_left * 19))
+    applymovement(LOCALID_LOW_QUARTER_NIGHT_UNCHOSEN_2, moves(delay_16 * 2, walk_fast_left * 19))
+    // Wave 4: Phantump (row 23)
+    applymovement(LOCALID_LOW_QUARTER_NIGHT_PHANTUMP, moves(delay_16 * 3, walk_fast_left * 19))
+    // Last: the MC's starter, along the sidewalk (row 21), straight into the MC.
+    applymovement(LOCALID_LOW_QUARTER_NIGHT_STARTER, moves(delay_16 * 5, walk_fast_left * 9))
+    waitmovement(LOCALID_LOW_QUARTER_NIGHT_STARTER)
+
+    // The hit: the MC is knocked back a step, the starter bounces off, dazed.
+    playse(SE_WALL_HIT)
+    applymovement(LOCALID_LOW_QUARTER_NIGHT_STARTER, moves(jump_in_place_left, emote_question_mark))
+    applymovement(OBJ_EVENT_ID_PLAYER, moves(lock_facing_direction, walk_fast_left, unlock_facing_direction))
+    playmoncry(VAR_0x8009, CRY_MODE_NORMAL)
+    waitmovement(LOCALID_LOW_QUARTER_NIGHT_STARTER)
+    waitmovement(OBJ_EVENT_ID_PLAYER)
+    waitmoncry
+
+    // The rest of the stampede is off screen by now (Phantump, the last, finishes ~200 frames in).
+    waitmovement(LOCALID_LOW_QUARTER_NIGHT_PHANTUMP)
+    removeobject(LOCALID_LOW_QUARTER_NIGHT_YAMPER)
+    removeobject(LOCALID_LOW_QUARTER_NIGHT_NICKIT)
+    removeobject(LOCALID_LOW_QUARTER_NIGHT_ZIGZAGOON)
+    removeobject(LOCALID_LOW_QUARTER_NIGHT_UNCHOSEN_1)
+    removeobject(LOCALID_LOW_QUARTER_NIGHT_KRABBY)
+    removeobject(LOCALID_LOW_QUARTER_NIGHT_UNCHOSEN_2)
+    removeobject(LOCALID_LOW_QUARTER_NIGHT_PHANTUMP)
+    delay(20)
+
+    // ---------------------------------------------------------------
+    // Part 4: The Alley
+    // ---------------------------------------------------------------
+    // Shouts from the crash, off screen to the east.
+    msgbox("They went this way! Don't let them\n"
+           "get to the alleys!")
+    closemessage
+    applymovement(OBJ_EVENT_ID_PLAYER, moves(emote_exclamation_mark))
+    waitmovement(0)
+
+    // The MC hustles the starter up into the alley, one step behind it, and turns to face the
+    // street with the starter tucked behind them: starter at (16, 18), MC at (16, 19).
+    applymovement(LOCALID_LOW_QUARTER_NIGHT_STARTER, LowQuarterNight_Movement_StarterIntoAlley)
+    applymovement(OBJ_EVENT_ID_PLAYER, LowQuarterNight_Movement_PlayerIntoAlley)
+    waitmovement(0) // the MC's walk is the longest
+
+    // ---------------------------------------------------------------
+    // Part 5: The Enforcers
+    // ---------------------------------------------------------------
+    // Three Enforcers come up the street from the crash (off screen at x 25). B and C run
+    // straight through to x 7; A runs along the sidewalk and stops in front of the MC at (16, 20).
+    clearflag(FLAG_TEMP_B)
+    clearflag(FLAG_TEMP_C)
+    clearflag(FLAG_TEMP_D)
+    addobject(LOCALID_LOW_QUARTER_NIGHT_ENFORCER_A)
+    addobject(LOCALID_LOW_QUARTER_NIGHT_ENFORCER_B)
+    addobject(LOCALID_LOW_QUARTER_NIGHT_ENFORCER_C)
+    applymovement(LOCALID_LOW_QUARTER_NIGHT_ENFORCER_B, moves(walk_fast_left * 18)) // to x 7
+    applymovement(LOCALID_LOW_QUARTER_NIGHT_ENFORCER_C, moves(delay_4, walk_fast_left * 18))
+    applymovement(LOCALID_LOW_QUARTER_NIGHT_ENFORCER_A, moves(delay_8, walk_fast_left * 9, walk_fast_up)) // to (16, 20)
+    waitmovement(LOCALID_LOW_QUARTER_NIGHT_ENFORCER_A)
+
+    msgbox("Hey, kid! You see where any of those\n"
+           "Pokémon went?")
+    closemessage
+    delay(MESSAGE_GAP)
+    msgbox("…No.")
+    closemessage
+    delay(MESSAGE_GAP)
+    msgbox("Then get off the street. Wild Pokémon\n"
+           "are dangerous.\p"
+           "You see one, you don't go near it.\n"
+           "You call the Bureau.")
+    closemessage
+    waitmovement(LOCALID_LOW_QUARTER_NIGHT_ENFORCER_B)
+    waitmovement(LOCALID_LOW_QUARTER_NIGHT_ENFORCER_C)
+    delay(MESSAGE_GAP)
+    // Enforcer B, off screen to the west.
+    msgbox("Move it! The Registry wants every last\n"
+           "one back without a scratch!")
+    closemessage
+
+    // A runs on after the others.
+    applymovement(LOCALID_LOW_QUARTER_NIGHT_ENFORCER_A, moves(walk_fast_down, walk_fast_left * 9))
+    waitmovement(0)
+    removeobject(LOCALID_LOW_QUARTER_NIGHT_ENFORCER_A)
+    removeobject(LOCALID_LOW_QUARTER_NIGHT_ENFORCER_B)
+    removeobject(LOCALID_LOW_QUARTER_NIGHT_ENFORCER_C)
+    delay(30)
+
+    // The street goes quiet. The MC turns to the starter.
+    applymovement(OBJ_EVENT_ID_PLAYER, moves(face_up))
+    waitmovement(0)
+    delay(30)
+
+    // TODO: Scene 4, the stealth escape to the warehouse, starts here. Until it exists, the
+    // starter joins now and the MC goes straight to the Underground Ladder. The player arrives
+    // on the ring's centre, where it's hidden and used as the camera.
+    call(LowQuarterNight_EventScript_GiveStarter)
+    setvar(VAR_LOW_QUARTER_NIGHT_STATE, 1)
+    warp(MAP_LOW_QUARTER_WAREHOUSE, 10, 9)
+    waitstate
+    releaseall
+    end
+}
+
+// Placeholder until Scene 4: gives the first stage of the partner named in the bedtime story
+// at Lv 5, plus the ladder's one Potion. (Moved here from Scene 2.)
+script LowQuarterNight_EventScript_GiveStarter {
+    switch (var(VAR_STARTER_CHOICE)) {
+        case STARTER_CHOICE_SPHEAL:
+            givemon(SPECIES_SPHEAL, 5)
+            bufferspeciesname(STR_VAR_1, SPECIES_SPHEAL)
+        case STARTER_CHOICE_ROLYCOLY:
+            givemon(SPECIES_ROLYCOLY, 5)
+            bufferspeciesname(STR_VAR_1, SPECIES_ROLYCOLY)
+        case STARTER_CHOICE_SEEDOT:
+            givemon(SPECIES_SEEDOT, 5)
+            bufferspeciesname(STR_VAR_1, SPECIES_SEEDOT)
+    }
+    additem(ITEM_POTION)
+    playfanfare(MUS_OBTAIN_ITEM)
+    msgbox("{STR_VAR_1} joined your team!\n"
+           "You got 1 Potion.")
+    waitfanfare
+    closemessage
+    return
+}
+
+// (12, 18) -> (13, 21): down the landing and stoop to the sidewalk, then a step east.
+movement LowQuarterNight_Movement_PlayerHeadOut {
+    walk_down * 3
+    walk_right
+}
+
+// Each runner: from x 23 to x 4, off screen on both ends. 19 steps, 152 frames.
+movement LowQuarterNight_Movement_Stampede {
+    walk_fast_left * 19
+}
+
+// (14, 21) -> (16, 18), the alley. Leads the MC by one step.
+movement LowQuarterNight_Movement_StarterIntoAlley {
+    delay_16
+    walk_fast_right * 2
+    walk_fast_up * 3
+    face_down
+}
+
+// (12, 21) -> (16, 19), one step behind the starter, then turns to face the street.
+movement LowQuarterNight_Movement_PlayerIntoAlley {
+    walk_right
+    delay_8
+    walk_fast_right * 3
+    walk_fast_up * 2
+    face_down
+}

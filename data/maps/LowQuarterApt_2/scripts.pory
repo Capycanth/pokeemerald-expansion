@@ -5,7 +5,7 @@
 //   0 = Scene 2 not played yet (plays on entry)
 //   1 = Scene 2 done; Mom is in her bedroom
 //
-// VAR_STARTER_CHOICE (read by the van scene)
+// VAR_STARTER_CHOICE (read by Scene 3, the van, in LowQuarterNight)
 //   STARTER_CHOICE_SPHEAL   (0) = "The bulky blubber-wall: Walrein"
 //   STARTER_CHOICE_ROLYCOLY (1) = "The stoic steam engine: Coalossal"
 //   STARTER_CHOICE_SEEDOT   (2) = "The nimble nightmare: Shiftry"
@@ -234,38 +234,12 @@ script LowQuarterApt_2_EventScript_Scene2 {
     waitmovement(0)
     setvar(VAR_LOW_QUARTER_APT_STATE, 1)
 
-    // TODO: the van scene goes here (the starter runs into the MC outside). Until it exists,
-    // the MC gets the starter here and goes straight to the Underground Ladder in the
-    // Low Quarter warehouse. The player arrives on the ring's centre, where it's hidden and
-    // used as the camera; the warehouse script warps back here when the ladder ends.
-    call(LowQuarterApt_2_EventScript_GiveStarter)
-    warp(MAP_LOW_QUARTER_WAREHOUSE, 10, 9)
+    // Out the front door into the night street: Scene 3, the van (LowQuarterNight). The MC
+    // arrives on the brownstone's door tile.
+    warp(MAP_LOW_QUARTER_NIGHT, 12, 18)
     waitstate
     releaseall
     end
-}
-
-// Placeholder until the van scene: gives the first stage of the partner named in the
-// bedtime story at Lv 5, plus the ladder's one Potion.
-script LowQuarterApt_2_EventScript_GiveStarter {
-    switch (var(VAR_STARTER_CHOICE)) {
-        case STARTER_CHOICE_SPHEAL:
-            givemon(SPECIES_SPHEAL, 5)
-            bufferspeciesname(STR_VAR_1, SPECIES_SPHEAL)
-        case STARTER_CHOICE_ROLYCOLY:
-            givemon(SPECIES_ROLYCOLY, 5)
-            bufferspeciesname(STR_VAR_1, SPECIES_ROLYCOLY)
-        case STARTER_CHOICE_SEEDOT:
-            givemon(SPECIES_SEEDOT, 5)
-            bufferspeciesname(STR_VAR_1, SPECIES_SEEDOT)
-    }
-    additem(ITEM_POTION)
-    playfanfare(MUS_OBTAIN_ITEM)
-    msgbox("{STR_VAR_1} joined your team!\n"
-           "You got 1 Potion.")
-    waitfanfare
-    closemessage
-    return
 }
 
 script LowQuarterApt_2_EventScript_BangOnDoor {

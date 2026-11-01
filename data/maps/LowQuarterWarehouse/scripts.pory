@@ -2,7 +2,7 @@
 // Design doc: docs/battles.md (Pokemon ROM Hack project)
 //
 // VAR_LOW_QUARTER_WAREHOUSE_STATE
-//   0 = ladder scene not played yet (plays on entry; Scene 2 warps here after the starter)
+//   0 = ladder scene not played yet (plays on entry; Scene 3 warps here after the starter joins)
 //   1 = played (set as the scene starts, so a battle's return to the field can't restart it)
 //
 // Camera: the ring is 9 rows tall, more than fits on screen around the MC, so the player object
