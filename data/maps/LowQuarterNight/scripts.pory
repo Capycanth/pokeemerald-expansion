@@ -1,15 +1,34 @@
-// Scene 3: The Van
-// Design doc: docs/scenes/scene-03-the-van.md (Pokemon ROM Hack project)
+// Scene 3: The Van, and Scene 4: The Escape (the sneak to the warehouse)
+// Design docs: docs/scenes/scene-03-the-van.md, docs/scenes/scene-04-the-escape.md
+// (Pokemon ROM Hack project)
 //
 // VAR_LOW_QUARTER_NIGHT_STATE
 //   0 = Scene 3 not played yet (plays on entry; Scene 2 warps the MC to the brownstone door)
-//   1 = Scene 3 done (set just before the warp to the warehouse)
+//   1 = Scene 4 in progress: the Enforcers patrol and the MC has to reach the warehouse door
+//       (38, 34) unseen. Set at the end of Scene 3, right after the cousin's call.
+//   2 = reached the warehouse (set by the door trigger, just before the warp to the ladder)
 //
 // The MC is the player, so the camera follows them. Everyone else starts hidden and is added
 // off screen when the scene needs them:
 //   FLAG_TEMP_1 van · 2 the car that hits it · 3 the chosen starter · 4-5 the unchosen starters
-//   6-A the five wild Pokémon · B-D Enforcers A-C
+//   6-A the five wild Pokémon · B-D Enforcers A-C · E the five Scene 4 patrols
 // The three starter objects take their sprites from VAR_OBJ_GFX_ID_0 (chosen) and _1/_2.
+//
+// Scene 4 patrols: Enforcers set up as trainers (TRAINER_TYPE_NORMAL), so the engine's trainer
+// sight does the spotting. They see in a straight line in the direction they face, up to their
+// sight range, and walls, props and other objects block the view. This expansion checks trainer
+// sight every frame, so standing still in a patrol's path still gets the MC caught.
+// Each Enforcer has one Lv 50 Archaludon. A loss doesn't white out (FLAG_NO_WHITEOUT is set
+// for the whole sneak); instead the MC is healed and put back in the alley, right after the
+// call, with every patrol back at its start (LowQuarterNight_EventScript_Caught).
+//   1 (24, 20) sidewalk, walks x 18-24 along row 20, sight 4: covers the alley mouth
+//   2 (22, 26) street, walks rows 22-26 up column 22, sight 5: cross behind his back
+//   3 (26, 26) at the wreck, turns clockwise (~49 frames a side), sight 4: the only way south
+//              is across row 26, so pass while he faces up, right or down
+//   4 (30, 30) avenue, walks x 25-30 along row 30, sight 5: cross the row behind him
+//   5 (38, 37) warehouse yard, walks x 32-38 along row 37, sight 6: slip in through the gate
+//              at (31, 37) while he walks away, then get off row 37 before he turns
+// The warehouse side door (38, 34) is a coord trigger that ends the sneak.
 //
 // Street 2 runs along rows 22-25. The van drives east in the near lane (row 25) and is hit off
 // screen at the avenue intersection (x 26-29). The stampede runs back west from x 23 to x 4.
@@ -37,11 +56,35 @@ mapscripts LowQuarterNight_MapScripts {
         setflag(FLAG_TEMP_B) // Enforcer A
         setflag(FLAG_TEMP_C) // Enforcer B
         setflag(FLAG_TEMP_D) // Enforcer C
+        setflag(FLAG_TEMP_E) // the five Scene 4 patrols
         call(LowQuarterNight_EventScript_SetStarterGfx)
+        if (var(VAR_LOW_QUARTER_NIGHT_STATE) == 1) {
+            call(LowQuarterNight_EventScript_SetUpSneak)
+        }
     }
+    MAP_SCRIPT_ON_WARP_INTO_MAP_TABLE [
+        VAR_LOW_QUARTER_NIGHT_STATE, 1: LowQuarterNight_EventScript_FaceStreet
+    ]
     MAP_SCRIPT_ON_FRAME_TABLE [
         VAR_LOW_QUARTER_NIGHT_STATE, 0: LowQuarterNight_EventScript_Scene3
     ]
+}
+
+// Scene 4 on a (re)load of the map: the wreck stays where it crashed and the patrols are out.
+// Runs on transition, so the objects spawn in place before the screen fades in.
+script LowQuarterNight_EventScript_SetUpSneak {
+    clearflag(FLAG_TEMP_1) // van
+    clearflag(FLAG_TEMP_2) // car
+    setobjectxyperm(LOCALID_LOW_QUARTER_NIGHT_VAN, 27, 25)
+    clearflag(FLAG_TEMP_E) // patrols
+    setflag(FLAG_NO_WHITEOUT)
+    return
+}
+
+// Back in the alley after getting caught: facing the street, ready to go again.
+script LowQuarterNight_EventScript_FaceStreet {
+    turnobject(OBJ_EVENT_ID_PLAYER, DIR_SOUTH)
+    end
 }
 
 // Sprites for the three starter objects, from the partner named in Scene 2's bedtime story.
@@ -260,19 +303,143 @@ script LowQuarterNight_EventScript_Scene3 {
     waitmovement(0)
     delay(30)
 
-    // TODO: Scene 4, the stealth escape to the warehouse, starts here. Until it exists, the
-    // starter joins now and the MC goes straight to the Underground Ladder. The player arrives
-    // on the ring's centre, where it's hidden and used as the camera.
+    // The starter joins here, so there's a party to battle with if a patrol spots the MC.
+    // There are no follower Pokémon, so once it has joined it leaves the screen with the MC.
     call(LowQuarterNight_EventScript_GiveStarter)
+    removeobject(LOCALID_LOW_QUARTER_NIGHT_STARTER)
+    delay(20)
+
+    // ---------------------------------------------------------------
+    // Scene 4: The Escape
+    // ---------------------------------------------------------------
+    // The MC's own thought, then the stealth tutorial's one hint (no speaker).
+    msgbox("…The Enforcers are still out there.\p"
+           "I have to get {STR_VAR_1} to the\n"
+           "warehouse without being seen.")
+    closemessage
+    delay(MESSAGE_GAP)
+    msgbox("Enforcers only see straight ahead.\n"
+           "Stay out of their line of sight.\p"
+           "Wait for one to turn away, then\n"
+           "make your move.")
+    closemessage
+
+    // The patrols go out. All five start off screen; the nearest, Patrol 1, walks in from the
+    // right along the sidewalk.
     setvar(VAR_LOW_QUARTER_NIGHT_STATE, 1)
+    setflag(FLAG_NO_WHITEOUT)
+    clearflag(FLAG_TEMP_E)
+    addobject(LOCALID_LOW_QUARTER_NIGHT_PATROL_1)
+    addobject(LOCALID_LOW_QUARTER_NIGHT_PATROL_2)
+    addobject(LOCALID_LOW_QUARTER_NIGHT_PATROL_3)
+    addobject(LOCALID_LOW_QUARTER_NIGHT_PATROL_4)
+    addobject(LOCALID_LOW_QUARTER_NIGHT_PATROL_5)
+    releaseall
+    end
+}
+
+// ---------------------------------------------------------------------------
+// Scene 4: the patrols
+// ---------------------------------------------------------------------------
+// Each patrol is a trainer object. When one spots the MC it walks up, says its line and starts
+// the battle; afterwards the engine jumps to LowQuarterNight_EventScript_Caught (win or loss).
+// The lines after each trainerbattle only play if the MC talks to a patrol they've beaten.
+
+script LowQuarterNight_EventScript_Patrol1 {
+    trainerbattle_single(TRAINER_ENFORCER_1,
+                         "Hey! Stop right there!\p"
+                         "That's a Registry Pokémon. Hand it\n"
+                         "over, kid!",
+                         "You'll answer to the Bureau for this!",
+                         LowQuarterNight_EventScript_Caught)
+    msgbox("The Bureau will hear about this.", MSGBOX_AUTOCLOSE)
+    end
+}
+
+script LowQuarterNight_EventScript_Patrol2 {
+    trainerbattle_single(TRAINER_ENFORCER_2,
+                         "You! What've you got there?\p"
+                         "That one's ours. Step away from it!",
+                         "You'll answer to the Bureau for this!",
+                         LowQuarterNight_EventScript_Caught)
+    msgbox("The Bureau will hear about this.", MSGBOX_AUTOCLOSE)
+    end
+}
+
+// At the wreck: the "stock" hint again (see Scene 3, Part 5).
+script LowQuarterNight_EventScript_Patrol3 {
+    trainerbattle_single(TRAINER_ENFORCER_3,
+                         "Over here! The kid's got one of the\n"
+                         "escaped stock!",
+                         "You'll answer to the Bureau for this!",
+                         LowQuarterNight_EventScript_Caught)
+    msgbox("The Bureau will hear about this.", MSGBOX_AUTOCLOSE)
+    end
+}
+
+script LowQuarterNight_EventScript_Patrol4 {
+    trainerbattle_single(TRAINER_ENFORCER_4,
+                         "Freeze! Nobody walks off with Registry\n"
+                         "property on my watch!",
+                         "You'll answer to the Bureau for this!",
+                         LowQuarterNight_EventScript_Caught)
+    msgbox("The Bureau will hear about this.", MSGBOX_AUTOCLOSE)
+    end
+}
+
+// In the warehouse yard, the last one before the door.
+script LowQuarterNight_EventScript_Patrol5 {
+    trainerbattle_single(TRAINER_ENFORCER_5,
+                         "Thought you'd sneak past us?\n"
+                         "Not tonight, kid.",
+                         "You'll answer to the Bureau for this!",
+                         LowQuarterNight_EventScript_Caught)
+    msgbox("The Bureau will hear about this.", MSGBOX_AUTOCLOSE)
+    end
+}
+
+// After a patrol battle. A win (unlikely, against Lv 50) just lets the MC carry on; that patrol
+// is beaten and won't spot them again. A loss starts the sneak over from right after the call:
+// healed, the one Potion back if it was used, every patrol unbeaten and back at its start.
+script LowQuarterNight_EventScript_Caught {
+    specialvar(VAR_RESULT, GetBattleOutcome)
+    if (var(VAR_RESULT) == B_OUTCOME_WON) {
+        releaseall
+        end
+    }
+    fadescreen(FADE_TO_BLACK)
+    special(HealPlayerParty)
+    checkitem(ITEM_POTION)
+    if (var(VAR_RESULT) == FALSE) {
+        additem(ITEM_POTION)
+    }
+    cleartrainerflag(TRAINER_ENFORCER_1)
+    cleartrainerflag(TRAINER_ENFORCER_2)
+    cleartrainerflag(TRAINER_ENFORCER_3)
+    cleartrainerflag(TRAINER_ENFORCER_4)
+    cleartrainerflag(TRAINER_ENFORCER_5)
+    // Reloading the map puts every patrol back on its template tile (SetUpSneak re-shows them).
+    warpsilent(MAP_LOW_QUARTER_NIGHT, 16, 19)
+    waitstate
+    releaseall
+    end
+}
+
+// The warehouse side door (38, 34), reached unseen. The Underground Ladder takes over: the player
+// arrives on the ring's centre, where it's hidden and used as the camera.
+script LowQuarterNight_EventScript_EnterWarehouse {
+    lockall
+    setvar(VAR_LOW_QUARTER_NIGHT_STATE, 2)
+    clearflag(FLAG_NO_WHITEOUT) // the ladder sets it again for its own fights
+    playse(SE_DOOR)
     warp(MAP_LOW_QUARTER_WAREHOUSE, 10, 9)
     waitstate
     releaseall
     end
 }
 
-// Placeholder until Scene 4: gives the first stage of the partner named in the bedtime story
-// at Lv 5, plus the ladder's one Potion. (Moved here from Scene 2.)
+// Gives the first stage of the partner named in the bedtime story at Lv 5, plus the ladder's
+// one Potion. (Moved here from Scene 2.)
 script LowQuarterNight_EventScript_GiveStarter {
     switch (var(VAR_STARTER_CHOICE)) {
         case STARTER_CHOICE_SPHEAL:
