@@ -237,6 +237,20 @@ script LowQuarterNight_EventScript_Scene3 {
     removeobject(LOCALID_LOW_QUARTER_NIGHT_ENFORCER_C)
     delay(30)
 
+    // The cousin calls. The line keeps cutting out, so each fragment gets its own box.
+    // Call text is 192 px per line, not 208: the call window leaves room for the PokéNav icon.
+    pokenavcall("Hello?!\p"
+                "{PLAYER}?!\p"
+                "What…?!\p"
+                "You were in a car accident…?!\p"
+                "No…?!\p"
+                "I can't hear you right now!\n"
+                "Come down to the warehouse!\p"
+                "It's just South-East of your\n"
+                "apartment!")
+    waitmessage
+    delay(30)
+
     // The street goes quiet. The MC turns to the starter.
     applymovement(OBJ_EVENT_ID_PLAYER, moves(face_up))
     waitmovement(0)
