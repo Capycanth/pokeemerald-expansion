@@ -239,7 +239,9 @@ script LowQuarterNight_EventScript_Scene3 {
 
     // The cousin calls. The line keeps cutting out, so each fragment gets its own box.
     // Call text is 192 px per line, not 208: the call window leaves room for the PokéNav icon.
-    pokenavcall("Hello?!\p"
+    // As in vanilla calls, the caller's label goes on the first line only, and the call ends
+    // with its own "Click!" box.
+    pokenavcall("COUSIN: Hello?!\p"
                 "{PLAYER}?!\p"
                 "What…?!\p"
                 "You were in a car accident…?!\p"
@@ -247,7 +249,9 @@ script LowQuarterNight_EventScript_Scene3 {
                 "I can't hear you right now!\n"
                 "Come down to the warehouse!\p"
                 "It's just South-East of your\n"
-                "apartment!")
+                "apartment!\p"
+                "… … … … … …\n"
+                "… … … … … Click!")
     waitmessage
     delay(30)
 
