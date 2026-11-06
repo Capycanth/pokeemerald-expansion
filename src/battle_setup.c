@@ -1232,7 +1232,8 @@ static void BattleSetup_ConfigureTrainerBattle(TrainerBattleParameter *battlePar
         return;
     }
 
-    if (battleParams->params.isDoubleBattle && !HasEnoughMonsForDoubleBattle2())
+    // With B_FORCE_DOUBLE_TRAINER_BATTLES, a Double Battle with only one Pokémon is allowed.
+    if (!B_FORCE_DOUBLE_TRAINER_BATTLES && battleParams->params.isDoubleBattle && !HasEnoughMonsForDoubleBattle2())
     {
         PUSH(EventSnippet_NotEnoughMonsForDoubleBattle)
         return;

@@ -384,6 +384,7 @@
 #define B_CATCH_SWAP_CHECK_HMS      TRUE       // If set to TRUE, the catch swap feature above will prevent returning Pokémon to the Box if they know HMs.
 
 // Other settings
+#define B_FORCE_DOUBLE_TRAINER_BATTLES  TRUE       // If set to TRUE, every Trainer battle is a Double Battle, regardless of each Trainer's `Double Battle` setting. Either side may still have only one Pokémon. Wild battles, the Battle Pyramid and the Trainer Hill are unaffected.
 #define B_MULTI_BATTLE_WHITEOUT         GEN_LATEST // In Gen4+, Multi Battles end when the player as well as their partner don't have any Pokémon left.
 #define B_EVOLUTION_AFTER_WHITEOUT      GEN_LATEST // In Gen6+, Pokémon that qualify for evolution after battle will evolve even if the player loses.
 #define B_AFFECTION_MECHANICS           TRUE       // In Gen6+, there's a stat called affection that can trigger different effects in battle. From LGPE onwards, these effects use friendship instead.

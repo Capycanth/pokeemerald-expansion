@@ -324,6 +324,8 @@ static inline const struct StartingStatuses GetTrainerStartingStatusFromId(u16 t
 
 static inline const enum TrainerBattleType GetTrainerBattleType(u16 trainerId)
 {
+    if (B_FORCE_DOUBLE_TRAINER_BATTLES)
+        return TRAINER_BATTLE_TYPE_DOUBLES;
     return GetTrainerStructFromId(trainerId)->battleType;
 }
 

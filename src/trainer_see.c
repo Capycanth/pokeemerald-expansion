@@ -582,7 +582,7 @@ static u8 CheckTrainer(u8 objectEventId)
         TrainerBattleParameter *temp = (TrainerBattleParameter *)(trainerBattlePtr + 1);
         if (temp->params.isDoubleBattle)
         {
-            if (GetMonsStateToDoubles_2() != PLAYER_HAS_TWO_USABLE_MONS)
+            if (!B_FORCE_DOUBLE_TRAINER_BATTLES && GetMonsStateToDoubles_2() != PLAYER_HAS_TWO_USABLE_MONS)
                 return 0;
 
             numTrainers = 2;
