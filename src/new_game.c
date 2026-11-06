@@ -234,6 +234,7 @@ void NewGameInitData(void)
     ResetItemFlags();
     ResetDexNav();
     ClearFollowerNPCData();
+    EnableNationalPokedex(); // The Pokédex is in National mode from the start of the game.
 }
 
 static void ResetMiniGamesRecords(void)
