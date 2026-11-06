@@ -522,6 +522,7 @@ enum TrainerClassID
     TRAINER_CLASS_LADY_FRLG,
     TRAINER_CLASS_PAINTER_FRLG,
     TRAINER_CLASS_BRAWLER,          // Underground Ladder fighters
+    TRAINER_CLASS_ENFORCER,         // Safety Bureau Enforcers (Scene 4 patrols)
 
     TRAINER_CLASS_COUNT,
 };

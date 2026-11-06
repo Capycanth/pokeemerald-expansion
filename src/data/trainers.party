@@ -17010,3 +17010,105 @@ Double Battle: No
 Kyogre
 Level: 5
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+
+/*
+Scene 4: the five Safety Bureau Enforcers patrolling the Low Quarter.
+Getting spotted by one starts this battle; losing sends the MC back to the
+alley after the cousin's call (data/maps/LowQuarterNight/scripts.pory).
+Each has one Lv 50 Archaludon: being seen is meant to be a loss.
+*/
+
+=== TRAINER_ENFORCER_1 ===
+Name: GRADY
+Class: Enforcer
+Pic: Pokemon Ranger M
+Gender: Male
+Music: Intense
+Double Battle: No
+AI: Basic Trainer
+
+Archaludon
+Level: 50
+Ability: Stamina
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+Nature: Modest
+- Electro Shot
+- Dragon Claw
+- Flash Cannon
+- Iron Defense
+
+=== TRAINER_ENFORCER_2 ===
+Name: HOLT
+Class: Enforcer
+Pic: Pokemon Ranger M
+Gender: Male
+Music: Intense
+Double Battle: No
+AI: Basic Trainer
+
+Archaludon
+Level: 50
+Ability: Stamina
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+Nature: Modest
+- Electro Shot
+- Dragon Claw
+- Flash Cannon
+- Iron Defense
+
+=== TRAINER_ENFORCER_3 ===
+Name: MERCER
+Class: Enforcer
+Pic: Pokemon Ranger M
+Gender: Male
+Music: Intense
+Double Battle: No
+AI: Basic Trainer
+
+Archaludon
+Level: 50
+Ability: Stamina
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+Nature: Modest
+- Electro Shot
+- Dragon Claw
+- Flash Cannon
+- Iron Defense
+
+=== TRAINER_ENFORCER_4 ===
+Name: VOSS
+Class: Enforcer
+Pic: Pokemon Ranger M
+Gender: Male
+Music: Intense
+Double Battle: No
+AI: Basic Trainer
+
+Archaludon
+Level: 50
+Ability: Stamina
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+Nature: Modest
+- Electro Shot
+- Dragon Claw
+- Flash Cannon
+- Iron Defense
+
+=== TRAINER_ENFORCER_5 ===
+Name: KANE
+Class: Enforcer
+Pic: Pokemon Ranger M
+Gender: Male
+Music: Intense
+Double Battle: No
+AI: Basic Trainer
+
+Archaludon
+Level: 50
+Ability: Stamina
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+Nature: Modest
+- Electro Shot
+- Dragon Claw
+- Flash Cannon
+- Iron Defense
