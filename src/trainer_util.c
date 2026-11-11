@@ -3,6 +3,7 @@
 #include "data.h"
 #include "move.h"
 #include "random.h"
+#include "starter_choose.h"
 #include "string_util.h"
 #include "trainer_util.h"
 #include "text.h"
@@ -123,19 +124,23 @@ void MakePartnerGenerator(struct TrainerGenerator *trainerGen, const struct Trai
 void GenerateMonFromTrainerMon(struct Pokemon *mon, const struct TrainerMon *trainerMon, struct TrainerGenerator *trainer)
 {
     u32 data;
+    u16 species = trainerMon->species;
+    // The rival's starter follows this game's random starters.
+    if (trainer->trainerClass == TRAINER_CLASS_RIVAL && !trainer->isFrontier)
+        species = GetRivalStarterSpecies(species);
     u32 personality = (LocalRandom32(&trainer->localRngState) & 0xFFFFDF00) + 0x1000;
     u32 genderValue = LocalRandom32(&trainer->localRngState);
     if (trainerMon->gender == TRAINER_MON_RANDOM_GENDER)
         genderValue = genderValue & 0x000000FF;
     else if (trainerMon->gender == TRAINER_MON_MALE)
-        genderValue = GeneratePersonalityForGender(MON_MALE, trainerMon->species, genderValue);
+        genderValue = GeneratePersonalityForGender(MON_MALE, species, genderValue);
     else if (trainerMon->gender == TRAINER_MON_FEMALE)
-        genderValue = GeneratePersonalityForGender(MON_FEMALE, trainerMon->species, genderValue);
+        genderValue = GeneratePersonalityForGender(MON_FEMALE, species, genderValue);
     else
         errorf("Unkwown trainer mon gender value %d", trainerMon->gender);
     personality |= genderValue;
     ModifyPersonalityForNature(&personality, trainerMon->nature);
-    CreateMon(mon, trainerMon->species, trainerMon->lvl, personality, trainer->otID);
+    CreateMon(mon, species, trainerMon->lvl, personality, trainer->otID);
     if (trainerMon->nickname != NULL)
         SetMonData(mon, MON_DATA_NICKNAME, trainerMon->nickname);
     if (trainerMon->ev) //ev in struct TrainerMon are stored in Showdown order not vanilla Emerald order
@@ -155,7 +160,7 @@ void GenerateMonFromTrainerMon(struct Pokemon *mon, const struct TrainerMon *tra
     bool32 abilitySet = FALSE;
     if (trainerMon->ability)
     {
-        abilitySet = SetCorrectAbilityNum(mon, trainerMon->species, trainerMon->ability);
+        abilitySet = SetCorrectAbilityNum(mon, species, trainerMon->ability);
     }
 
     if (!abilitySet)
@@ -164,7 +169,7 @@ void GenerateMonFromTrainerMon(struct Pokemon *mon, const struct TrainerMon *tra
         {
             do {
                 data = Random() % NUM_ABILITY_SLOTS; // includes hidden abilities
-            } while (GetAbilityBySpecies(trainerMon->species, data) == ABILITY_NONE);
+            } while (GetAbilityBySpecies(species, data) == ABILITY_NONE);
             SetMonData(mon, MON_DATA_ABILITY_NUM, &data);
         }
         else if (B_TRAINER_MON_RANDOM_ABILITY == 0)
