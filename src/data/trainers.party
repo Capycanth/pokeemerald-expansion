@@ -4629,6 +4629,14 @@ IVs: 30 HP / 30 Atk / 30 Def / 30 SpA / 30 SpD / 30 Spe
 - Strength
 - Facade
 
+Sharpedo
+Level: 48
+IVs: 30 HP / 30 Atk / 30 Def / 30 SpA / 30 SpD / 30 Spe
+- Crunch
+- Liquidation
+- Ice Fang
+- Aqua Jet
+
 Absol @ Sitrus Berry
 Level: 49
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
@@ -4664,6 +4672,14 @@ IVs: 30 HP / 30 Atk / 30 Def / 30 SpA / 30 SpD / 30 Spe
 - Will O Wisp
 - Feint Attack
 
+Mismagius
+Level: 49
+IVs: 30 HP / 30 Atk / 30 Def / 30 SpA / 30 SpD / 30 Spe
+- Shadow Ball
+- Mystical Fire
+- Power Gem
+- Thunderbolt
+
 Sableye
 Level: 50
 IVs: 30 HP / 30 Atk / 30 Def / 30 SpA / 30 SpD / 30 Spe
@@ -4672,21 +4688,21 @@ IVs: 30 HP / 30 Atk / 30 Def / 30 SpA / 30 SpD / 30 Spe
 - Night Shade
 - Feint Attack
 
-Banette
-Level: 49
+Drifblim
+Level: 50
 IVs: 30 HP / 30 Atk / 30 Def / 30 SpA / 30 SpD / 30 Spe
 - Shadow Ball
-- Psychic
-- Thunderbolt
-- Facade
+- Tailwind
+- Strength Sap
+- Destiny Bond
 
-Dusclops @ Sitrus Berry
+Dusknoir @ Sitrus Berry
 Level: 51
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-- Shadow Ball
-- Ice Beam
-- Rock Slide
+- Shadow Punch
+- Ice Punch
 - Earthquake
+- Will O Wisp
 
 === TRAINER_GLACIA ===
 Name: GLACIA
@@ -4715,21 +4731,29 @@ IVs: 30 HP / 30 Atk / 30 Def / 30 SpA / 30 SpD / 30 Spe
 - Icy Wind
 - Ice Beam
 
-Sealeo
-Level: 52
+Abomasnow
+Level: 51
 IVs: 30 HP / 30 Atk / 30 Def / 30 SpA / 30 SpD / 30 Spe
-- Attract
-- Double Edge
-- Hail
 - Blizzard
+- Wood Hammer
+- Ice Shard
+- Ice Punch
 
-Glalie
+Froslass
 Level: 52
 IVs: 30 HP / 30 Atk / 30 Def / 30 SpA / 30 SpD / 30 Spe
-- Shadow Ball
-- Explosion
-- Hail
 - Ice Beam
+- Shadow Ball
+- Will O Wisp
+- Destiny Bond
+
+Lapras
+Level: 52
+IVs: 30 HP / 30 Atk / 30 Def / 30 SpA / 30 SpD / 30 Spe
+- Ice Beam
+- Surf
+- Body Slam
+- Sing
 
 Walrein @ Sitrus Berry
 Level: 53
@@ -4782,6 +4806,14 @@ IVs: 30 HP / 30 Atk / 30 Def / 30 SpA / 30 SpD / 30 Spe
 - Dragon Breath
 - Earthquake
 
+Dragonite
+Level: 54
+IVs: 30 HP / 30 Atk / 30 Def / 30 SpA / 30 SpD / 30 Spe
+- Outrage
+- Extreme Speed
+- Fire Punch
+- Dragon Dance
+
 Salamence @ Sitrus Berry
 Level: 55
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
@@ -4808,13 +4840,37 @@ IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
 - Rock Throw
 - Rock Tomb
 
-Geodude
+Roggenrola
 Level: 12
 IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
 - Tackle
-- Defense Curl
-- Rock Throw
+- Harden
+- Mud Slap
 - Rock Tomb
+
+Anorith
+Level: 13
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+- Metal Claw
+- Smack Down
+- Fury Cutter
+- Harden
+
+Lileep
+Level: 13
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+- Acid
+- Astonish
+- Confuse Ray
+- Ingrain
+
+Onix
+Level: 14
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+- Rock Throw
+- Smack Down
+- Rock Polish
+- Bind
 
 Nosepass @ Oran Berry
 Level: 15
@@ -4850,6 +4906,30 @@ IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
 - Reflect
 - Bulk Up
 
+Timburr
+Level: 16
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+- Low Kick
+- Rock Throw
+- Focus Energy
+- Bulk Up
+
+Mienfoo
+Level: 17
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+- Fake Out
+- Detect
+- Reversal
+- Fury Swipes
+
+Riolu
+Level: 17
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+- Quick Attack
+- Counter
+- Feint
+- Metal Claw
+
 Makuhita @ Sitrus Berry
 Level: 19
 IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
@@ -4883,6 +4963,22 @@ IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
 - Leer
 - Quick Attack
 - Howl
+
+Plusle
+Level: 21
+IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
+- Spark
+- Helping Hand
+- Encore
+- Quick Attack
+
+Minun
+Level: 21
+IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
+- Spark
+- Helping Hand
+- Thunder Wave
+- Swift
 
 Magneton
 Level: 22
@@ -4926,6 +5022,22 @@ IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
 - Light Screen
 - Sunny Day
 
+Vulpix
+Level: 25
+IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
+- Incinerate
+- Will O Wisp
+- Confuse Ray
+- Quick Attack
+
+Growlithe
+Level: 25
+IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
+- Fire Fang
+- Bite
+- Flame Wheel
+- Helping Hand
+
 Camerupt
 Level: 26
 IVs: 30 HP / 30 Atk / 30 Def / 30 SpA / 30 SpD / 30 Spe
@@ -4967,6 +5079,22 @@ IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
 - Facade
 - Encore
 - Feint Attack
+
+Zangoose
+Level: 28
+IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
+- Facade
+- Crush Claw
+- Quick Attack
+- Hone Claws
+
+Kangaskhan
+Level: 28
+IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
+- Fake Out
+- Facade
+- Bite
+- Sucker Punch
 
 Linoone
 Level: 29
@@ -5018,6 +5146,14 @@ IVs: 25 HP / 25 Atk / 25 Def / 25 SpA / 25 SpD / 25 Spe
 - Protect
 - Aerial Ace
 
+Swellow
+Level: 30
+IVs: 25 HP / 25 Atk / 25 Def / 25 SpA / 25 SpD / 25 Spe
+- Aerial Ace
+- Quick Attack
+- Wing Attack
+- Double Team
+
 Skarmory
 Level: 31
 IVs: 26 HP / 26 Atk / 26 Def / 26 SpA / 26 SpD / 26 Spe
@@ -5059,6 +5195,22 @@ IVs: 30 HP / 30 Atk / 30 Def / 30 SpA / 30 SpD / 30 Spe
 - Sunny Day
 - Confuse Ray
 - Calm Mind
+
+Gardevoir
+Level: 41
+IVs: 30 HP / 30 Atk / 30 Def / 30 SpA / 30 SpD / 30 Spe
+- Psychic
+- Dazzling Gleam
+- Calm Mind
+- Protect
+
+Gallade
+Level: 41
+IVs: 30 HP / 30 Atk / 30 Def / 30 SpA / 30 SpD / 30 Spe
+- Sacred Sword
+- Leaf Blade
+- Night Slash
+- Protect
 
 Lunatone @ Sitrus Berry
 Level: 42
@@ -5117,6 +5269,14 @@ IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
 - Crabhammer
 - Taunt
 - Leer
+
+Ludicolo
+Level: 44
+IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
+- Water Pulse
+- Energy Ball
+- Fake Out
+- Rain Dance
 
 Kingdra @ Chesto Berry
 Level: 46
