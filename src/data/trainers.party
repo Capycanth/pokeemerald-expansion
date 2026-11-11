@@ -14351,6 +14351,22 @@ IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 - Roar
 - Rock Slide
 
+Boldore
+Level: 34
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+- Rock Slide
+- Iron Defense
+- Sandstorm
+- Explosion
+
+Lileep
+Level: 35
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+- Ancient Power
+- Giga Drain
+- Confuse Ray
+- Ingrain
+
 Nosepass @ Sitrus Berry
 Level: 37
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
@@ -14401,6 +14417,14 @@ IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 - Roar
 - Rock Slide
 
+Cradily
+Level: 40
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+- Rock Slide
+- Giga Drain
+- Sludge Bomb
+- Ingrain
+
 Nosepass @ Sitrus Berry
 Level: 42
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
@@ -14450,6 +14474,14 @@ IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 - Explosion
 - Roar
 - Rock Slide
+
+Cradily
+Level: 45
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+- Rock Slide
+- Giga Drain
+- Sludge Bomb
+- Ingrain
 
 Nosepass @ Sitrus Berry
 Level: 47
@@ -14551,6 +14583,22 @@ IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 - Protect
 - Triple Kick
 
+Gurdurr
+Level: 34
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+- Focus Punch
+- Rock Slide
+- Bulk Up
+- Low Kick
+
+Lucario
+Level: 35
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+- Aura Sphere
+- Iron Tail
+- Quick Attack
+- Protect
+
 Hariyama @ Sitrus Berry
 Level: 37
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
@@ -14592,6 +14640,22 @@ IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 - Counter
 - Protect
 - Triple Kick
+
+Gurdurr
+Level: 39
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+- Focus Punch
+- Rock Slide
+- Bulk Up
+- Low Kick
+
+Lucario
+Level: 40
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+- Aura Sphere
+- Iron Tail
+- Quick Attack
+- Protect
 
 Hariyama @ Sitrus Berry
 Level: 42
@@ -14642,6 +14706,14 @@ IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 - Counter
 - Protect
 - Triple Kick
+
+Lucario
+Level: 45
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+- Aura Sphere
+- Iron Tail
+- Quick Attack
+- Protect
 
 Hariyama @ Sitrus Berry
 Level: 47
@@ -14735,6 +14807,22 @@ IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 - Explosion
 - Rain Dance
 
+Plusle
+Level: 37
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+- Thunder
+- Helping Hand
+- Encore
+- Protect
+
+Minun
+Level: 37
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+- Thunder
+- Helping Hand
+- Thunder Wave
+- Protect
+
 Magneton @ Sitrus Berry
 Level: 38
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
@@ -14785,6 +14873,14 @@ IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 - Explosion
 - Rain Dance
 
+Luxray
+Level: 42
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+- Thunder Fang
+- Crunch
+- Ice Fang
+- Protect
+
 Magneton @ Sitrus Berry
 Level: 43
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
@@ -14834,6 +14930,14 @@ IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 - Thunder
 - Explosion
 - Rain Dance
+
+Luxray
+Level: 47
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+- Thunder Fang
+- Crunch
+- Ice Fang
+- Protect
 
 Magneton @ Sitrus Berry
 Level: 48
@@ -14935,6 +15039,22 @@ IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 - Solar Beam
 - Bounce
 
+Growlithe
+Level: 36
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+- Flamethrower
+- Helping Hand
+- Roar
+- Sunny Day
+
+Ninetales
+Level: 37
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+- Flamethrower
+- Sunny Day
+- Will O Wisp
+- Solar Beam
+
 Camerupt @ White Herb
 Level: 38
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
@@ -14984,6 +15104,14 @@ IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 - Attract
 - Solar Beam
 - Bounce
+
+Ninetales
+Level: 42
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+- Flamethrower
+- Sunny Day
+- Will O Wisp
+- Solar Beam
 
 Camerupt @ White Herb
 Level: 43
@@ -15143,6 +15271,22 @@ IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 - Double Edge
 - Fire Blast
 
+Kangaskhan
+Level: 41
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+- Fake Out
+- Dizzy Punch
+- Endure
+- Reversal
+
+Zangoose
+Level: 42
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+- Facade
+- Crush Claw
+- Quick Attack
+- Swords Dance
+
 Spinda
 Level: 43
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
@@ -15193,6 +15337,14 @@ IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 - Endure
 - Reversal
 
+Zangoose
+Level: 47
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+- Facade
+- Crush Claw
+- Quick Attack
+- Swords Dance
+
 Spinda
 Level: 48
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
@@ -15242,6 +15394,14 @@ IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 - Dizzy Punch
 - Endure
 - Reversal
+
+Zangoose
+Level: 52
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+- Facade
+- Crush Claw
+- Quick Attack
+- Swords Dance
 
 Spinda
 Level: 53
@@ -15350,6 +15510,14 @@ IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 - Supersonic
 - Protect
 - Aerial Ace
+
+Swellow
+Level: 42
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+- Aerial Ace
+- Facade
+- Quick Attack
+- Protect
 
 Skarmory
 Level: 43
@@ -15551,12 +15719,20 @@ Items: Full Restore / Full Restore / Full Restore
 Double Battle: Yes
 AI: Basic Trainer
 
-Slowpoke
+Gardevoir
 Level: 48
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-- Yawn
 - Psychic
+- Dazzling Gleam
 - Calm Mind
+- Protect
+
+Gallade
+Level: 48
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+- Psycho Cut
+- Leaf Blade
+- Night Slash
 - Protect
 
 Claydol
@@ -15807,6 +15983,14 @@ IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 - Taunt
 - Double Team
 
+Ludicolo
+Level: 49
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+- Surf
+- Giga Drain
+- Fake Out
+- Rain Dance
+
 Kingdra @ Chesto Berry
 Level: 51
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
@@ -15856,6 +16040,14 @@ IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 - Guillotine
 - Taunt
 - Double Team
+
+Ludicolo
+Level: 54
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+- Surf
+- Giga Drain
+- Fake Out
+- Rain Dance
 
 Kingdra @ Chesto Berry
 Level: 56
