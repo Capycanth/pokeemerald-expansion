@@ -36,6 +36,7 @@ LilycoveCity_DepartmentStore_3F_Pokemart_Vitamins:
 	.2byte ITEM_WHIPPED_DREAM
 	.2byte ITEM_SHINY_STONE
 	.2byte ITEM_DUSK_STONE
+	.2byte ITEM_DAWN_STONE
 	pokemartlistend
 
 LilycoveCity_DepartmentStore_3F_EventScript_ClerkRight::
