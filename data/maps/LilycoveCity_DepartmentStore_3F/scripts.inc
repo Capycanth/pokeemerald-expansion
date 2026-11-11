@@ -19,6 +19,23 @@ LilycoveCity_DepartmentStore_3F_Pokemart_Vitamins:
 	.2byte ITEM_ZINC
 	.2byte ITEM_CARBOS
 	.2byte ITEM_HP_UP
+	.2byte ITEM_LINKING_CORD
+	.2byte ITEM_KINGS_ROCK
+	.2byte ITEM_METAL_COAT
+	.2byte ITEM_DRAGON_SCALE
+	.2byte ITEM_UPGRADE
+	.2byte ITEM_DUBIOUS_DISC
+	.2byte ITEM_PROTECTOR
+	.2byte ITEM_ELECTIRIZER
+	.2byte ITEM_MAGMARIZER
+	.2byte ITEM_REAPER_CLOTH
+	.2byte ITEM_PRISM_SCALE
+	.2byte ITEM_DEEP_SEA_TOOTH
+	.2byte ITEM_DEEP_SEA_SCALE
+	.2byte ITEM_SACHET
+	.2byte ITEM_WHIPPED_DREAM
+	.2byte ITEM_SHINY_STONE
+	.2byte ITEM_DUSK_STONE
 	pokemartlistend
 
 LilycoveCity_DepartmentStore_3F_EventScript_ClerkRight::
