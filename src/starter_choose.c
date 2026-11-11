@@ -10,6 +10,7 @@
 #include "palette.h"
 #include "pokedex.h"
 #include "pokemon.h"
+#include "random.h"
 #include "scanline_effect.h"
 #include "sound.h"
 #include "sprite.h"
@@ -119,6 +120,61 @@ static const u16 sStarterMon[STARTER_MON_COUNT] =
     GRASS_STARTER,
     FIRE_STARTER,
     WATER_STARTER,
+};
+
+// Every starter line, by type and generation. Each new game picks one line of
+// each type at random (RandomizeStarters), so Birch's bag always has a Grass,
+// a Fire and a Water starter, in that order.
+// The Hoenn line must stay at HOENN_STARTER_INDEX: saves from before starters
+// were randomized (var = 0) and the rival's trainer data both use it.
+#define NUM_STARTER_LINES   9
+#define HOENN_STARTER_INDEX 2
+
+static const u16 sStarterLines[STARTER_MON_COUNT][NUM_STARTER_LINES][3] =
+{
+    [0] = // Grass
+    {
+        {SPECIES_BULBASAUR, SPECIES_IVYSAUR, SPECIES_VENUSAUR},
+        {SPECIES_CHIKORITA, SPECIES_BAYLEEF, SPECIES_MEGANIUM},
+        {SPECIES_TREECKO, SPECIES_GROVYLE, SPECIES_SCEPTILE},
+        {SPECIES_TURTWIG, SPECIES_GROTLE, SPECIES_TORTERRA},
+        {SPECIES_SNIVY, SPECIES_SERVINE, SPECIES_SERPERIOR},
+        {SPECIES_CHESPIN, SPECIES_QUILLADIN, SPECIES_CHESNAUGHT},
+        {SPECIES_ROWLET, SPECIES_DARTRIX, SPECIES_DECIDUEYE},
+        {SPECIES_GROOKEY, SPECIES_THWACKEY, SPECIES_RILLABOOM},
+        {SPECIES_SPRIGATITO, SPECIES_FLORAGATO, SPECIES_MEOWSCARADA},
+    },
+    [1] = // Fire
+    {
+        {SPECIES_CHARMANDER, SPECIES_CHARMELEON, SPECIES_CHARIZARD},
+        {SPECIES_CYNDAQUIL, SPECIES_QUILAVA, SPECIES_TYPHLOSION},
+        {SPECIES_TORCHIC, SPECIES_COMBUSKEN, SPECIES_BLAZIKEN},
+        {SPECIES_CHIMCHAR, SPECIES_MONFERNO, SPECIES_INFERNAPE},
+        {SPECIES_TEPIG, SPECIES_PIGNITE, SPECIES_EMBOAR},
+        {SPECIES_FENNEKIN, SPECIES_BRAIXEN, SPECIES_DELPHOX},
+        {SPECIES_LITTEN, SPECIES_TORRACAT, SPECIES_INCINEROAR},
+        {SPECIES_SCORBUNNY, SPECIES_RABOOT, SPECIES_CINDERACE},
+        {SPECIES_FUECOCO, SPECIES_CROCALOR, SPECIES_SKELEDIRGE},
+    },
+    [2] = // Water
+    {
+        {SPECIES_SQUIRTLE, SPECIES_WARTORTLE, SPECIES_BLASTOISE},
+        {SPECIES_TOTODILE, SPECIES_CROCONAW, SPECIES_FERALIGATR},
+        {SPECIES_MUDKIP, SPECIES_MARSHTOMP, SPECIES_SWAMPERT},
+        {SPECIES_PIPLUP, SPECIES_PRINPLUP, SPECIES_EMPOLEON},
+        {SPECIES_OSHAWOTT, SPECIES_DEWOTT, SPECIES_SAMUROTT},
+        {SPECIES_FROAKIE, SPECIES_FROGADIER, SPECIES_GRENINJA},
+        {SPECIES_POPPLIO, SPECIES_BRIONNE, SPECIES_PRIMARINA},
+        {SPECIES_SOBBLE, SPECIES_DRIZZILE, SPECIES_INTELEON},
+        {SPECIES_QUAXLY, SPECIES_QUAXWELL, SPECIES_QUAQUAVAL},
+    },
+};
+
+static const u16 sRandomStarterVars[STARTER_MON_COUNT] =
+{
+    VAR_RANDOM_STARTER_GRASS,
+    VAR_RANDOM_STARTER_FIRE,
+    VAR_RANDOM_STARTER_WATER,
 };
 
 static const struct BgTemplate sBgTemplates[3] =
@@ -347,11 +403,45 @@ static const struct SpriteTemplate sSpriteTemplate_StarterCircle =
 };
 
 // .text
+static u32 GetStarterLineIndex(u32 type)
+{
+    u32 value = VarGet(sRandomStarterVars[type]);
+    if (value == 0 || value > NUM_STARTER_LINES)
+        return HOENN_STARTER_INDEX;
+    return value - 1;
+}
+
+// Called when a new game starts.
+void RandomizeStarters(void)
+{
+    for (u32 i = 0; i < STARTER_MON_COUNT; i++)
+        VarSet(sRandomStarterVars[i], (Random() % NUM_STARTER_LINES) + 1);
+}
+
 u16 GetStarterPokemon(u16 chosenStarterId)
 {
-    if (chosenStarterId > STARTER_MON_COUNT)
+    if (chosenStarterId >= STARTER_MON_COUNT)
         chosenStarterId = 0;
-    return sStarterMon[chosenStarterId];
+    if (IS_FRLG)
+        return sStarterMon[chosenStarterId];
+    return sStarterLines[chosenStarterId][GetStarterLineIndex(chosenStarterId)][0];
+}
+
+// The rival's teams are written with the Hoenn starters. Swap any Hoenn
+// starter (any stage) for the same stage of this game's starter of that type.
+u16 GetRivalStarterSpecies(u16 species)
+{
+    if (IS_FRLG)
+        return species;
+    for (u32 type = 0; type < STARTER_MON_COUNT; type++)
+    {
+        for (u32 stage = 0; stage < 3; stage++)
+        {
+            if (sStarterLines[type][HOENN_STARTER_INDEX][stage] == species)
+                return sStarterLines[type][GetStarterLineIndex(type)][stage];
+        }
+    }
+    return species;
 }
 
 static void VblankCB_StarterChoose(void)
