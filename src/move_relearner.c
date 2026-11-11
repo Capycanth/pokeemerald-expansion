@@ -65,7 +65,7 @@ static EWRAM_DATA struct
     u16 movesToLearn[MAX_RELEARNER_MOVES];
     struct ListMenuItem menuItems[MAX_RELEARNER_MOVES + 1];
     u8 mainTask;
-    u8 numMenuChoices;
+    u16 numMenuChoices;
     u8 numToShowAtOnce;
     u8 moveListMenuTask;
     u8 moveListScrollArrowTask;
