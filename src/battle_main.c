@@ -1735,6 +1735,21 @@ void BattleMainCB2(void)
     UpdatePaletteFade();
     RunTasks();
 
+    // B_ANIM_SPEED_MULTIPLIER: while a battle animation plays, run extra updates
+    // this frame. Animations don't wait for input, so this doesn't skip any choices.
+    // Link battles are left alone so both sides stay in step.
+    for (u32 i = 1; i < B_ANIM_SPEED_MULTIPLIER; i++)
+    {
+        if (!gAnimScriptActive || gBattleTypeFlags & BATTLE_TYPE_LINK
+         || gMain.callback1 != BattleMainCB1 || gMain.callback2 != BattleMainCB2)
+            break;
+        BattleMainCB1();
+        AnimateSprites();
+        UpdatePaletteFade();
+        RunTasks();
+        BuildOamBuffer();
+    }
+
     if (JOY_HELD(B_BUTTON) && gBattleTypeFlags & BATTLE_TYPE_RECORDED && RecordedBattle_CanStopPlayback())
     {
         // Player pressed B during recorded battle playback, end battle
