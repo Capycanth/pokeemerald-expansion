@@ -524,6 +524,40 @@ void CreateWildMon(enum Species species, u8 level)
 #define TRY_GET_ABILITY_INFLUENCED_WILD_MON_INDEX(wildPokemon, type, ability, ptr, count) TryGetAbilityInfluencedWildMonIndex(wildPokemon, type, ability, ptr)
 #endif
 
+// Used by WE_EQUAL_SPECIES_ODDS. Picks one of the different species in slots
+// [firstSlot, firstSlot + numSlots) with equal odds, then a random slot holding it.
+static u32 ChooseWildMonIndex_EqualSpecies(const struct WildPokemon *wildPokemon, u32 firstSlot, u32 numSlots)
+{
+    enum Species species[NUM_LAND_MONS_ENCOUNTER_SLOTS];
+    u32 numSpecies = 0, i, j, count = 0, pick;
+    enum Species chosen;
+
+    for (i = firstSlot; i < firstSlot + numSlots; i++)
+    {
+        for (j = 0; j < numSpecies; j++)
+        {
+            if (species[j] == wildPokemon[i].species)
+                break;
+        }
+        if (j == numSpecies && numSpecies < ARRAY_COUNT(species))
+            species[numSpecies++] = wildPokemon[i].species;
+    }
+
+    chosen = species[Random() % numSpecies];
+    for (i = firstSlot; i < firstSlot + numSlots; i++)
+    {
+        if (wildPokemon[i].species == chosen)
+            count++;
+    }
+    pick = Random() % count;
+    for (i = firstSlot; i < firstSlot + numSlots; i++)
+    {
+        if (wildPokemon[i].species == chosen && pick-- == 0)
+            return i;
+    }
+    return firstSlot;
+}
+
 bool8 TryGenerateWildMon(const struct WildPokemonInfo *wildMonInfo, enum WildPokemonArea area, u8 flags)
 {
     u8 wildMonIndex = 0;
@@ -545,7 +579,10 @@ bool8 TryGenerateWildMon(const struct WildPokemonInfo *wildMonInfo, enum WildPok
         if (OW_STORM_DRAIN >= GEN_8 && TRY_GET_ABILITY_INFLUENCED_WILD_MON_INDEX(wildMonInfo->wildPokemon, TYPE_WATER, ABILITY_STORM_DRAIN, &wildMonIndex, NUM_LAND_MONS_ENCOUNTER_SLOTS))
             break;
 
-        wildMonIndex = ChooseWildMonIndex_Land();
+        if (WE_EQUAL_SPECIES_ODDS)
+            wildMonIndex = ChooseWildMonIndex_EqualSpecies(wildMonInfo->wildPokemon, 0, NUM_LAND_MONS_ENCOUNTER_SLOTS);
+        else
+            wildMonIndex = ChooseWildMonIndex_Land();
         break;
     case WILD_AREA_WATER:
         if (TRY_GET_ABILITY_INFLUENCED_WILD_MON_INDEX(wildMonInfo->wildPokemon, TYPE_STEEL, ABILITY_MAGNET_PULL, &wildMonIndex, NUM_WATER_MONS_ENCOUNTER_SLOTS))
@@ -561,10 +598,16 @@ bool8 TryGenerateWildMon(const struct WildPokemonInfo *wildMonInfo, enum WildPok
         if (OW_STORM_DRAIN >= GEN_8 && TRY_GET_ABILITY_INFLUENCED_WILD_MON_INDEX(wildMonInfo->wildPokemon, TYPE_WATER, ABILITY_STORM_DRAIN, &wildMonIndex, NUM_WATER_MONS_ENCOUNTER_SLOTS))
             break;
 
-        wildMonIndex = ChooseWildMonIndex_Water();
+        if (WE_EQUAL_SPECIES_ODDS)
+            wildMonIndex = ChooseWildMonIndex_EqualSpecies(wildMonInfo->wildPokemon, 0, NUM_WATER_MONS_ENCOUNTER_SLOTS);
+        else
+            wildMonIndex = ChooseWildMonIndex_Water();
         break;
     case WILD_AREA_ROCKS:
-        wildMonIndex = ChooseWildMonIndex_Rocks();
+        if (WE_EQUAL_SPECIES_ODDS)
+            wildMonIndex = ChooseWildMonIndex_EqualSpecies(wildMonInfo->wildPokemon, 0, NUM_ROCK_SMASH_MONS_ENCOUNTER_SLOTS);
+        else
+            wildMonIndex = ChooseWildMonIndex_Rocks();
         break;
     default:
     case WILD_AREA_FISHING:
@@ -584,7 +627,21 @@ bool8 TryGenerateWildMon(const struct WildPokemonInfo *wildMonInfo, enum WildPok
 
 static u16 GenerateFishingWildMon(const struct WildPokemonInfo *wildMonInfo, u8 rod)
 {
-    u8 wildMonIndex = ChooseWildMonIndex_Fishing(rod);
+    u8 wildMonIndex;
+    if (WE_EQUAL_SPECIES_ODDS)
+    {
+        // Each rod has its own slots: Old Rod 0-1, Good Rod 2-4, Super Rod 5-9.
+        if (rod == OLD_ROD)
+            wildMonIndex = ChooseWildMonIndex_EqualSpecies(wildMonInfo->wildPokemon, 0, 2);
+        else if (rod == GOOD_ROD)
+            wildMonIndex = ChooseWildMonIndex_EqualSpecies(wildMonInfo->wildPokemon, 2, 3);
+        else
+            wildMonIndex = ChooseWildMonIndex_EqualSpecies(wildMonInfo->wildPokemon, 5, 5);
+    }
+    else
+    {
+        wildMonIndex = ChooseWildMonIndex_Fishing(rod);
+    }
     enum Species wildMonSpecies = wildMonInfo->wildPokemon[wildMonIndex].species;
     u8 level = ChooseWildMonLevel(wildMonInfo->wildPokemon, wildMonIndex, WILD_AREA_FISHING);
 

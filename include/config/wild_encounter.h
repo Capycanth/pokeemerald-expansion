@@ -4,6 +4,7 @@
 // Vanilla
 #define WE_VANILLA_RANDOM           TRUE    // If TRUE, Pokémon can randomly spawn on tiles that can trigger wild encounters, as in vanilla.
 #define WE_FLAG_NO_ENCOUNTER        0       // If this flag is set, wild encounters will be disabled.
+#define WE_EQUAL_SPECIES_ODDS       TRUE    // If TRUE, every species in an encounter table (grass, surfing, Rock Smash, or one fishing rod) is equally likely, no matter how many slots it fills or each slot's rate. The level is taken from a random slot of the chosen species.
 
 // Double Wild Battles
 #define WE_DOUBLE_WILD_CHANCE            0          // % chance of encountering two Pokémon in a Wild Encounter.
