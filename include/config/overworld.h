@@ -3,6 +3,7 @@
 
 // Movement config
 #define OW_RUNNING_INDOORS          GEN_LATEST  // In Gen4+, players are allowed to run indoors.
+#define OW_RUN_SPEED                2           // How fast running is. 1: vanilla (8 frames per tile). 2: a third faster, the Acro Bike's speed (6 frames). 3: twice as fast, the Mach Bike's top speed (4 frames).
 #define SLOW_MOVEMENT_ON_STAIRS     FALSE       // If enabled, the player will move slower up/down stairs like in FR
 
 // Other settings

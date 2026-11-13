@@ -5865,6 +5865,14 @@ bool8 FollowablePlayerMovement_Step(struct ObjectEvent *objectEvent, struct Spri
     {
         objectEvent->movementActionId = GetWalkFastMovementAction(direction);
     }
+    else if (gSprites[gPlayerAvatar.spriteId].data[4] == MOVE_SPEED_FAST_2) // running with OW_RUN_SPEED 2
+    {
+        objectEvent->movementActionId = GetRideWaterCurrentMovementAction(direction);
+    }
+    else if (gSprites[gPlayerAvatar.spriteId].data[4] == MOVE_SPEED_FASTER) // running with OW_RUN_SPEED 3
+    {
+        objectEvent->movementActionId = GetWalkFasterMovementAction(direction);
+    }
     else
     {
         objectEvent->movementActionId = GetWalkNormalMovementAction(direction);
@@ -7006,7 +7014,8 @@ static void InitMovementNormal(struct ObjectEvent *objectEvent, struct Sprite *s
 
 static void StartRunningAnim(struct ObjectEvent *objectEvent, struct Sprite *sprite, enum Direction direction)
 {
-    InitNpcForMovement(objectEvent, sprite, direction, MOVE_SPEED_FAST_1);
+    // OW_RUN_SPEED 1/2/3 = MOVE_SPEED_FAST_1/FAST_2/FASTER
+    InitNpcForMovement(objectEvent, sprite, direction, MOVE_SPEED_FAST_1 + (OW_RUN_SPEED - 1));
     SetStepAnimHandleAlternation(objectEvent, sprite, GetRunningDirectionAnimNum(objectEvent->facingDirection));
 }
 
