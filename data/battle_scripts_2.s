@@ -331,6 +331,12 @@ BattleScript_GhostBallDodge::
 	waitmessage B_WAIT_TIME_LONG
 	finishaction
 
+BattleScript_NuzlockeBallBlock::
+	waitmessage B_WAIT_TIME_LONG
+	printstring STRINGID_NUZLOCKEBLOCKEDBALL
+	waitmessage B_WAIT_TIME_LONG
+	finishaction
+
 BattleScript_ActionThrowRock::
 	printstring STRINGID_THREWROCK
 	waitmessage B_WAIT_TIME_LONG

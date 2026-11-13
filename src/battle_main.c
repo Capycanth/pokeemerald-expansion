@@ -78,6 +78,7 @@
 #include "constants/trainers.h"
 #include "constants/weather.h"
 #include "cable_club.h"
+#include "nuzlocke.h"
 
 extern const struct BgTemplate gBattleBgTemplates[];
 extern const struct WindowTemplate *const gBattleWindowTemplates[];
@@ -5417,6 +5418,12 @@ static void ReturnFromBattleToOverworld(void)
         CalculatePlayerPartyCount();
         RandomlyGivePartyPokerus();
         PartySpreadPokerus();
+        // Nuzlocke: fainted Pokémon go to the graveyard box. Losing the last one ends the run.
+        if (!Nuzlocke_AfterBattle())
+        {
+            DoSoftReset();
+            return;
+        }
     }
 
     if (gBattleTypeFlags & BATTLE_TYPE_LINK && gReceivedRemoteLinkPlayers)

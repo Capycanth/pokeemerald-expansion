@@ -22,6 +22,7 @@
 #include "script.h"
 #include "tv.h"
 #include "wild_encounter.h"
+#include "nuzlocke.h"
 #include "battle_debug.h"
 #include "battle_pike.h"
 #include "battle_pyramid.h"
@@ -558,6 +559,28 @@ static u32 ChooseWildMonIndex_EqualSpecies(const struct WildPokemon *wildPokemon
     return firstSlot;
 }
 
+// Picks a slot the normal way for this area (used to re-roll for the Nuzlocke dupes clause).
+static u32 ChooseWildMonIndexForArea(const struct WildPokemonInfo *wildMonInfo, enum WildPokemonArea area)
+{
+    switch (area)
+    {
+    case WILD_AREA_LAND:
+        if (WE_EQUAL_SPECIES_ODDS)
+            return ChooseWildMonIndex_EqualSpecies(wildMonInfo->wildPokemon, 0, NUM_LAND_MONS_ENCOUNTER_SLOTS);
+        return ChooseWildMonIndex_Land();
+    case WILD_AREA_WATER:
+        if (WE_EQUAL_SPECIES_ODDS)
+            return ChooseWildMonIndex_EqualSpecies(wildMonInfo->wildPokemon, 0, NUM_WATER_MONS_ENCOUNTER_SLOTS);
+        return ChooseWildMonIndex_Water();
+    case WILD_AREA_ROCKS:
+        if (WE_EQUAL_SPECIES_ODDS)
+            return ChooseWildMonIndex_EqualSpecies(wildMonInfo->wildPokemon, 0, NUM_ROCK_SMASH_MONS_ENCOUNTER_SLOTS);
+        return ChooseWildMonIndex_Rocks();
+    default:
+        return 0;
+    }
+}
+
 bool8 TryGenerateWildMon(const struct WildPokemonInfo *wildMonInfo, enum WildPokemonArea area, u8 flags)
 {
     u8 wildMonIndex = 0;
@@ -615,6 +638,13 @@ bool8 TryGenerateWildMon(const struct WildPokemonInfo *wildMonInfo, enum WildPok
         break;
     }
 
+    // Nuzlocke dupes clause: re-roll an area's first encounter if it's a Pokémon you already have.
+    if (area == WILD_AREA_LAND || area == WILD_AREA_WATER || area == WILD_AREA_ROCKS)
+    {
+        for (u32 tries = 0; tries < 10 && Nuzlocke_ShouldRerollWildMon(wildMonInfo->wildPokemon[wildMonIndex].species); tries++)
+            wildMonIndex = ChooseWildMonIndexForArea(wildMonInfo, area);
+    }
+
     level = ChooseWildMonLevel(wildMonInfo->wildPokemon, wildMonIndex, area);
     if (flags & WILD_CHECK_REPEL && !IsWildLevelAllowedByRepel(level))
         return FALSE;
@@ -641,6 +671,18 @@ static u16 GenerateFishingWildMon(const struct WildPokemonInfo *wildMonInfo, u8 
     else
     {
         wildMonIndex = ChooseWildMonIndex_Fishing(rod);
+    }
+    // Nuzlocke dupes clause: re-roll an area's first encounter if it's a Pokémon you already have.
+    for (u32 tries = 0; tries < 10 && Nuzlocke_ShouldRerollWildMon(wildMonInfo->wildPokemon[wildMonIndex].species); tries++)
+    {
+        if (!WE_EQUAL_SPECIES_ODDS)
+            wildMonIndex = ChooseWildMonIndex_Fishing(rod);
+        else if (rod == OLD_ROD)
+            wildMonIndex = ChooseWildMonIndex_EqualSpecies(wildMonInfo->wildPokemon, 0, 2);
+        else if (rod == GOOD_ROD)
+            wildMonIndex = ChooseWildMonIndex_EqualSpecies(wildMonInfo->wildPokemon, 2, 3);
+        else
+            wildMonIndex = ChooseWildMonIndex_EqualSpecies(wildMonInfo->wildPokemon, 5, 5);
     }
     enum Species wildMonSpecies = wildMonInfo->wildPokemon[wildMonIndex].species;
     u8 level = ChooseWildMonLevel(wildMonInfo->wildPokemon, wildMonIndex, WILD_AREA_FISHING);

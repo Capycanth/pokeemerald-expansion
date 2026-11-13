@@ -52,6 +52,7 @@
 #include "constants/items.h"
 #include "difficulty.h"
 #include "follower_npc.h"
+#include "nuzlocke.h"
 
 extern const u8 EventScript_ResetAllMapFlags[];
 extern const u8 EventScript_ResetAllMapFlagsFrlg[];
@@ -235,6 +236,7 @@ void NewGameInitData(void)
     ResetDexNav();
     ClearFollowerNPCData();
     EnableNationalPokedex(); // The Pokédex is in National mode from the start of the game.
+    Nuzlocke_InitNewGame();
 }
 
 static void ResetMiniGamesRecords(void)

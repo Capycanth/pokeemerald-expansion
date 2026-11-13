@@ -19,6 +19,7 @@
 #include "agb_flash.h"
 #include "event_data.h"
 #include "constants/event_objects.h"
+#include "nuzlocke.h"
 
 static void ApplyNewEncryptionKeyToAllEncryptedData(u32 encryptionKey);
 
@@ -194,6 +195,7 @@ void LoadPlayerParty(void)
         data = gParties[B_TRAINER_PLAYER][i].status;
         SetBoxMonData(&gParties[B_TRAINER_PLAYER][i].box, MON_DATA_STATUS, &data);
     }
+    Nuzlocke_OnPlayerPartyLoaded();
 }
 
 void SaveObjectEvents(void)
