@@ -1,6 +1,7 @@
 #include "global.h"
 #include "clock.h"
 #include "new_game.h"
+#include "nuzlocke.h"
 #include "random.h"
 #include "clock.h"
 #include "pokemon.h"
@@ -52,7 +53,6 @@
 #include "constants/items.h"
 #include "difficulty.h"
 #include "follower_npc.h"
-#include "nuzlocke.h"
 
 extern const u8 EventScript_ResetAllMapFlags[];
 extern const u8 EventScript_ResetAllMapFlagsFrlg[];
@@ -200,6 +200,7 @@ void NewGameInitData(void)
     gPartiesCount[B_TRAINER_PLAYER] = 0;
     ZeroPlayerPartyMons();
     ResetPokemonStorageSystem();
+    Nuzlocke_InitNewGame(); // Names the graveyard box
     DeactivateAllRoamers();
     gSaveBlock1Ptr->registeredItem = ITEM_NONE;
     ClearBag();
@@ -236,7 +237,6 @@ void NewGameInitData(void)
     ResetDexNav();
     ClearFollowerNPCData();
     EnableNationalPokedex(); // The Pokédex is in National mode from the start of the game.
-    Nuzlocke_InitNewGame();
 }
 
 static void ResetMiniGamesRecords(void)
