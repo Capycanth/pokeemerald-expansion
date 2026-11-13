@@ -76,6 +76,7 @@
 #include "test/battle.h"
 #include "follower_npc.h"
 #include "load_save.h"
+#include "nuzlocke.h"
 
 // Helper for accessing command arguments and advancing gBattlescriptCurrInstr.
 //
@@ -8255,6 +8256,13 @@ static void Cmd_handleballthrow(void)
         MarkBattlerForControllerExec(gBattlerAttacker);
         gBattlescriptCurrInstr = BattleScript_WallyBallThrow;
     }
+    else if (!Nuzlocke_CanCatchWildMon(GetBattlerMon(gBattlerTarget)))
+    {
+        // Nuzlocke: only the first encounter in an area can be caught (also covers Safari Balls).
+        BtlController_EmitBallThrowAnim(gBattlerAttacker, B_COMM_TO_CONTROLLER, BALL_TRAINER_BLOCK);
+        MarkBattlerForControllerExec(gBattlerAttacker);
+        gBattlescriptCurrInstr = BattleScript_NuzlockeBallBlock;
+    }
     else
     {
         SetBallThrowShakes();
@@ -8569,6 +8577,13 @@ static void Cmd_trygivecaughtmonnick(void)
     switch (gBattleCommunication[MULTIUSE_STATE])
     {
     case 0:
+        if (B_NUZLOCKE && B_NUZLOCKE_NICKNAMES)
+        {
+            // Nuzlocke: every catch gets a nickname, so go straight to the naming screen.
+            gBattleCommunication[MULTIUSE_STATE] = 2;
+            BeginFastPaletteFade(3);
+            break;
+        }
         HandleBattleWindow(YESNOBOX_X_Y, 0);
         BattlePutTextOnWindow(gText_BattleYesNoChoice, B_WIN_YESNO);
         gBattleCommunication[MULTIUSE_STATE]++;

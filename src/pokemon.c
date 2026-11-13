@@ -76,6 +76,7 @@
 #include "constants/trainers.h"
 #include "constants/union_room.h"
 #include "constants/weather.h"
+#include "nuzlocke.h"
 
 extern enum Item gSpecialVar_ItemId;
 
@@ -2970,7 +2971,7 @@ u8 CopyMonToPC(struct Pokemon *mon)
 
     do
     {
-        for (boxPos = 0; boxPos < IN_BOX_COUNT; boxPos++)
+        for (boxPos = 0; boxPos < IN_BOX_COUNT && !Nuzlocke_IsGraveyardBox(boxNo); boxPos++)
         {
             struct BoxPokemon *checkingMon = GetBoxedMonPtr(boxNo, boxPos);
             if (GetBoxMonData(checkingMon, MON_DATA_SPECIES) == SPECIES_NONE)
@@ -3170,7 +3171,7 @@ bool8 IsPokemonStorageFull(void)
 
     for (i = 0; i < TOTAL_BOXES_COUNT; i++)
         for (j = 0; j < IN_BOX_COUNT; j++)
-            if (GetBoxMonDataAt(i, j, MON_DATA_SPECIES) == SPECIES_NONE)
+            if (!Nuzlocke_IsGraveyardBox(i) && GetBoxMonDataAt(i, j, MON_DATA_SPECIES) == SPECIES_NONE)
                 return FALSE;
 
     return TRUE;
@@ -3662,7 +3663,8 @@ bool8 PokemonUseItemEffects(struct Pokemon *mon, enum Item item, u8 partyIndex, 
                         }
                         // Check use validity.
                         if ((effectFlags & (ITEM4_REVIVE >> 2) && currentHP != 0)
-                              || (!(effectFlags & (ITEM4_REVIVE >> 2)) && currentHP == 0))
+                              || (!(effectFlags & (ITEM4_REVIVE >> 2)) && currentHP == 0)
+                              || (effectFlags & (ITEM4_REVIVE >> 2) && Nuzlocke_IsReviveBlocked(mon)))
                         {
                             itemEffectParam++;
                             break;

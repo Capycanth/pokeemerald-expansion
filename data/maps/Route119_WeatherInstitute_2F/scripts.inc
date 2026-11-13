@@ -90,8 +90,10 @@ Route119_WeatherInstitute_2F_EventScript_ReceiveCastform::
 
 Route119_WeatherInstitute_2F_EventScript_ReceiveCastformParty::
 	call Route119_WeatherInstitute_2F_EventScript_ReceivedCastformFanfare
+.if B_NUZLOCKE == FALSE || B_NUZLOCKE_NICKNAMES == FALSE @ Nuzlocke: gifts always get a nickname
 	msgbox gText_NicknameThisPokemon, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, NO, Route119_WeatherInstitute_2F_EventScript_ExplainCastform
+.endif
 	call Common_EventScript_GetGiftMonPartySlot
 	call Common_EventScript_NameReceivedPartyMon
 	goto Route119_WeatherInstitute_2F_EventScript_ExplainCastform
@@ -99,8 +101,10 @@ Route119_WeatherInstitute_2F_EventScript_ReceiveCastformParty::
 
 Route119_WeatherInstitute_2F_EventScript_ReceiveCastformPC::
 	call Route119_WeatherInstitute_2F_EventScript_ReceivedCastformFanfare
+.if B_NUZLOCKE == FALSE || B_NUZLOCKE_NICKNAMES == FALSE @ Nuzlocke: gifts always get a nickname
 	msgbox gText_NicknameThisPokemon, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, NO, Route119_WeatherInstitute_2F_EventScript_SendCastformToPC
+.endif
 	call Common_EventScript_NameReceivedBoxMon
 	goto Route119_WeatherInstitute_2F_EventScript_SendCastformToPC
 	end

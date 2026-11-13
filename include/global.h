@@ -1210,6 +1210,7 @@ struct SaveBlock1
     u8 rivalName[PLAYER_NAME_LENGTH + 1];
     struct DaycareMon route5DayCareMon;
 #endif
+    u8 nuzlockeAreasUsed[32]; // One bit per map section: set once its first wild encounter has happened (B_NUZLOCKE_ONE_CATCH_PER_AREA)
     // sizeof: 0x3???
 };
 

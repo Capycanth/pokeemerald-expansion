@@ -59,6 +59,7 @@
 #include "constants/trainers.h"
 #include "constants/trainer_hill.h"
 #include "constants/weather.h"
+#include "nuzlocke.h"
 
 enum TransitionType
 {
@@ -410,6 +411,8 @@ static void DoStandardWildBattle(bool32 isDouble)
         VarSet(VAR_TEMP_E, 0);
         gBattleTypeFlags |= BATTLE_TYPE_PYRAMID;
     }
+    // Wild encounters in the overworld count toward the Nuzlocke one-catch-per-area rule.
+    Nuzlocke_SetAreaEncounter(!(gBattleTypeFlags & BATTLE_TYPE_PYRAMID));
     CreateBattleStartTask(GetWildBattleTransition(), 0);
     IncrementGameStat(GAME_STAT_TOTAL_BATTLES);
     IncrementGameStat(GAME_STAT_WILD_BATTLES);
@@ -457,6 +460,7 @@ static void DoSafariBattle(void)
     StopPlayerAvatar();
     gMain.savedCallback = CB2_EndSafariBattle;
     gBattleTypeFlags = BATTLE_TYPE_SAFARI;
+    Nuzlocke_SetAreaEncounter(TRUE);
     CreateBattleStartTask(GetWildBattleTransition(), 0);
 }
 

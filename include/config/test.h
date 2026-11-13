@@ -1142,6 +1142,10 @@
 // Compression DebugPrintf switch
 #define T_COMPRESSION_SHOULD_PRINT FALSE
 
+// Nuzlocke rules change catching, revives and losing, which the tests don't expect.
+#undef B_NUZLOCKE
+#define B_NUZLOCKE                       FALSE
+
 //  Move animation testing
 #define T_SHOULD_RUN_MOVE_ANIM  FALSE       //  If TRUE, enables the move animation tests, these are very computationally heavy and takes a long time to run.
 

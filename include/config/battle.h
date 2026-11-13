@@ -404,6 +404,14 @@
 #define NUM_BEEPS_OFF                   0                    // Does not play at all
 #define B_NUM_LOW_HEALTH_BEEPS          NUM_BEEPS_GEN_LATEST // This controls the number of times the "low HP" beep will loop. Setting this value to NUM_BEEPS_OFF will disable the beep, while NUM_BEEPS_GEN_3 will loop infinitely. You can set this to any number you want, the defines listed are just for ease of use.
 
+// Nuzlocke
+#define B_NUZLOCKE                    TRUE   // Master switch for the Nuzlocke rules below. Fainted Pokémon are moved to the graveyard PC box after every battle, revival items don't work on your Pokémon, and losing your last Pokémon ends the game (back to the title screen; your last save is untouched).
+#define B_NUZLOCKE_GRAVEYARD_BOX      13     // PC box (0-based) that holds fainted Pokémon. Pokémon in it can be viewed and released, but not withdrawn or moved, and nothing else can be put in it. 13 is the last box.
+#define B_NUZLOCKE_ONE_CATCH_PER_AREA TRUE   // Only the first wild Pokémon met in each area (map section) can be caught. Scripted encounters (legendaries, Kecleon, Voltorb, etc.), roamers and gifts don't count.
+#define B_NUZLOCKE_DUPES_CLAUSE       TRUE   // An area's first encounter is re-rolled (up to 10 times) if you already caught a Pokémon of that evolution family. A duplicate that slips through can't be caught and doesn't use up the area.
+#define B_NUZLOCKE_SHINY_CLAUSE       TRUE   // Shiny Pokémon can always be caught and never use up an area.
+#define B_NUZLOCKE_NICKNAMES          TRUE   // Caught, hatched, gift and starter Pokémon always go straight to the naming screen.
+
 // Animation Settings
 #define B_NEW_SWORD_PARTICLE            FALSE    // If set to TRUE, it updates Swords Dance's particle.
 #define B_NEW_LEECH_SEED_PARTICLE       FALSE    // If set to TRUE, it updates Leech Seed's particle.

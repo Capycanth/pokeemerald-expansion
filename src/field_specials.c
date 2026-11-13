@@ -79,6 +79,7 @@
 #include "battle_util.h"
 #include "naming_screen.h"
 #include "chooseboxmon.h"
+#include "nuzlocke.h"
 
 #define TAG_ITEM_ICON 5500
 
@@ -3488,7 +3489,7 @@ bool8 IsDestinationBoxFull(void)
     box = StorageGetCurrentBox();
     do
     {
-        for (i = 0; i < IN_BOX_COUNT; i++)
+        for (i = 0; i < IN_BOX_COUNT && !Nuzlocke_IsGraveyardBox(box); i++)
         {
             if (GetBoxMonData(GetBoxedMonPtr(box, i), MON_DATA_SPECIES, 0) == SPECIES_NONE)
             {

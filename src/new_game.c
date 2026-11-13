@@ -1,6 +1,7 @@
 #include "global.h"
 #include "clock.h"
 #include "new_game.h"
+#include "nuzlocke.h"
 #include "random.h"
 #include "clock.h"
 #include "pokemon.h"
@@ -199,6 +200,7 @@ void NewGameInitData(void)
     gPartiesCount[B_TRAINER_PLAYER] = 0;
     ZeroPlayerPartyMons();
     ResetPokemonStorageSystem();
+    Nuzlocke_InitNewGame(); // Names the graveyard box
     DeactivateAllRoamers();
     gSaveBlock1Ptr->registeredItem = ITEM_NONE;
     ClearBag();

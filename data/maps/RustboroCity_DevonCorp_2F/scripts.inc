@@ -151,8 +151,10 @@ RustboroCity_DevonCorp_2F_EventScript_ReceiveLileep::
 
 RustboroCity_DevonCorp_2F_EventScript_ReceiveLileepParty::
 	call RustboroCity_DevonCorp_2F_EventScript_ReceivedLileepFanfare
+.if B_NUZLOCKE == FALSE || B_NUZLOCKE_NICKNAMES == FALSE @ Nuzlocke: gifts always get a nickname
 	msgbox gText_NicknameThisPokemon, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, NO, RustboroCity_DevonCorp_2F_EventScript_FinishReceivingLileep
+.endif
 	call Common_EventScript_GetGiftMonPartySlot
 	call Common_EventScript_NameReceivedPartyMon
 	goto RustboroCity_DevonCorp_2F_EventScript_FinishReceivingLileep
@@ -160,8 +162,10 @@ RustboroCity_DevonCorp_2F_EventScript_ReceiveLileepParty::
 
 RustboroCity_DevonCorp_2F_EventScript_ReceiveLileepPC::
 	call RustboroCity_DevonCorp_2F_EventScript_ReceivedLileepFanfare
+.if B_NUZLOCKE == FALSE || B_NUZLOCKE_NICKNAMES == FALSE @ Nuzlocke: gifts always get a nickname
 	msgbox gText_NicknameThisPokemon, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, NO, RustboroCity_DevonCorp_2F_EventScript_TransferLileepToPC
+.endif
 	call Common_EventScript_NameReceivedBoxMon
 	goto RustboroCity_DevonCorp_2F_EventScript_TransferLileepToPC
 	end
@@ -196,8 +200,10 @@ RustboroCity_DevonCorp_2F_EventScript_ReceiveAnorith::
 
 RustboroCity_DevonCorp_2F_EventScript_ReceiveAnorithParty::
 	call RustboroCity_DevonCorp_2F_EventScript_ReceivedAnorithFanfare
+.if B_NUZLOCKE == FALSE || B_NUZLOCKE_NICKNAMES == FALSE @ Nuzlocke: gifts always get a nickname
 	msgbox gText_NicknameThisPokemon, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, NO, RustboroCity_DevonCorp_2F_EventScript_FinishReceivingAnorith
+.endif
 	call Common_EventScript_GetGiftMonPartySlot
 	call Common_EventScript_NameReceivedPartyMon
 	goto RustboroCity_DevonCorp_2F_EventScript_FinishReceivingAnorith
@@ -205,8 +211,10 @@ RustboroCity_DevonCorp_2F_EventScript_ReceiveAnorithParty::
 
 RustboroCity_DevonCorp_2F_EventScript_ReceiveAnorithPC::
 	call RustboroCity_DevonCorp_2F_EventScript_ReceivedAnorithFanfare
+.if B_NUZLOCKE == FALSE || B_NUZLOCKE_NICKNAMES == FALSE @ Nuzlocke: gifts always get a nickname
 	msgbox gText_NicknameThisPokemon, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, NO, RustboroCity_DevonCorp_2F_EventScript_TransferAnorithToPC
+.endif
 	call Common_EventScript_NameReceivedBoxMon
 	goto RustboroCity_DevonCorp_2F_EventScript_TransferAnorithToPC
 	end

@@ -104,7 +104,7 @@ enum __attribute__((packed)) Stat
 #define MAX_STAT_STAGE    12
 
 // Shiny odds
-#define SHINY_ODDS 8 // Actual probability is SHINY_ODDS/65536
+#define SHINY_ODDS 64 // Actual probability is SHINY_ODDS/65536 (64 = 1 in 1024; vanilla is 8)
 
 // Ribbon IDs used by TV and Pokénav
 #define CHAMPION_RIBBON       0

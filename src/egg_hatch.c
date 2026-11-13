@@ -645,7 +645,16 @@ static void CB2_EggHatch(void)
         break;
     case 9:
         // Print the nickname prompt
-        if (!IsTextPrinterActiveOnWindow(sEggHatchData->windowId))
+        if (!IsTextPrinterActiveOnWindow(sEggHatchData->windowId) && B_NUZLOCKE && B_NUZLOCKE_NICKNAMES)
+        {
+            // Nuzlocke: every hatched Pokémon gets a nickname, so skip the Yes/No.
+            GetMonNickname(&gParties[B_TRAINER_PLAYER][sEggHatchData->eggPartyId], gStringVar3);
+            species = GetMonData(&gParties[B_TRAINER_PLAYER][sEggHatchData->eggPartyId], MON_DATA_SPECIES);
+            gender = GetMonGender(&gParties[B_TRAINER_PLAYER][sEggHatchData->eggPartyId]);
+            personality = GetMonData(&gParties[B_TRAINER_PLAYER][sEggHatchData->eggPartyId], MON_DATA_PERSONALITY, 0);
+            DoNamingScreen(NAMING_SCREEN_NICKNAME, gStringVar3, species, gender, personality, EggHatchSetMonNickname);
+        }
+        else if (!IsTextPrinterActiveOnWindow(sEggHatchData->windowId))
         {
             LoadUserWindowBorderGfx(sEggHatchData->windowId, 0x140, BG_PLTT_ID(14));
             CreateYesNoMenu(&sYesNoWinTemplate, 0x140, 0xE, 0);

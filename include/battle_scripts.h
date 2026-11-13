@@ -728,6 +728,7 @@ extern const u8 BattleScript_EffectDoodle[];
 extern const u8 BattleScript_EffectShedTail[];
 extern const u8 BattleScript_EffectTidyUp[];
 extern const u8 BattleScript_GhostBallDodge[];
+extern const u8 BattleScript_NuzlockeBallBlock[];
 extern const u8 BattleScript_GhostGetOutGetOut[];
 extern const u8 BattleScript_TooScaredToMove[];
 extern const u8 BattleScript_SilphScopeUnveiled[];

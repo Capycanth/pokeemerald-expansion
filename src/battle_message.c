@@ -210,7 +210,11 @@ const u8 *const gBattleStringsTable[STRINGID_COUNT] =
     [STRINGID_PLAYERWHITEOUT]                       = COMPOUND_STRING("You have no more Pokémon that can fight!\p"),
     [STRINGID_PLAYERWHITEOUT2_WILD]                 = COMPOUND_STRING("You panicked and dropped ¥{B_BUFF1}…"),
     [STRINGID_PLAYERWHITEOUT2_TRAINER]              = COMPOUND_STRING("You gave ¥{B_BUFF1} to the winner…"),
+#if B_NUZLOCKE
+    [STRINGID_PLAYERWHITEOUT3]                      = COMPOUND_STRING("Your Nuzlocke challenge is over…"),
+#else
     [STRINGID_PLAYERWHITEOUT3]                      = COMPOUND_STRING("You were overwhelmed by your defeat!"),
+#endif
     [STRINGID_PREVENTSESCAPE]                       = COMPOUND_STRING("{B_SCR_NAME_WITH_PREFIX} prevents escape with {B_SCR_ABILITY}!\p"),
     [STRINGID_HITXTIMES]                            = COMPOUND_STRING("The Pokémon was hit {B_BUFF1} time{B_BUFF2}!"),
     [STRINGID_PKMNFELLASLEEP]                       = COMPOUND_STRING("{B_EFF_NAME_WITH_PREFIX} fell asleep!"),
@@ -425,7 +429,11 @@ const u8 *const gBattleStringsTable[STRINGID_COUNT] =
     [STRINGID_SHOOTSOCLOSE]                         = COMPOUND_STRING("Gah! It was so close, too!"),
     [STRINGID_GOTCHAPKMNCAUGHTPLAYER]               = COMPOUND_STRING("Gotcha! {B_DEF_NAME} was caught!{WAIT_SE}{PLAY_BGM MUS_CAUGHT}\p"),
     [STRINGID_GOTCHAPKMNCAUGHTWALLY]                = COMPOUND_STRING("Gotcha! {B_DEF_NAME} was caught!{WAIT_SE}{PLAY_BGM MUS_CAUGHT}{PAUSE 127}"),
+#if B_NUZLOCKE && B_NUZLOCKE_NICKNAMES
+    [STRINGID_GIVENICKNAMECAPTURED]                 = COMPOUND_STRING("Give {B_DEF_NAME} a nickname!"),
+#else
     [STRINGID_GIVENICKNAMECAPTURED]                 = COMPOUND_STRING("Would you like to give {B_DEF_NAME} a nickname?"),
+#endif
     [STRINGID_PKMNDATAADDEDTODEX]                   = COMPOUND_STRING("{B_DEF_NAME}'s data has been added to the Pokédex!\p"),
     [STRINGID_ITISRAINING]                          = COMPOUND_STRING("It's raining!"),
     [STRINGID_SANDSTORMISRAGING]                    = COMPOUND_STRING("The sandstorm is raging!"),
@@ -904,6 +912,7 @@ const u8 *const gBattleStringsTable[STRINGID_COUNT] =
     [STRINGID_S]                                    = COMPOUND_STRING("s"),
     [STRINGID_LOSTSOMEOFITSHP]                      = COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX} lost some of its HP!"),
     [STRINGID_BELCHCANTUSE]                         = COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX} hasn't eaten any held Berries, so it can't possibly belch!\p"),
+    [STRINGID_NUZLOCKEBLOCKEDBALL]                  = COMPOUND_STRING("You already had your encounter here! This Pokémon can't be caught!"),
 };
 
 const u16 gTrainerUsedItemStringIds[] =

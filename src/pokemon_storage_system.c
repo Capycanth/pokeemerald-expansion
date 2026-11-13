@@ -45,6 +45,7 @@
 #include "constants/songs.h"
 #include "constants/pokemon_icon.h"
 #include "chooseboxmon.h"
+#include "nuzlocke.h"
 #include "party_menu.h"
 
 /*
@@ -1384,6 +1385,10 @@ u8 CountMonsInBox(u8 boxId)
 
 s16 GetFirstFreeBoxSpot(u8 boxId)
 {
+    // Nothing can be put in the Nuzlocke graveyard box by hand.
+    if (Nuzlocke_IsGraveyardBox(boxId))
+        return -1;
+
     u16 i;
 
     for (i = 0; i < IN_BOX_COUNT; i++)
@@ -7262,6 +7267,10 @@ static u8 InBoxInput_Normal(void)
                     return INPUT_SELECT_MON;
                 }
             }
+            else if (Nuzlocke_IsGraveyardBox(StorageGetCurrentBox()))
+            {
+                return INPUT_IN_MENU;
+            }
             else
             {
                 sStorage->inBoxMovingMode = MOVE_MODE_MULTIPLE_SELECTING;
@@ -7424,7 +7433,7 @@ static u8 InBoxInput_MovingMultiple(void)
     }
     else if (JOY_NEW(A_BUTTON))
     {
-        if (MultiMove_CanPlaceSelection())
+        if (MultiMove_CanPlaceSelection() && !Nuzlocke_IsGraveyardBox(StorageGetCurrentBox()))
         {
             sIsMonBeingMoved = FALSE;
             sStorage->inBoxMovingMode = MOVE_MODE_NORMAL;
@@ -7769,6 +7778,20 @@ static u8 SetSelectionMenuTexts(void)
 static bool8 SetMenuTexts_Mon(void)
 {
     enum Species species = GetSpeciesAtCursorPosition();
+
+    // Nuzlocke graveyard box: Pokémon can be viewed, marked and released, but not
+    // withdrawn, moved or selected, and nothing can be placed here.
+    if (sCursorArea == CURSOR_AREA_IN_BOX && Nuzlocke_IsGraveyardBox(StorageGetCurrentBox()))
+    {
+        if (species == SPECIES_NONE || sIsMonBeingMoved)
+            return FALSE;
+        SetMenuText(MENU_SUMMARY);
+        SetMenuText(MENU_MARK);
+        if (sStorage->boxOption != OPTION_SELECT_MON)
+            SetMenuText(MENU_RELEASE);
+        SetMenuText(MENU_CANCEL);
+        return TRUE;
+    }
 
     switch (sStorage->boxOption)
     {
